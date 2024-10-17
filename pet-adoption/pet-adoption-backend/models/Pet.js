@@ -1,14 +1,46 @@
 const mongoose = require('mongoose');
+// const Schema = mongoose.Schema;
 
-const PetSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  age: { type: Number, required: true },
-  breed: { type: String, required: true },
-  location: { type: String, required: true },
-  description: { type: String },
-  adoptionStatus: { type: String, enum: ['available', 'adopted'], default: 'available' },
-  image: { type: String },
-  createdAt: { type: Date, default: Date.now },
+const petSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  age: {
+    type: Number,
+    required: true,
+  },
+  breed: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    enum: ['Dog', 'Cat', 'Other'], // Define the types of pets
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String, // URL to the pet’s image
+    required: false,
+  },
+  status: {
+    type: String,
+    enum: ['Available', 'Adopted'],
+    default: 'Available',
+    required: true,
+  },
+  adoptionDate: {
+    type: Date, // Only if the pet is adopted
+    required: false,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
-module.exports = mongoose.model('Pet', PetSchema);
+module.exports = mongoose.model('Pet', petSchema);
