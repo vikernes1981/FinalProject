@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();  // Load environment variables from .env
 
 
-const TELEGRAM_API_URL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
+const TELEGRAM_API_URL = `https://api.telegram.org/bot7835725736:AAGoLebvE4Nj57QbCMCTm66J00Ke3NTNe44`;
 console.log('Telegram api:', process.env.TELEGRAM_API_URL); // Add this line
 
 // Send a message via Telegram bot
