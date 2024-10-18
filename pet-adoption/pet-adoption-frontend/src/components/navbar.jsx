@@ -32,7 +32,7 @@ const Navbar = () => {
         >
           <li><Link to="/">Home</Link></li>
           <li><Link to="/about">About Us</Link></li>
-          <li><Link to="/pets">Browse Pets</Link></li>
+          <li><Link to="/contact">Contact Us</Link></li> {/* Updated */}
           <li><Link to="/login">Login</Link></li>
         </ul>
       </div>
@@ -42,7 +42,7 @@ const Navbar = () => {
         <ul className="menu menu-horizontal p-0">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/about">About Us</Link></li>
-          <li><Link to="/pets">Browse Pets</Link></li>
+          <li><Link to="/contact">Contact Us</Link></li> {/* Updated */}
           <li><Link to="/login">Login</Link></li>
         </ul>
       </div>
