@@ -12,18 +12,21 @@ exports.getAllPets = async (req, res) => {
     const pets = await Pet.find(filter);
     res.json(pets);
   } catch (err) {
+    console.error('Error fetching pets:', err);
     res.status(500).send('Server Error');
   }
 };
 
 // Create a new pet (Admin only)
 exports.createPet = async (req, res) => {
-  const { name, age, breed, location, description, image } = req.body;
+  const { name, age, breed, type, description, image } = req.body;
+  console.log('Creating pet with data:', req.body);
   try {
-    const pet = new Pet({ name, age, breed, location, description, image });
+    const pet = new Pet({ name, age, breed, type, description, image });
     await pet.save();
     res.json(pet);
   } catch (err) {
+    console.error('Error creating pet:', err);
     res.status(500).send('Server Error');
   }
 };
@@ -37,7 +40,32 @@ exports.getPetById = async (req, res) => {
     }
     res.json(pet);
   } catch (err) {
+    console.error('Error fetching pet by ID:', err);
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Update a pet by ID (Admin only)
+exports.updatePet = async (req, res) => {
+  const { id } = req.params;
+  const { name, age, breed, location, description, image } = req.body;
+  console.log('Updating pet with ID:', id, 'and data:', req.body);
+
+  try {
+    const pet = await Pet.findByIdAndUpdate(
+      id,
+      { name, age, breed, location, description, image },
+      { new: true }
+    );
+
+    if (!pet) {
+      return res.status(404).json({ message: 'Pet not found' });
+    }
+
+    res.json(pet);
+  } catch (err) {
+    console.error('Error updating pet:', err);
+    res.status(500).send('Server Error');
   }
 };
 

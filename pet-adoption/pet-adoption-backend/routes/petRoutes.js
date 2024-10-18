@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllPets, createPet, getPetById, submitInquiry } = require('../controllers/petController');
+const { getAllPets, createPet, getPetById, updatePet, submitInquiry } = require('../controllers/petController');
 const Pet = require('../models/Pet'); // Import the Pet model directly for the new routes
 const router = express.Router();
 
@@ -9,17 +9,8 @@ router.post('/', createPet);
 router.get('/:id', getPetById);
 router.post('/:petId/inquiry', submitInquiry);
 
-// Add a Pet (Admin only)
-router.post('/', async (req, res) => {
-  const { name, age, breed, location, description, image } = req.body;
-  try {
-    const newPet = new Pet({ name, age, breed, location, description, image });
-    await newPet.save();
-    res.json(newPet);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to add pet' });
-  }
-});
+// Update a Pet (Admin only)
+router.put('/:id', updatePet);
 
 // Delete a Pet (Admin only)
 router.delete('/:id', async (req, res) => {
