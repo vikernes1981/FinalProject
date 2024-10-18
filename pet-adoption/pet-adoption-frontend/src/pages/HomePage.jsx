@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import { FaSearch } from 'react-icons/fa'; // Import Search Icon
@@ -7,17 +7,17 @@ import { FaSearch } from 'react-icons/fa'; // Import Search Icon
 const PetCard = ({ pet }) => {
   return (
     <Link to={`/pets/${pet.name}`}>
-      <div className="relative shadow-lg rounded-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+      <div className="relative shadow-lg rounded-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl animate-pulse-on-hover">
         {/* Image Section */}
         <img 
           src={pet.image} 
           alt={pet.name} 
-          className="object-cover h-64 w-full" 
-          style={{ filter: 'brightness(1.1)' }} // Slight brightness for clarity
+          className="object-cover h-64 w-full transition-opacity duration-300 hover:opacity-90" 
+          style={{ filter: 'brightness(1.1)' }}
         />
 
         {/* Overlay Section */}
-        <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-end p-4"> {/* Adjusted opacity */}
+        <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-end p-4">
           <h2 className="text-xl font-bold text-white">{pet.name} - {pet.breed}</h2>
           <p className="text-white text-sm mt-1">{pet.personality}</p>
         </div>
@@ -25,6 +25,8 @@ const PetCard = ({ pet }) => {
     </Link>
   );
 };
+
+
 
 // Google Map configuration
 const containerStyle = {
@@ -41,6 +43,13 @@ const center = {
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState(''); // Search term state
   const [visiblePets, setVisiblePets] = useState(8); // State to keep track of visible pets
+  const [fadeIn, setFadeIn] = useState(false);
+
+  // Trigger fade-in effect on load
+  useEffect(() => {
+    setFadeIn(true);
+  }, []);
+
 
   const pets = [
     // Sample data for pets
@@ -85,20 +94,33 @@ const HomePage = () => {
   return (
     <div className="space-y-12">
   {/* Header Section */}
-  <section className="bg-green-200 py-12">
-    <div className="max-w-7xl mx-auto px-4 text-center">
-      <h1 className="text-4xl font-bold text-green-700">Welcome to Our Pet Adoption Platform</h1>
-      <img 
-        src="/cute cat.jpg" 
-        alt="Cute Pet" 
-        className="mx-auto mt-8 rounded-lg shadow-lg h-96 w-full object-cover" 
-        style={{ maxWidth: '600px' }} // Optional limit to the max-width
-      />
-    </div>
-  </section>
+  <section className="relative bg-green-200 py-0 h-[550px] flex items-center justify-center overflow-hidden">
+  <div 
+    className="w-full h-full relative flex justify-center items-center text-center"
+    style={{
+      backgroundImage: 'url("/cute cat.jpg")', // Use the image as a background
+      backgroundPosition: 'center',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+    }}
+  >
+    {/* Overlay to darken the background for better text readability */}
+    <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
-      {/* Search Bar Section */}
-      <section className="max-w-7xl mx-auto px-4 mt-6">
+    {/* Text on top of the background image */}
+    <h1 className="relative text-5xl font-bold text-white z-10 animate-fadeInAndMove">
+      Welcome to Our Pet Adoption Platform
+    </h1>
+  </div>
+</section>
+
+
+
+
+
+
+      {/* Search Section */}
+      <section className="max-w-7xl mx-auto px-4 mt-6 animate-slideDown">
         <div className="relative">
           <input
             type="text"
@@ -121,7 +143,9 @@ const HomePage = () => {
         </div>
         <div className="flex justify-center mt-6">
           {visiblePets < filteredPets.length && (
-            <button onClick={loadMorePets} className="btn btn-primary">Load More</button>
+            <button onClick={loadMorePets} className="btn btn-primary animate-bounce hover:bg-blue-600">
+              Load More
+            </button>
           )}
         </div>
       </section>
@@ -131,7 +155,9 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto text-center">
           <h3 className="text-2xl font-bold">Which Pet is Right for You?</h3>
           <Link to="/quiz">
-            <button className="btn btn-success mt-4">Find Out Now!</button>
+            <button className="btn btn-success mt-4 transition duration-500 ease-in-out transform hover:scale-105">
+              Find Out Now!
+            </button>
           </Link>
         </div>
       </section>
@@ -141,7 +167,6 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto text-center">
           <h3 className="text-2xl font-bold">Adoption Centers Near You</h3>
           <div className="h-64 mt-6 rounded-lg overflow-hidden">
-            {/* LoadScript wraps the map to ensure Google Maps API is loaded */}
             <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
               <GoogleMap
                 mapContainerStyle={containerStyle}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 // Example pets data
 const petsData = [
@@ -40,23 +40,35 @@ const petsData = [
     }
   
     return (
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="card shadow-lg rounded-lg overflow-hidden">
-          <img src={pet.image} alt={pet.name} className="object-cover h-96 w-full" />
-          <div className="p-6">
-            <h1 className="text-3xl font-bold">{pet.name}</h1>
-            <p className="text-xl">{pet.breed}</p>
-            <p className="mt-4">{pet.description}</p>
-  
-            {/* Additional Pet Details */}
-            <p className="mt-4"><strong>Age:</strong> {pet.age} years old</p>
-            <p className="mt-2"><strong>Location:</strong> {pet.location}</p>
-            <p className="mt-2"><strong>Status:</strong> {pet.status}</p>
-            <p className="mt-2"><strong>Personality:</strong> {pet.personality}</p>
+        <div className="max-w-7xl mx-auto px-4 py-12">
+          <div className="card shadow-lg rounded-lg overflow-hidden">
+            <img src={pet.image} alt={pet.name} className="object-cover h-96 w-full" />
+            <div className="p-6">
+              <h1 className="text-3xl font-bold">{pet.name}</h1>
+              <p className="text-xl">{pet.breed}</p>
+              <p className="mt-4">{pet.description}</p>
+    
+              {/* Additional Pet Details */}
+              <p className="mt-4"><strong>Age:</strong> {pet.age} years old</p>
+              <p className="mt-2"><strong>Location:</strong> {pet.location}</p>
+              <p className="mt-2"><strong>Status:</strong> {pet.status}</p>
+              <p className="mt-2"><strong>Personality:</strong> {pet.personality}</p>
+    
+              {/* Adopt Me Button */}
+              <Link to={`/adopt/${pet.name}`}>
+  <button className="mt-6 bg-pink-500 text-white py-3 px-6 rounded-full hover:bg-pink-600 
+  transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 shadow-lg
+  animate-bounce focus:outline-none focus:ring-4 focus:ring-pink-300">
+    🐾 Adopt Me 🐾
+  </button>
+</Link>
+
+
+
+            </div>
           </div>
         </div>
-      </div>
-    );
-  };
+      );
+    };
   
   export default PetDetails;

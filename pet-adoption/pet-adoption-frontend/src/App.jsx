@@ -10,6 +10,7 @@ import QuizPage from './pages/QuizPage';
 import ForgotPassword from './pages/ForgotPassword'; // Import ForgotPassword component
 import ContactUs from './pages/ContactUs';
 import FoodRecommendation from './pages/FoodRecommendation';
+import AdoptionRequestForm from './components/AdoptionRequestForm';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
 
         {/* Pet Details Route */}
         <Route path="/pets/:name" element={<PetDetails />} />
+        <Route path="/adopt/:name" element={<AdoptionRequestForm />} />
 
         {/* Other Pages */}
         <Route path="/login" element={<Login />} />
