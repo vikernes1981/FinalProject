@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const petRoutes = require('./routes/petRoutes');
+const adoptionRoutes = require('./routes/adoptionRoutes');
 const User = require('./models/User');
 const Pet = require('./models/Pet');
 const AdoptionRequest = require('./models/AdoptionRequest');
@@ -13,6 +14,7 @@ app.use(cors());
 dotenv.config();
 app.use(express.json());
 app.use('/api/pets', petRoutes);
+app.use('/admin', adoptionRoutes);
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
