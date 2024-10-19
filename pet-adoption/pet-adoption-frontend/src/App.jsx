@@ -10,7 +10,9 @@ import QuizPage from './pages/QuizPage';
 import ForgotPassword from './pages/ForgotPassword'; // Import ForgotPassword component
 import ContactUs from './pages/ContactUs';
 import FoodRecommendation from './pages/FoodRecommendation';
+import Dashboard from './pages/Dashboard';
 import AdoptionRequestForm from './components/AdoptionRequestForm';
+
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
         
         {/* Quiz Route */}
         <Route path="/quiz" element={<QuizPage />} />
+
+        <Route path="/admin" element={<Dashboard />} /> {/* Admin Dashboard Route */}
 
         {/* Forgot Password Route */}
         <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Add ForgotPassword route */}

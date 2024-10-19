@@ -1,57 +1,20 @@
-// src/services/postService.jsx
+import axios from 'axios';
 
-const API_URL_PETS = 'http://localhost:5000/api/pets'; // Update to the correct API endpoint
+const API_URL_PETS = 'http://localhost:5000/api/pets';
 
-export const getPosts = async () => {
-    const response = await fetch(API_URL);
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return await response.json();
+export const getAllPets = async () => {
+  const res = await axios.get(`${API_URL_PETS}`);
+  return res.data;
 };
 
-export const getPostById = async (id) => {
-    const response = await fetch(`${API_URL_PETS}/${id}`);
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return await response.json();
+export const addPet = async (newPet) => {
+  await axios.post(`${API_URL_PETS}`, newPet);
 };
 
-export const createPost = async (post) => {
-    const response = await fetch(API_URL_PETS, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(post),
-    });
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return await response.json();
+export const updatePet = async (id, updatedPet) => {
+  await axios.put(`${API_URL_PETS}/${id}`, updatedPet);
 };
 
-export const deletePost = async (id) => {
-    const response = await fetch(`${API_URL_PETS}/${id}`, {
-        method: 'DELETE',
-    });
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return await response.json(); // Optionally return the deleted post or a success message
-};
-
-export const updatePost = async (id, updatedFields) => {
-    const response = await fetch(`${API_URL_PETS}/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedFields),
-    });
-    if (!response.ok) {
-        throw new Error('Network response was not ok');
-    }
-    return await response.json();
+export const deletePet = async (id) => {
+  await axios.delete(`${API_URL_PETS}/${id}`);
 };
