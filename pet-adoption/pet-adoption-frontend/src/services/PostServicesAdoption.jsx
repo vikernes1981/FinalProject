@@ -55,7 +55,7 @@ export const updateRequest = async (id, updatedFields) => {
         });
         return response.data;
     } catch (error) {
-        console.error(`Error updating post with id ${id}:`, error);
+        console.error(`Error updating request with id ${id}:`, error);
         throw error;
     }
 };
