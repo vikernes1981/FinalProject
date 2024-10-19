@@ -11,6 +11,8 @@ import ForgotPassword from './pages/ForgotPassword'; // Import ForgotPassword co
 import ContactUs from './pages/ContactUs';
 import FoodRecommendation from './pages/FoodRecommendation';
 import Dashboard from './pages/Dashboard';
+import AdoptionRequestForm from './components/AdoptionRequestForm';
+
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
 
         {/* Pet Details Route */}
         <Route path="/pets/:name" element={<PetDetails />} />
+        <Route path="/adopt/:name" element={<AdoptionRequestForm />} />
 
         {/* Other Pages */}
         <Route path="/login" element={<Login />} />
