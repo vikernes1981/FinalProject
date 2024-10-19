@@ -5,9 +5,12 @@ const petRoutes = require('./routes/petRoutes');
 const User = require('./models/User');
 const Pet = require('./models/Pet');
 const AdoptionRequest = require('./models/AdoptionRequest');
+const cors = require('cors');
+const app = express();
+
+app.use(cors());
 
 dotenv.config();
-const app = express();
 app.use(express.json());
 app.use('/api/pets', petRoutes);
 
