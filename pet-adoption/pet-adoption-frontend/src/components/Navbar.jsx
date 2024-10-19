@@ -49,6 +49,7 @@ const Navbar = () => {
             <li><Link to="/about" onClick={handleMenuItemClick}>About Us</Link></li>
             <li><Link to="/contact" onClick={handleMenuItemClick}>Contact Us</Link></li>
             <li><Link to="/login" onClick={handleMenuItemClick}>Login</Link></li>
+            <li><Link to="/admin" onClick={handleMenuItemClick}>Admin Dashboard</Link></li>
           </ul>
         )}
       </div>
@@ -60,6 +61,7 @@ const Navbar = () => {
           <li><Link to="/about">About Us</Link></li>
           <li><Link to="/contact">Contact Us</Link></li>
           <li><Link to="/login">Login</Link></li>
+          <li><Link to="/admin">Admin Dashboard</Link></li>
         </ul>
       </div>
     </nav>
