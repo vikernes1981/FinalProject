@@ -48,6 +48,11 @@ const ManageUsers = () => {
     setFormData({ username: user.username, email: user.email, password: '', role: user.role });
   };
 
+  const handleCancelEdit = () => {
+    setSelectedUser(null);
+    setFormData({ username: '', email: '', password: '', role: '' });
+  };
+
   return (
     <div className="manage-users p-6 bg-gray-100 min-h-screen">
       <h2 className="text-2xl font-semibold mb-6">Manage Users</h2>
@@ -73,6 +78,7 @@ const ManageUsers = () => {
               console.log('Delete button clicked for user:', selectedUser._id); // Log when button is clicked
               handleDeleteUser(selectedUser._id);
             }}>Delete</button>
+            <button className="btn btn-secondary" onClick={handleCancelEdit}>Cancel</button>
           </div>
         )}
       </div>
