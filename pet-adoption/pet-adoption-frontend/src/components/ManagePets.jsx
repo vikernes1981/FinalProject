@@ -56,6 +56,38 @@ const ManagePets = () => {
         pet: pet,
     }));
 
+    const typeOptions = [
+        { value: "Dog", label: "Dog" },
+        { value: "Cat", label: "Cat" },
+        { value: "Bird", label: "Bird" },
+        { value: "Fish", label: "Fish" },
+        { value: "Turtle", label: "Turtle" },
+    ];
+
+    const customStyles = {
+        control: (provided) => ({
+            ...provided,
+            backgroundColor: '#333',
+            color: '#fff',
+        }),
+        menu: (provided) => ({
+            ...provided,
+            backgroundColor: '#333',
+        }),
+        singleValue: (provided) => ({
+            ...provided,
+            color: '#fff',
+        }),
+        option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isSelected ? '#555' : '#333',
+            color: '#fff',
+            '&:hover': {
+                backgroundColor: '#444',
+            },
+        }),
+    };
+
     return (
         <div className="manage-pets p-4">
             <h2 className="text-2xl font-semibold mb-6">Manage Pets</h2>
@@ -64,6 +96,7 @@ const ManagePets = () => {
                 onChange={(selectedOption) => setEditingPet(selectedOption.pet)}
                 placeholder="Select a pet..."
                 className="mb-6"
+                styles={customStyles}
             />
 
             {editingPet && (
@@ -105,12 +138,12 @@ const ManagePets = () => {
                         onChange={(e) => setNewPet({ ...newPet, breed: e.target.value })}
                         className="input input-bordered w-full"
                     />
-                    <input
-                        type="text"
-                        placeholder="Type"
-                        value={newPet.type}
-                        onChange={(e) => setNewPet({ ...newPet, type: e.target.value })}
-                        className="input input-bordered w-full"
+                    <Select
+                        options={typeOptions}
+                        onChange={(selectedOption) => setNewPet({ ...newPet, type: selectedOption.value })}
+                        placeholder="Select a type..."
+                        className="mb-4"
+                        styles={customStyles}
                     />
                     <input
                         type="text"

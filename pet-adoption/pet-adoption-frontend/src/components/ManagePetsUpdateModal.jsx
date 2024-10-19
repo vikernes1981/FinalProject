@@ -3,6 +3,7 @@ import { addPet, updatePet, deletePet } from '../services/PostServicesPets';
 
 const ManagePetsModal = ({ pet, onClose, onSave }) => {
     const [currentPet, setCurrentPet] = useState(pet || {});
+    const [notification, setNotification] = useState({ message: '', visible: false });
 
     useEffect(() => {
         setCurrentPet(pet);
@@ -15,22 +16,33 @@ const ManagePetsModal = ({ pet, onClose, onSave }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (pet) {
-            await updatePet(currentPet._id, currentPet);
-        } else {
-            await addPet(currentPet);
+        try {
+            if (pet) {
+                await updatePet(currentPet._id, currentPet);
+                setNotification({ message: 'Pet updated successfully!', visible: true });
+            } else {
+                await addPet(currentPet);
+                setNotification({ message: 'Pet added successfully!', visible: true });
+            }
+            onSave(currentPet); // Notify parent to update pets list
+            onClose(); // Close the modal
+            setTimeout(() => window.location.reload(), 2000); // Refresh the page after 2 seconds
+        } catch (error) {
+            console.error('Error updating/adding pet:', error);
         }
-        onSave(currentPet); // Notify parent to update pets list
-        onClose(); // Close the modal
-        window.location.reload(); // Refresh the page
     };
 
     const handleDelete = async () => {
-        if (currentPet._id) {
-            await deletePet(currentPet._id);
-            onSave(null); // Notify parent to update pets list
-            onClose(); // Close the modal
-            window.location.reload(); // Refresh the page
+        try {
+            if (currentPet._id) {
+                await deletePet(currentPet._id);
+                setNotification({ message: 'Pet deleted successfully!', visible: true });
+                onSave(null); // Notify parent to update pets list
+                onClose(); // Close the modal
+                setTimeout(() => window.location.reload(), 2000); // Refresh the page after 2 seconds
+            }
+        } catch (error) {
+            console.error('Error deleting pet:', error);
         }
     };
 
@@ -148,6 +160,11 @@ const ManagePetsModal = ({ pet, onClose, onSave }) => {
                     </div>
                 </div>
             </div>
+            {notification.visible && (
+                <div className="fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded">
+                    {notification.message}
+                </div>
+            )}
         </>
     );
 };
