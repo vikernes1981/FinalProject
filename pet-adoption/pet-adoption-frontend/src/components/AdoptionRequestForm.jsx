@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { createRequest } from '../services/PostServicesAdoption';
+import { getUserById } from '../services/PostServicesUsers'; // Ensure the correct path
 
 const AdoptionRequestForm = () => {
   const { name } = useParams(); // Get the pet name from the URL
@@ -12,6 +13,21 @@ const AdoptionRequestForm = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [userData, setUserData] = useState(null); // State to hold user data
+
+  // Fetch the logged-in user's details on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('/admin/user'); // Modify this endpoint as necessary
+        setUserData(response.data);
+      } catch (error) {
+        setErrorMessage('Failed to fetch user data. Please try again.');
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   // Handle form data change
   const handleChange = (e) => {
@@ -43,8 +59,26 @@ const AdoptionRequestForm = () => {
       setLoading(true);
       setErrorMessage(''); // Clear any previous error message
 
-      // Mock API call
-      await axios.post(`/api/adoption-request/${name}`, { formData });
+      if (!userData) {
+        throw new Error('User data not available.');
+      }
+
+      const requestData = {
+        user: {
+          _id: userData._id, // User ID
+          username: userData.username, // User username
+          email: userData.email, // User email
+          role: userData.role, // User role
+        },
+        pet: {
+          name: name, // Pet name from URL
+        },
+        message: formData.why, // Message from the form
+        status: "Pending", // Default status
+      };
+
+      // Use the createRequest function to submit the request
+      await createRequest(requestData);
 
       setSuccessMessage('Your adoption request has been submitted successfully!');
       setFormData({ adopterName: '', why: '', when: '' }); // Reset form fields
