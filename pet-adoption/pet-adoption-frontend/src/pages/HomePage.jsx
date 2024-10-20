@@ -63,7 +63,8 @@ const HomePage = () => {
   // Filter pets based on the search term (name or breed)
   const filteredPets = pets.filter(pet =>
     pet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    pet.breed.toLowerCase().includes(searchTerm.toLowerCase())
+    pet.breed.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    pet.type.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Logic to load more pets
