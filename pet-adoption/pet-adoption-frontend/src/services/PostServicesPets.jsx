@@ -18,3 +18,9 @@ export const updatePet = async (id, updatedPet) => {
 export const deletePet = async (id) => {
   await axios.delete(`${API_URL_PETS}/${id}`);
 };
+
+export const getPetById = async (id) => {
+  const res = await axios.get(`${API_URL_PETS}/${id}`);
+  return res.data;
+};
+

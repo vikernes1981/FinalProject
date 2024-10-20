@@ -3,7 +3,6 @@ import Select from "react-select";
 import {
     getAllPets,
     addPet,
-    updatePet,
 } from "../services/PostServicesPets";
 import ManagePetsModal from "./ManagePetsUpdateModal"; // Ensure the import matches the file name
 

@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import { FaSearch } from 'react-icons/fa'; // Import Search Icon
+import { getAllPets } from '../services/PostServicesPets';  
 
 // PetCard Component for each pet
 const PetCard = ({ pet }) => {
   return (
-    <Link to={`/pets/${pet.name}`}>
+    <Link to={`/pets/${pet._id}`}>
       <div className="relative shadow-lg rounded-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl animate-pulse-on-hover">
         {/* Image Section */}
         <img 
@@ -19,14 +20,12 @@ const PetCard = ({ pet }) => {
         {/* Overlay Section */}
         <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-end p-4">
           <h2 className="text-xl font-bold text-white">{pet.name} - {pet.breed}</h2>
-          <p className="text-white text-sm mt-1">{pet.personality}</p>
+          <p className="text-white text-sm mt-1">{pet.description}</p>
         </div>
       </div>
     </Link>
   );
 };
-
-
 
 // Google Map configuration
 const containerStyle = {
@@ -44,41 +43,22 @@ const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState(''); // Search term state
   const [visiblePets, setVisiblePets] = useState(8); // State to keep track of visible pets
   const [fadeIn, setFadeIn] = useState(false);
+  const [pets, setPets] = useState([]); // State to store pets data
 
   // Trigger fade-in effect on load
   useEffect(() => {
     setFadeIn(true);
   }, []);
 
+  // Fetch pets data on component mount
+  useEffect(() => {
+    const fetchPets = async () => {
+      const petsData = await getAllPets();
+      setPets(petsData);
+    };
 
-  const pets = [
-    // Sample data for pets
-    { name: 'Labrador', breed: 'Dog', image: '/Labrador.png' },
-    { name: 'Siamese Cat', breed: 'Cat', image: '/Siamese Cat.webp' },
-    { name: 'Parrot', breed: 'Bird', image: '/Parrot.jpg' },
-    { name: 'Goldfish', breed: 'Fish', image: '/Goldfish.jpg' },
-    { name: 'Hedgehog', breed: 'Small Mammal', image: '/Hedgehog.webp' },
-    { name: 'Rabbit', breed: 'Small Mammal', image: '/Rabbit.jpg' },
-    { name: 'Poodle', breed: 'Dog', image: '/Poodle.webp' },
-    { name: 'Persian Cat', breed: 'Cat', image: '/Persian Cat.jpg' },
-    { name: 'Cockatoo', breed: 'Bird', image: '/Cockatoo.webp' },
-    { name: 'Turtle', breed: 'Reptile', image: '/Turtle.JPG' },
-    { name: 'Guinea Pig', breed: 'Small Mammal', image: '/Guinea Pig.jpg' },
-    { name: 'Dalmatian', breed: 'Dog', image: '/Dalmatian.jpg' },
-    { name: 'Maine Coon', breed: 'Cat', image: '/Maine Coon.jpg' },
-    { name: 'Beagle', breed: 'Dog', image: '/Beagle.webp' },
-    { name: 'Budgerigar', breed: 'Bird', image: '/Budgerigar.webp' },
-    { name: 'Chameleon', breed: 'Reptile', image: '/Chameleon.webp' },
-    { name: 'Great Dane', breed: 'Dog', image: '/Great Dane.webp' },
-    { name: 'Sphynx Cat', breed: 'Cat', image: '/Sphynx Cat.jpg' },
-    { name: 'Hamster', breed: 'Small Mammal', image: '/Hamster.webp' },
-    { name: 'Iguana', breed: 'Reptile', image: '/Iguana.jpg' },
-    { name: 'Yorkshire Terrier', breed: 'Dog', image: '/Yorkshire Terrier.jpg' },
-    { name: 'Macaw', breed: 'Bird', image: '/Macaw.jpg' },
-    { name: 'Ferret', breed: 'Small Mammal', image: '/Ferret.jpg' },
-    { name: 'Tortoise', breed: 'Reptile', image: '/Tortoise.jpg' }
-    // Add more pet objects as needed
-  ];
+    fetchPets();
+  }, []);
 
   // Filter pets based on the search term (name or breed)
   const filteredPets = pets.filter(pet =>
@@ -93,31 +73,26 @@ const HomePage = () => {
 
   return (
     <div className="space-y-12">
-  {/* Header Section */}
-  <section className="relative bg-green-200 py-0 h-[550px] flex items-center justify-center overflow-hidden">
-  <div 
-    className="w-full h-full relative flex justify-center items-center text-center"
-    style={{
-      backgroundImage: 'url("/cute cat.jpg")', // Use the image as a background
-      backgroundPosition: 'center',
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-    }}
-  >
-    {/* Overlay to darken the background for better text readability */}
-    <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+      {/* Header Section */}
+      <section className="relative bg-green-200 py-0 h-[550px] flex items-center justify-center overflow-hidden">
+        <div 
+          className="w-full h-full relative flex justify-center items-center text-center"
+          style={{
+            backgroundImage: 'url("/cute cat.jpg")', // Use the image as a background
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
+          {/* Overlay to darken the background for better text readability */}
+          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
-    {/* Text on top of the background image */}
-    <h1 className="relative text-5xl font-bold text-white z-10 animate-fadeInAndMove">
-      Welcome to Our Pet Adoption Platform
-    </h1>
-  </div>
-</section>
-
-
-
-
-
+          {/* Text on top of the background image */}
+          <h1 className="relative text-5xl font-bold text-white z-10 animate-fadeInAndMove">
+            Welcome to Our Pet Adoption Platform
+          </h1>
+        </div>
+      </section>
 
       {/* Search Section */}
       <section className="max-w-7xl mx-auto px-4 mt-6 animate-slideDown">

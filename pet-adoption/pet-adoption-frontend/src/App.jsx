@@ -23,7 +23,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
 
         {/* Pet Details Route */}
-        <Route path="/pets/:name" element={<PetDetails />} />
+        <Route path="/pets/:id" element={<PetDetails />} />
         <Route path="/adopt/:name" element={<AdoptionRequestForm />} />
 
         {/* Other Pages */}
