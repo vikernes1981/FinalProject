@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 
 // Container style for the map
 const containerStyle = {
@@ -17,6 +18,8 @@ const AdoptionCentersMap = () => {
   const [center, setCenter] = useState(defaultCenter); // Center of the map
   const [markers, setMarkers] = useState([]); // Markers for adoption centers
   const [loading, setLoading] = useState(false); // Loading state
+  const [hoveredMarker, setHoveredMarker] = useState(null); // State for hovered marker
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleFindAdoptionCenters = () => {
     if (navigator.geolocation) {
@@ -33,8 +36,8 @@ const AdoptionCentersMap = () => {
 
         const request = {
           location: { lat, lng },
-          radius: '5000', // 5 km radius
-          keyword: 'pet adoption center',
+          radius: '5000', // 50 km radius
+          keyword: 'tierheim',
         };
 
         service.nearbySearch(request, (results, status) => {
@@ -42,6 +45,10 @@ const AdoptionCentersMap = () => {
             const newMarkers = results.map((place) => ({
               position: place.geometry.location,
               name: place.name,
+              address: place.vicinity, // Get the vicinity (address) of the place
+              phone: place.formatted_phone_number || 'N/A', // Get phone number if available
+              website: place.website || 'N/A', // Get website if available
+              id: place.place_id, // Store place_id for navigation
             }));
             setMarkers(newMarkers);
           } else {
@@ -53,6 +60,11 @@ const AdoptionCentersMap = () => {
     } else {
       alert('Geolocation is not supported by this browser.');
     }
+  };
+
+  const handleMarkerClick = (markerId) => {
+    // Navigate to the tierheim's details page using the place_id
+    navigate(`/tierheim/${markerId}`);
   };
 
   return (
@@ -70,8 +82,35 @@ const AdoptionCentersMap = () => {
               zoom={12}
             >
               {markers.map((marker, index) => (
-                <Marker key={index} position={marker.position} />
+                <Marker
+                  key={index}
+                  position={marker.position}
+                  onMouseOver={() => setHoveredMarker(marker)}
+                  onMouseOut={() => setHoveredMarker(null)}
+                  onClick={() => handleMarkerClick(marker.id)} // Handle marker click
+                />
               ))}
+              {/* Display info for hovered marker */}
+              {hoveredMarker && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '20px',
+                    left: '20px',
+                    background: 'white',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+                  }}
+                >
+                  <h4>{hoveredMarker.name}</h4>
+                  <p>{hoveredMarker.address}</p>
+                  <p>Phone: {hoveredMarker.phone}</p>
+                  <p>
+                    Website: <a href={hoveredMarker.website} target="_blank" rel="noopener noreferrer">{hoveredMarker.website}</a>
+                  </p>
+                </div>
+              )}
             </GoogleMap>
           </LoadScript>
         </div>
