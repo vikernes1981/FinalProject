@@ -1,134 +1,91 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
-    password: '',
-    confirmPassword: '',
+    password: ''
   });
-  const [error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
     setLoading(true);
+    setErrorMessage('');
 
     try {
-      await axios.post('/api/auth/register', {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
-      alert('Registration successful');
-    } catch (err) {
-      setError('Registration failed');
-      console.error(err);
-    } finally {
+      const response = await axios.post('http://localhost:5000/api/register', formData);
+      const token = response.data.token;
+      localStorage.setItem('token', token); // Save token in local storage
       setLoading(false);
+      navigate('/'); // Redirect to the homepage or dashboard after registration
+    } catch (error) {
+      setLoading(false);
+      setErrorMessage('Registration failed. Please try again.');
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white shadow-md rounded-lg p-8">
-      <h1 className="text-2xl font-bold text-center mb-6">Register</h1>
-
-      {/* Error Message */}
-      {error && (
-        <div className="text-red-500 mb-4 text-center">
-          {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Name Field */}
+    <div className="max-w-md mx-auto mt-10">
+      <h1 className="text-3xl font-bold mb-6 text-center">Register</h1>
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-gray-700 font-bold mb-2">Name:</label>
+          <label htmlFor="username" className="block text-lg font-semibold mb-2">Username</label>
           <input
+            id="username"
+            name="username"
             type="text"
-            placeholder="Enter your name"
-            className="form-input w-full px-3 py-2 border rounded-lg"
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            value={formData.username}
+            onChange={handleChange}
             required
+            className="w-full p-4 border rounded-lg"
           />
         </div>
-
-        {/* Email Field */}
         <div>
-          <label className="block text-gray-700 font-bold mb-2">Email:</label>
+          <label htmlFor="email" className="block text-lg font-semibold mb-2">Email</label>
           <input
+            id="email"
+            name="email"
             type="email"
-            placeholder="Enter your email"
-            className="form-input w-full px-3 py-2 border rounded-lg"
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            value={formData.email}
+            onChange={handleChange}
             required
+            className="w-full p-4 border rounded-lg"
           />
         </div>
-
-        {/* Password Field */}
         <div>
-          <label className="block text-gray-700 font-bold mb-2">Password:</label>
+          <label htmlFor="password" className="block text-lg font-semibold mb-2">Password</label>
           <input
+            id="password"
+            name="password"
             type="password"
-            placeholder="Enter your password"
-            className="form-input w-full px-3 py-2 border rounded-lg"
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            value={formData.password}
+            onChange={handleChange}
             required
+            className="w-full p-4 border rounded-lg"
           />
         </div>
+        <button
+          type="submit"
+          className={`w-full py-3 text-white bg-blue-500 rounded-lg ${loading ? 'opacity-50' : ''}`}
+          disabled={loading}
+        >
+          {loading ? 'Registering...' : 'Register'}
+        </button>
 
-        {/* Confirm Password Field */}
-        <div>
-          <label className="block text-gray-700 font-bold mb-2">Confirm Password:</label>
-          <input
-            type="password"
-            placeholder="Confirm your password"
-            className="form-input w-full px-3 py-2 border rounded-lg"
-            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-            required
-          />
-        </div>
-
-        {/* Submit Button */}
-        <div className="flex justify-center">
-          <button
-            type="submit"
-            className="btn btn-primary w-full"
-            disabled={loading}
-          >
-            {loading ? 'Registering...' : 'Register'}
-          </button>
-        </div>
+        {errorMessage && <p className="text-red-500 text-center mt-4">{errorMessage}</p>}
       </form>
-
-      {/* Login Link */}
-      <div className="text-center mt-4">
-        <p className="text-gray-600">
-          Already have an account?{' '}
-          <Link to="/login" className="text-blue-500 hover:underline">
-            Login here
-          </Link>
-        </p>
-      </div>
-
-      {/* Reset Password Link */}
-      <div className="text-center mt-4">
-        <p className="text-gray-600">
-          Forgot your password?{' '}
-          <Link to="/ForgotPassword" className="text-blue-500 hover:underline">
-            Reset it here
-          </Link>
-        </p>
-      </div>
     </div>
   );
 };

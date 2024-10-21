@@ -4,9 +4,6 @@ const dotenv = require('dotenv');
 const petRoutes = require('./routes/petRoutes');
 const adoptionRoutes = require('./routes/adoptionRoutes');
 const authRoutes = require('./routes/authRoutes');
-const User = require('./models/User');
-const Pet = require('./models/Pet');
-const AdoptionRequest = require('./models/AdoptionRequest');
 const cors = require('cors');
 const app = express();
 
@@ -17,6 +14,7 @@ app.use(express.json());
 app.use('/api/pets', petRoutes);
 app.use('/admin', adoptionRoutes);
 app.use('/admin', authRoutes);
+app.use('/api', authRoutes); // Add auth routes
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))

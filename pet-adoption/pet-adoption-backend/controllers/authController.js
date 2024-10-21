@@ -1,4 +1,41 @@
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+exports.registerUser = async (req, res) => {
+  const { username, email, password } = req.body;
+
+  try {
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const user = new User({
+      username,
+      email,
+      password: hashedPassword
+    });
+
+    await user.save();
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.status(201).json({ token });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error. Please try again later.' });
+  }
+};
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -22,7 +59,8 @@ exports.getUserById = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
-    const newUser = new User({ username, email, password, role });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, email, password: hashedPassword, role });
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
@@ -39,7 +77,7 @@ exports.updateUser = async (req, res) => {
 
     user.username = username || user.username;
     user.email = email || user.email;
-    if (password) user.password = password;
+    if (password) user.password = await bcrypt.hash(password, 10);
     user.role = role || user.role;
 
     await user.save();
