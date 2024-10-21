@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // For navigation to other pages (Signup, Forgot Password)
+import { Link, useNavigate } from 'react-router-dom'; // For navigation to other pages (Signup, Forgot Password)
 import axios from 'axios';
 
 const Login = ({ setAuth }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false); // For showing loading spinner during login
+  const navigate = useNavigate(); // To navigate after successful login
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('/api/auth/login', formData);
+      // API call to the backend login route
+      const response = await axios.post('http://localhost:5000/api/login', formData); // Adjust the baseURL as per your setup
       const { token } = response.data;
-      localStorage.setItem('token', token); // Save token to localStorage
-      setAuth(true); // Update authentication state
+
+      // Save token to localStorage
+      localStorage.setItem('token', token);
+
+      // Set the authentication state to true
+      setAuth(true);
+
+      // Navigate to a dashboard or home page after login
       alert('Login successful');
+      navigate('/');
     } catch (err) {
       console.error(err);
-      alert('Login failed');
+      alert('Login failed: Invalid email or password');
     } finally {
       setLoading(false);
     }
@@ -47,7 +56,7 @@ const Login = ({ setAuth }) => {
             type="password"
             placeholder="Enter your password"
             className="form-input w-full px-3 py-2 border rounded-lg"
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value.trim() })}
             required
           />
         </div>
