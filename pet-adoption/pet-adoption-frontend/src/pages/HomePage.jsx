@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
-import { FaSearch } from 'react-icons/fa'; // Import Search Icon
-import { getAllPets } from '../services/PostServicesPets';  
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { FaSearch } from 'react-icons/fa';
+import { getAllPets } from '../services/PostServicesPets';
+import AdoptionCentersMap from './AdoptionCentersMap'; // Import the new component
 
 // PetCard Component for each pet
 const PetCard = ({ pet }) => {
   return (
     <Link to={`/pets/${pet._id}`}>
       <div className="relative shadow-lg rounded-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl animate-pulse-on-hover">
-        {/* Image Section */}
         <img 
           src={pet.image} 
           alt={pet.name} 
           className="object-cover h-64 w-full transition-opacity duration-300 hover:opacity-90" 
           style={{ filter: 'brightness(1.1)' }}
         />
-
-        {/* Overlay Section */}
         <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-end p-4">
           <h2 className="text-xl font-bold text-white">{pet.name} - {pet.breed}</h2>
           <p className="text-white text-sm mt-1">{pet.description}</p>
@@ -34,23 +32,21 @@ const containerStyle = {
 };
 
 const center = {
-  lat: 51.1657,  // Latitude for the center of Germany
-  lng: 10.4515,  // Longitude for the center of Germany
+  lat: 51.1657,  // Latitude for Germany
+  lng: 10.4515,  // Longitude for Germany
 };
 
 // Main HomePage Component
 const HomePage = () => {
-  const [searchTerm, setSearchTerm] = useState(''); // Search term state
-  const [visiblePets, setVisiblePets] = useState(8); // State to keep track of visible pets
+  const [searchTerm, setSearchTerm] = useState('');
+  const [visiblePets, setVisiblePets] = useState(8);
   const [fadeIn, setFadeIn] = useState(false);
-  const [pets, setPets] = useState([]); // State to store pets data
+  const [pets, setPets] = useState([]);
 
-  // Trigger fade-in effect on load
   useEffect(() => {
     setFadeIn(true);
   }, []);
 
-  // Fetch pets data on component mount
   useEffect(() => {
     const fetchPets = async () => {
       const petsData = await getAllPets();
@@ -60,16 +56,14 @@ const HomePage = () => {
     fetchPets();
   }, []);
 
-  // Filter pets based on the search term (name or breed)
   const filteredPets = pets.filter(pet =>
     pet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     pet.breed.toLowerCase().includes(searchTerm.toLowerCase()) || 
     pet.type.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Logic to load more pets
   const loadMorePets = () => {
-    setVisiblePets(prev => prev + 8); // Show 8 more pets
+    setVisiblePets(prev => prev + 8);
   };
 
   return (
@@ -85,10 +79,7 @@ const HomePage = () => {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          {/* Overlay to darken the background for better text readability */}
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-
-          {/* Text on top of the background image */}
           <h1 className="relative text-5xl font-bold text-white z-10 animate-fadeInAndMove">
             Welcome to Our Pet Adoption Platform
           </h1>
@@ -103,9 +94,9 @@ const HomePage = () => {
             placeholder="Search by pet name or breed..."
             className="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600 transition duration-300 ease-in-out shadow-sm focus:shadow-lg"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} // Update search term on change
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" /> {/* Search Icon */}
+          <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
         </div>
       </section>
 
@@ -139,23 +130,7 @@ const HomePage = () => {
       </section>
 
       {/* Map Section with Google Map */}
-      <section className="bg-yellow-200 py-12">
-        <div className="max-w-7xl mx-auto text-center">
-          <h3 className="text-2xl font-bold">Adoption Centers Near You</h3>
-          <div className="h-64 mt-6 rounded-lg overflow-hidden">
-            <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={10}
-              />
-            </LoadScript>
-          </div>
-          <Link to="/map">
-            <button className="btn btn-success mt-4">Find Out Now!</button>
-          </Link>
-        </div>
-      </section>
+      <AdoptionCentersMap /> {/* Use the imported AdoptionCentersMap component */}
 
       {/* Food Recommendation Section */}
       <section className="bg-green-200 py-12">
