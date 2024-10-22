@@ -2,19 +2,47 @@ import React, { useState } from 'react';
 
 const FoodRecommendation = () => {
   const [petType, setPetType] = useState('');
-  const [age, setAge] = useState('');
-  const [size, setSize] = useState(''); // Add size for pets like dogs and cats
-  const [healthCondition, setHealthCondition] = useState(''); // Add health conditions
+  const [age, setAge] = useState(''); // Age in years or months
+  const [ageInMonths, setAgeInMonths] = useState(''); // Age in months for pets younger than 1 year
+  const [size, setSize] = useState(''); // Size for pets like dogs and cats
+  const [healthCondition, setHealthCondition] = useState(''); // Health conditions
   const [foodRecommendation, setFoodRecommendation] = useState(null);
 
-  // Function to determine food recommendation
-  const findFoodRecommendation = () => {
-    let recommendation = '';
+  // Function to determine pet's life stage based on age
+  const getLifeStage = (petType, age) => {
+    age = parseFloat(age); // Ensure age is a number
 
     if (petType === 'Dog') {
-      if (age === 'Puppy') {
+      if (age < 1) return 'Puppy';
+      if (age >= 1 && age < 7) return 'Adult';
+      return 'Senior'; // Age 7+ for dogs is considered senior
+    }
+    if (petType === 'Cat') {
+      if (age < 1) return 'Kitten';
+      if (age >= 1 && age < 10) return 'Adult';
+      return 'Senior'; // Age 10+ for cats is considered senior
+    }
+    // Default for other animals
+    return 'Adult'; // Default to adult for simplicity
+  };
+
+  // Function to determine food recommendation based on inputs
+  const findFoodRecommendation = () => {
+    let finalAge = age;
+
+    // If age is less than 1 year, use the value from the months input
+    if (age < 1 && ageInMonths) {
+      finalAge = (parseFloat(ageInMonths) / 12).toFixed(2); // Convert months to years
+    }
+
+    const lifeStage = getLifeStage(petType, finalAge); // Get the life stage based on age
+    let recommendation = '';
+
+    // Dog-specific recommendations
+    if (petType === 'Dog') {
+      if (lifeStage === 'Puppy') {
         recommendation = 'High-protein puppy food with DHA for development.';
-      } else if (age === 'Adult') {
+      } else if (lifeStage === 'Adult') {
         if (size === 'Small') {
           recommendation = 'Small breed adult dog food rich in protein.';
         } else if (size === 'Medium') {
@@ -25,43 +53,61 @@ const FoodRecommendation = () => {
           recommendation = 'Balanced adult dog food with essential nutrients.';
         }
 
+        // Specific recommendations based on health conditions
         if (healthCondition === 'Weight Management') {
           recommendation += ' Look for food labeled for weight management with lower calories.';
         } else if (healthCondition === 'Sensitive Stomach') {
           recommendation += ' Opt for limited-ingredient diets with easily digestible proteins.';
+        } else if (healthCondition === 'Joint Support') {
+          recommendation += ' Consider food with added glucosamine and chondroitin to support joints.';
         }
-      } else if (age === 'Senior') {
+      } else if (lifeStage === 'Senior') {
         recommendation = 'Senior dog food with joint support and reduced calories.';
         if (healthCondition === 'Joint Support') {
-          recommendation += ' Look for glucosamine and chondroitin in the ingredients.';
+          recommendation += ' Look for food with glucosamine and chondroitin for joint support.';
+        } else if (healthCondition === 'Weight Management') {
+          recommendation += ' Choose a lower-calorie senior diet for weight control.';
         }
       }
+
+    // Cat-specific recommendations
     } else if (petType === 'Cat') {
-      if (age === 'Kitten') {
+      if (lifeStage === 'Kitten') {
         recommendation = 'High-calorie kitten food with taurine for growth.';
-      } else if (age === 'Adult') {
+      } else if (lifeStage === 'Adult') {
         recommendation = 'Balanced adult cat food with plenty of protein.';
         if (healthCondition === 'Urinary Health') {
-          recommendation += ' Opt for food that supports urinary tract health.';
+          recommendation += ' Opt for food that supports urinary tract health with low magnesium levels.';
         } else if (healthCondition === 'Hairball Control') {
-          recommendation += ' Choose food with added fiber for hairball control.';
+          recommendation += ' Choose food with added fiber to help manage hairballs.';
+        } else if (healthCondition === 'Sensitive Stomach') {
+          recommendation += ' Choose food with easily digestible proteins for a sensitive stomach.';
         }
-      } else if (age === 'Senior') {
+      } else if (lifeStage === 'Senior') {
         recommendation = 'Senior cat food with reduced calories and kidney support.';
+        if (healthCondition === 'Urinary Health') {
+          recommendation += ' Look for senior cat food that supports kidney health and reduces urinary issues.';
+        }
       }
+
+    // Bird-specific recommendations
     } else if (petType === 'Bird') {
       recommendation = 'Bird seed mix with added fruits and vegetables.';
       if (healthCondition === 'Feather Health') {
-        recommendation += ' Look for food with omega fatty acids for feather health.';
+        recommendation += ' Look for food with omega fatty acids to promote healthy feathers.';
       }
+
+    // Fish-specific recommendations
     } else if (petType === 'Fish') {
       recommendation = 'Specialized fish flakes or pellets based on species.';
+
+    // Small Mammal-specific recommendations
     } else if (petType === 'Small Mammal') {
       recommendation = 'Pellet-based food with occasional fresh vegetables.';
+
+    // Reptile-specific recommendations
     } else if (petType === 'Reptile') {
       recommendation = 'Insects and leafy greens, specific to reptile species.';
-    } else {
-      recommendation = 'Please select a valid pet type and age for recommendations.';
     }
 
     setFoodRecommendation(recommendation);
@@ -94,24 +140,42 @@ const FoodRecommendation = () => {
           </select>
         </div>
 
-        {/* Pet Age */}
+        {/* Pet Age (in years) */}
         <div>
           <label htmlFor="age" className="block text-lg font-semibold text-gray-700">
-            Select your pet's age:
+            Enter your pet's age (in years):
           </label>
-          <select
+          <input
+            type="number"
             id="age"
             value={age}
             onChange={(e) => setAge(e.target.value)}
             className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            placeholder="Enter age in years"
             required
-          >
-            <option value="">Select...</option>
-            <option value="Puppy">Puppy/Kitten</option>
-            <option value="Adult">Adult</option>
-            <option value="Senior">Senior</option>
-          </select>
+            min="0"
+          />
         </div>
+
+        {/* Age in months (conditional for pets younger than 1 year) */}
+        {age < 1 && (
+          <div>
+            <label htmlFor="ageInMonths" className="block text-lg font-semibold text-gray-700">
+              Enter your pet's age (in months):
+            </label>
+            <input
+              type="number"
+              id="ageInMonths"
+              value={ageInMonths}
+              onChange={(e) => setAgeInMonths(e.target.value)}
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+              placeholder="Enter age in months"
+              min="0"
+              max="12"
+              required
+            />
+          </div>
+        )}
 
         {/* Pet Size (only for Dogs and Cats) */}
         {(petType === 'Dog' || petType === 'Cat') && (
