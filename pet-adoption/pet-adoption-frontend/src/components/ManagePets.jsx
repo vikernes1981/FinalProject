@@ -1,170 +1,168 @@
-import React, { useState, useEffect } from "react";
-import Select from "react-select";
-import {
-    getAllPets,
-    addPet,
-} from "../services/PostServicesPets";
-import ManagePetsModal from "./ManagePetsUpdateModal"; // Ensure the import matches the file name
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
+import { getAllPets, addPet, updatePet, deletePet } from '../services/PostServicesPets';
 
 const ManagePets = () => {
-    const [pets, setPets] = useState([]);
-    const [newPet, setNewPet] = useState({
-        name: "",
-        age: "",
-        breed: "",
-        type: "",
-        description: "",
-        image: "",
+  const [pets, setPets] = useState([]);
+  const [selectedPet, setSelectedPet] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    age: '',
+    breed: '',
+    type: '',
+    description: '',
+    image: '',
+  });
+
+  useEffect(() => {
+    fetchPets();
+  }, []);
+
+  const fetchPets = async () => {
+    const res = await getAllPets();
+    setPets(res);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleCreatePet = async () => {
+    await addPet(formData);
+    fetchPets();
+    setFormData({ name: '', age: '', breed: '', type: '', description: '', image: '' });
+  };
+
+  const handleUpdatePet = async () => {
+    await updatePet(selectedPet._id, formData);
+    fetchPets();
+    setSelectedPet(null);
+    setFormData({ name: '', age: '', breed: '', type: '', description: '', image: '' });
+  };
+
+  const handleDeletePet = async (petId) => {
+    try {
+      await deletePet(petId);
+      fetchPets(); // Refresh the pet list after deletion
+    } catch (error) {
+      console.error('Failed to delete pet:', error);
+      alert('Error deleting pet');
+    }
+  };
+
+  const handleEditPet = (pet) => {
+    setSelectedPet(pet);
+    setFormData({
+      name: pet.name,
+      age: pet.age,
+      breed: pet.breed,
+      type: pet.type,
+      description: pet.description,
+      image: pet.image,
     });
-    const [editingPet, setEditingPet] = useState(null); // State for the pet currently being edited
+  };
 
-    useEffect(() => {
-        fetchPets();
-    }, []);
+  const handleCancelEdit = () => {
+    setSelectedPet(null);
+    setFormData({ name: '', age: '', breed: '', type: '', description: '', image: '' });
+  };
 
-    const fetchPets = async () => {
-        const res = await getAllPets();
-        if (Array.isArray(res)) {
-            setPets(res);
-        } else {
-            setPets([]);
-            console.error("Expected an array but got:", res);
-        }
-    };
-
-    const handleAddPet = async () => {
-        try {
-            await addPet(newPet);
-            setNewPet({
-                name: "",
-                age: "",
-                breed: "",
-                type: "",
-                description: "",
-                image: "",
-            }); // Reset the form
-            fetchPets();
-        } catch (error) {
-            console.error("Error adding pet:", error);
-        }
-    };
-
-    const petOptions = pets.map((pet) => ({
-        value: pet._id,
-        label: `${pet.name} (${pet.breed})`,
-        pet: pet,
-    }));
-
-    const typeOptions = [
-        { value: "Dog", label: "Dog" },
-        { value: "Cat", label: "Cat" },
-        { value: "Bird", label: "Bird" },
-        { value: "Fish", label: "Fish" },
-        { value: "Turtle", label: "Turtle" },
-    ];
-
-    const customStyles = {
-        control: (provided) => ({
-            ...provided,
-            backgroundColor: '#333',
-            color: '#fff',
-        }),
-        menu: (provided) => ({
-            ...provided,
-            backgroundColor: '#333',
-        }),
-        singleValue: (provided) => ({
-            ...provided,
-            color: '#fff',
-        }),
-        option: (provided, state) => ({
-            ...provided,
-            backgroundColor: state.isSelected ? '#555' : '#333',
-            color: '#fff',
-            '&:hover': {
-                backgroundColor: '#444',
-            },
-        }),
-    };
-
-    return (
-        <div className="manage-pets p-4">
-            <h2 className="text-2xl font-semibold mb-6">Manage Pets</h2>
-            <Select
-                options={petOptions}
-                onChange={(selectedOption) => setEditingPet(selectedOption.pet)}
-                placeholder="Select a pet..."
-                className="mb-6"
-                styles={customStyles}
-            />
-
-            {editingPet && (
-                <ManagePetsModal
-                    pet={editingPet}
-                    onClose={() => setEditingPet(null)}
-                    onUpdate={(updatedPet) => {
-                        fetchPets(); // Refresh the pet list after update or delete
-                        setEditingPet(null); // Clear editingPet
-                    }}
-                    onDelete={() => {
-                        fetchPets(); // Refresh the pet list after delete
-                        setEditingPet(null); // Clear editingPet
-                    }}
-                />
-            )}
-
-            <div className="add-pet-form p-4 bg-white shadow-md rounded-lg">
-                <h3 className="text-xl font-semibold mb-4">Add New Pet</h3>
-                <div className="grid grid-cols-1 gap-4">
-                    <input
-                        type="text"
-                        placeholder="Name"
-                        value={newPet.name}
-                        onChange={(e) => setNewPet({ ...newPet, name: e.target.value })}
-                        className="input input-bordered w-full"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Age"
-                        value={newPet.age}
-                        onChange={(e) => setNewPet({ ...newPet, age: e.target.value })}
-                        className="input input-bordered w-full"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Breed"
-                        value={newPet.breed}
-                        onChange={(e) => setNewPet({ ...newPet, breed: e.target.value })}
-                        className="input input-bordered w-full"
-                    />
-                    <Select
-                        options={typeOptions}
-                        onChange={(selectedOption) => setNewPet({ ...newPet, type: selectedOption.value })}
-                        placeholder="Select a type..."
-                        className="mb-4"
-                        styles={customStyles}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Description"
-                        value={newPet.description}
-                        onChange={(e) => setNewPet({ ...newPet, description: e.target.value })}
-                        className="input input-bordered w-full"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Image URL"
-                        value={newPet.image}
-                        onChange={(e) => setNewPet({ ...newPet, image: e.target.value })}
-                        className="input input-bordered w-full"
-                    />
-                    <button onClick={handleAddPet} className="btn btn-primary w-full">
-                        Add Pet
-                    </button>
-                </div>
-            </div>
+  return (
+    <div className="manage-pets p-6 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl font-semibold mb-6">Manage Pets</h2>
+      <div className="space-y-4">
+        <select
+          className="select select-bordered w-full"
+          onChange={(e) => {
+            const pet = pets.find(pet => pet._id === e.target.value);
+            handleEditPet(pet);
+          }}
+        >
+          <option value="">Select a pet</option>
+          {pets.map(pet => (
+            <option key={pet._id} value={pet._id}>
+              {pet.name} ({pet.breed})
+            </option>
+          ))}
+        </select>
+        {selectedPet && (
+          <div className="space-x-2 mt-4">
+            <button className="btn btn-primary" onClick={() => handleEditPet(selectedPet)}>Edit</button>
+            <button className="btn btn-error" onClick={() => handleDeletePet(selectedPet._id)}>Delete</button>
+            <button className="btn btn-secondary" onClick={handleCancelEdit}>Cancel</button>
+          </div>
+        )}
+      </div>
+      <div className="pet-form mt-6 p-6 bg-white rounded shadow">
+        <div className="form-control mb-4">
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            placeholder="Name"
+            className="input input-bordered w-full"
+          />
         </div>
-    );
+        <div className="form-control mb-4">
+          <input
+            type="text"
+            name="age"
+            value={formData.age}
+            onChange={handleInputChange}
+            placeholder="Age"
+            className="input input-bordered w-full"
+          />
+        </div>
+        <div className="form-control mb-4">
+          <input
+            type="text"
+            name="breed"
+            value={formData.breed}
+            onChange={handleInputChange}
+            placeholder="Breed"
+            className="input input-bordered w-full"
+          />
+        </div>
+        <div className="form-control mb-4">
+          <input
+            type="text"
+            name="type"
+            value={formData.type}
+            onChange={handleInputChange}
+            placeholder="Type (e.g. Dog, Cat)"
+            className="input input-bordered w-full"
+          />
+        </div>
+        <div className="form-control mb-4">
+          <input
+            type="text"
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            placeholder="Description"
+            className="input input-bordered w-full"
+          />
+        </div>
+        <div className="form-control mb-4">
+          <input
+            type="text"
+            name="image"
+            value={formData.image}
+            onChange={handleInputChange}
+            placeholder="Image URL"
+            className="input input-bordered w-full"
+          />
+        </div>
+        {selectedPet ? (
+          <button className="btn btn-primary w-full" onClick={handleUpdatePet}>Update Pet</button>
+        ) : (
+          <button className="btn btn-success w-full" onClick={handleCreatePet}>Create Pet</button>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default ManagePets;
