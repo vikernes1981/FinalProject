@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const petRoutes = require('./routes/petRoutes');
 const adoptionRoutes = require('./routes/adoptionRoutes');
+const postRequestRoutes = require('./routes/postRequestRoutes');
 const authRoutes = require('./routes/authRoutes');
 const cors = require('cors');
 const app = express();
@@ -18,6 +19,7 @@ app.use('/api/pets', petRoutes);
 app.use('/admin', adoptionRoutes);
 app.use('/admin', authRoutes);
 app.use('/api', authRoutes); // Add auth routes
+app.use('/api/adoption-requests', postRequestRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
