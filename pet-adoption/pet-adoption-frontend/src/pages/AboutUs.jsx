@@ -62,13 +62,13 @@ const AboutUs = () => {
 
         {/* Section 5: Call to Action */}
         <section className="text-center mt-12">
-          <h2 className="text-3xl font-semibold text-green-600 mb-6">Start Your Adoption Journey Today!</h2>
-          <Link to="/pets">
-            <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-500 transition">
-              Browse Available Pets
-            </button>
-          </Link>
-        </section>
+  <h2 className="text-3xl font-semibold text-green-600 mb-6">Start Your Adoption Journey Today!</h2>
+  <Link to="/">
+    <button className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-500 transition">
+      Browse Available Pets
+    </button>
+  </Link>
+</section>
       </div>
     </div>
   );

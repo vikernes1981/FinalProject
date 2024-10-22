@@ -6,4 +6,5 @@ router.get('/adoption-requests', getAllAdoptionRequests);
 router.patch('/adoption-requests/:id', updateAdoptionRequestStatus);
 
 
+
 module.exports = router;
