@@ -1,80 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { createRequest } from '../services/PostServicesAdoption';
-import axios from 'axios'; // Assuming you are using axios
+import { createRequest } from '../services/PostServicesPostRequest';
+import { getUserById } from '../services/PostServicesUsers'; // Fetch user info
+import { getPetById } from '../services/PostServicesPets'; // Fetch pet info
 
 const AdoptionRequestForm = () => {
-  const { name } = useParams(); // Get the pet name from the URL
+  const { id } = useParams(); // Get pet id from URL
   const [formData, setFormData] = useState({
-    adopterName: '',
+    email: '',
     why: '',
     when: '',
   });
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [userData, setUserData] = useState(null); // State to hold user data
+  const [petName, setPetName] = useState('');
+  const [userId, setUserId] = useState(null); // To store user ID
 
-  // Fetch the logged-in user's details on component mount
+  // Fetch the pet and user info
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchPetAndUser = async () => {
       try {
-        const response = await axios.get('/admin/user'); // Modify this endpoint as necessary
-        setUserData(response.data);
+        // Fetch pet info
+        const petResponse = await getPetById(id);
+        console.log('PetResponse : ', petResponse)
+        if (petResponse) {
+          setPetName(petResponse.name);
+        } else {
+          throw new Error('Failed to fetch pet data');
+        }
+        const userID = "67163c50e87ae46261c7ee91";
+        // Fetch user info (assuming you have a logged-in user with their ID stored)
+        const userResponse = await getUserById(userID); // Pass any necessary params like userID
+        if (userResponse) {
+          setFormData((prevData) => ({
+            ...prevData,
+            email: userResponse.email, // Populate the form with user's email
+          }));
+          setUserId(userResponse._id); // Store user ID for later
+        } else {
+          throw new Error('Failed to fetch user data');
+        }
       } catch (error) {
-        setErrorMessage('Failed to fetch user data. Please try again.');
+        setErrorMessage(error.message);
       }
     };
+    fetchPetAndUser();
+  }, [id]);
 
-    fetchUserData();
-  }, []);
-
-  // Handle form data change
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Updated handleSubmit function
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate form fields
-    if (!formData.adopterName || formData.why.length < 10 || !formData.when) {
-      setErrorMessage("Please fill all the fields correctly.");
-      return;
-    }
+    setLoading(true);
+    setErrorMessage(''); 
 
     try {
-      setLoading(true);
-      setErrorMessage("");
-
-      if (!userData) {
-        throw new Error("User data not available.");
-      }
-
       const requestData = {
-        user: {
-          _id: userData._id, // User ID
-          username: userData.username,
-          email: userData.email,
-        },
-        pet: {
-          name: name, // Pet name from URL params
-        },
-        message: formData.why, // Reason for adoption
-        status: "Pending", // Default status when creating a new request
+        user: userId, // Use the fetched user ID
+        pet: id, // Pet ID from URL
+        message: formData.why,
+        when: new Date(formData.when).toISOString(), // Format the date
+        status: "Pending",
       };
 
-      // Call API to create the request
-      await createRequest(requestData);
-
-      setSuccessMessage("Your adoption request has been submitted successfully!");
-      setFormData({ adopterName: "", why: "", when: "" }); // Reset form fields
+      await createRequest(requestData); // Submit the request
+      setSuccessMessage('Your adoption request has been submitted successfully!');
+      setFormData({ email: '', why: '', when: '' }); // Reset the form
     } catch (err) {
-      setErrorMessage("There was an issue submitting your request. Please try again.");
+      setErrorMessage('There was an issue submitting your request. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -82,21 +75,20 @@ const AdoptionRequestForm = () => {
 
   return (
     <div className="max-w-lg mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold mb-6 text-center text-green-700">Adoption Request for {name}</h1>
-      
+      <h1 className="text-3xl font-bold mb-6 text-center text-green-700">Adoption Request for {petName}</h1>
+
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Adopter Name */}
+        {/* Email Field (auto-filled from user data) */}
         <div>
-          <label htmlFor="adopterName" className="block text-lg font-semibold mb-2">Your Name</label>
+          <label htmlFor="email" className="block text-lg font-semibold mb-2">Your Email</label>
           <input
-            id="adopterName"
-            type="text"
-            name="adopterName"
-            value={formData.adopterName}
-            onChange={handleChange}
-            placeholder="Enter your full name"
+            id="email"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
-            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition duration-300"
+            className="w-full p-4 border border-gray-300 rounded-lg"
             disabled={loading}
           />
         </div>
@@ -108,10 +100,9 @@ const AdoptionRequestForm = () => {
             id="why"
             name="why"
             value={formData.why}
-            onChange={handleChange}
-            placeholder="Tell us why you want to adopt this pet"
+            onChange={(e) => setFormData({ ...formData, why: e.target.value })}
             required
-            className="w-full h-32 p-4 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition duration-300"
+            className="w-full h-32 p-4 border border-gray-300 rounded-lg"
             disabled={loading}
           />
         </div>
@@ -124,38 +115,21 @@ const AdoptionRequestForm = () => {
             type="date"
             name="when"
             value={formData.when}
-            onChange={handleChange}
+            onChange={(e) => setFormData({ ...formData, when: e.target.value })}
             required
-            className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500 transition duration-300"
+            className="w-full p-4 border border-gray-300 rounded-lg"
             disabled={loading}
           />
         </div>
 
         {/* Submit Button */}
-        <div className="text-center">
-          <button
-            type="submit"
-            className={`w-full py-3 px-6 text-white rounded-lg font-semibold transition duration-300 
-              ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'}`}
-            disabled={loading}
-          >
-            {loading ? 'Submitting...' : 'Submit Request'}
-          </button>
-        </div>
+        <button type="submit" className="w-full py-3 px-6 bg-green-600 text-white rounded-lg" disabled={loading}>
+          {loading ? 'Submitting...' : 'Submit Request'}
+        </button>
 
-        {/* Success Message */}
-        {successMessage && (
-          <div className="text-green-600 mt-4 text-center">
-            <p>{successMessage}</p>
-          </div>
-        )}
-
-        {/* Error Message */}
-        {errorMessage && (
-          <div className="text-red-600 mt-4 text-center">
-            <p>{errorMessage}</p>
-          </div>
-        )}
+        {/* Success and Error Messages */}
+        {successMessage && <p className="text-green-600 mt-4">{successMessage}</p>}
+        {errorMessage && <p className="text-red-600 mt-4">{errorMessage}</p>}
       </form>
     </div>
   );

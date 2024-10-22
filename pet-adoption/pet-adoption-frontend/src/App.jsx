@@ -26,7 +26,7 @@ function App() {
 
         {/* Pet Details Route */}
         <Route path="/pets/:id" element={<PetDetails />} />
-        <Route path="/adopt/:name" element={<AdoptionRequestForm />} />
+        <Route path="/adopt/:id" element={<AdoptionRequestForm />} />
 
         {/* Other Pages */}
         <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} /> {/* Pass setAuth prop */}

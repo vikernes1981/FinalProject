@@ -100,7 +100,7 @@ const PetDetails = () => {
           <p className="mt-2"><strong>Personality:</strong> {pet.description}</p>
 
           {/* Adopt Me Button */}
-          <Link to={`/adopt/${pet.name}`}>
+          <Link to={`/adopt/${pet._id}`}>
             <button className="mt-6 bg-pink-500 text-white py-3 px-6 rounded-full hover:bg-pink-600 
             transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 shadow-lg
             animate-bounce focus:outline-none focus:ring-4 focus:ring-pink-300">
