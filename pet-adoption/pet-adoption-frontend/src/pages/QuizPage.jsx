@@ -8,6 +8,10 @@ const QuizPage = () => {
     space: '',
     allergies: '',
     experience: '',
+    timeAvailability: '',
+    grooming: '',
+    children: '',
+    petSize: '',
   });
 
   const [recommendedPet, setRecommendedPet] = useState(null);
@@ -22,16 +26,20 @@ const QuizPage = () => {
 
   // Function to calculate the recommended pet
   const calculatePet = () => {
-    if (answers.activityLevel === 'High' && answers.space === 'Large') {
-      setRecommendedPet('Dog');
-    } else if (answers.allergies === 'Yes') {
+    if (answers.allergies === 'Yes') {
       setRecommendedPet('Fish');
-    } else if (answers.activityLevel === 'Low' && answers.space === 'Small') {
+    } else if (answers.children === 'Yes' && answers.space === 'Large' && answers.timeAvailability === 'High') {
+      setRecommendedPet('Dog');
+    } else if (answers.children === 'No' && answers.space === 'Small' && answers.activityLevel === 'Low') {
       setRecommendedPet('Cat');
-    } else if (answers.activityLevel === 'Medium' && answers.space === 'Medium') {
+    } else if (answers.activityLevel === 'High' && answers.grooming === 'No' && answers.petSize === 'Large') {
+      setRecommendedPet('Dog');
+    } else if (answers.activityLevel === 'Low' && answers.grooming === 'Yes' && answers.petSize === 'Small') {
+      setRecommendedPet('Rabbit');
+    } else if (answers.timeAvailability === 'Low' && answers.petSize === 'Small') {
       setRecommendedPet('Bird');
     } else {
-      setRecommendedPet('Rabbit');
+      setRecommendedPet('Hamster');
     }
   };
 
@@ -101,6 +109,68 @@ const QuizPage = () => {
               <option value="">Select...</option>
               <option value="Yes">Yes</option>
               <option value="No">No</option>
+            </select>
+          </div>
+
+          {/* Time Availability Question */}
+          <div>
+            <label className="block text-xl font-semibold text-gray-700 mb-2">How much time can you dedicate to a pet daily?</label>
+            <select
+              name="timeAvailability"
+              value={answers.timeAvailability}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+            >
+              <option value="">Select...</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+
+          {/* Grooming Preference Question */}
+          <div>
+            <label className="block text-xl font-semibold text-gray-700 mb-2">Do you mind frequent grooming for pets?</label>
+            <select
+              name="grooming"
+              value={answers.grooming}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+            >
+              <option value="">Select...</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          {/* Children in Household Question */}
+          <div>
+            <label className="block text-xl font-semibold text-gray-700 mb-2">Do you have young children at home?</label>
+            <select
+              name="children"
+              value={answers.children}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+            >
+              <option value="">Select...</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          {/* Preferred Pet Size Question */}
+          <div>
+            <label className="block text-xl font-semibold text-gray-700 mb-2">What size of pet would you prefer?</label>
+            <select
+              name="petSize"
+              value={answers.petSize}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+            >
+              <option value="">Select...</option>
+              <option value="Small">Small</option>
+              <option value="Medium">Medium</option>
+              <option value="Large">Large</option>
             </select>
           </div>
 
