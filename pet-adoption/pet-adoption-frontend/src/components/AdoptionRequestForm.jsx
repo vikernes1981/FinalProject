@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { createRequest } from '../services/PostServicesPostRequest';
-import { getUserById } from '../services/PostServicesUsers'; // Fetch user info
+import { getAllUsers } from '../services/PostServicesUsers'; // Fetch all users
 import { getPetById } from '../services/PostServicesPets'; // Fetch pet info
 
 const AdoptionRequestForm = () => {
   const { id } = useParams(); // Get pet id from URL
+  const navigate = useNavigate(); // For navigation
   const [formData, setFormData] = useState({
     email: '',
     why: '',
@@ -15,52 +16,53 @@ const AdoptionRequestForm = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [petName, setPetName] = useState('');
-  const [userId, setUserId] = useState(null); // To store user ID
+  const [users, setUsers] = useState([]); // Store all users
 
-  // Fetch the pet and user info
+  // Fetch the pet info and all users
   useEffect(() => {
-    const fetchPetAndUser = async () => {
+    const fetchPetAndUsers = async () => {
       try {
         // Fetch pet info
         const petResponse = await getPetById(id);
-        console.log('PetResponse : ', petResponse)
+        console.log('PetResponse : ', petResponse);
         if (petResponse) {
           setPetName(petResponse.name);
         } else {
           throw new Error('Failed to fetch pet data');
         }
-        const userID = "67163c50e87ae46261c7ee91";
-        // Fetch user info (assuming you have a logged-in user with their ID stored)
-        const userResponse = await getUserById(userID); // Pass any necessary params like userID
-        if (userResponse) {
-          setFormData((prevData) => ({
-            ...prevData,
-            email: userResponse.email, // Populate the form with user's email
-          }));
-          setUserId(userResponse._id); // Store user ID for later
-        } else {
-          throw new Error('Failed to fetch user data');
-        }
+
+        // Fetch all users
+        const usersResponse = await getAllUsers();
+        setUsers(usersResponse); // Store users in state
       } catch (error) {
         setErrorMessage(error.message);
       }
     };
-    fetchPetAndUser();
+    fetchPetAndUsers();
   }, [id]);
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMessage(''); 
+    setErrorMessage('');
+
+    // Check if the user exists with the provided email
+    const user = users.find((user) => user.email === formData.email);
+
+    if (!user) {
+      // If user doesn't exist, redirect to login
+      navigate('/login');
+      return;
+    }
 
     try {
       const requestData = {
-        user: userId, // Use the fetched user ID
+        user: user._id, // Use the fetched user ID
         pet: id, // Pet ID from URL
         message: formData.why,
         when: new Date(formData.when).toISOString(), // Format the date
-        status: "Pending",
+        status: 'Pending',
       };
 
       await createRequest(requestData); // Submit the request
@@ -78,7 +80,7 @@ const AdoptionRequestForm = () => {
       <h1 className="text-3xl font-bold mb-6 text-center text-green-700">Adoption Request for {petName}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Email Field (auto-filled from user data) */}
+        {/* Email Field */}
         <div>
           <label htmlFor="email" className="block text-lg font-semibold mb-2">Your Email</label>
           <input
