@@ -13,9 +13,7 @@ import ContactUs from './pages/ContactUs';
 import FoodRecommendation from './pages/FoodRecommendation';
 import Dashboard from './pages/Dashboard';
 import AdoptionRequestForm from './components/AdoptionRequestForm';
-import Profile from './components/Profile';
-import AuthProvider, { AuthContext } from './context/AuthContext'; // Import AuthProvider and AuthContext
-import PrivateRoute from './components/PrivateRoute'; // We'll create this component to protect routes
+import AuthProvider from './context/AuthContext'; // Import AuthProvider
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Manage authentication state
@@ -55,13 +53,6 @@ function App() {
 
           {/* Forgot Password Route */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
-
-          {/* Profile Route - Protect this route */}
-          <Route path="/profile" element={
-            <PrivateRoute isAuthenticated={isAuthenticated}>
-              <Profile />
-            </PrivateRoute>
-          } />
         </Routes>
       </Router>
     </AuthProvider>

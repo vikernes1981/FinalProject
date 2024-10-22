@@ -43,7 +43,7 @@ const AdoptionCentersMap = () => {
 
         const request = {
           location: { lat, lng },
-          radius: '5000', // 50 km radius
+          radius: '10000', // 50 km radius
           keyword: 'tierheim',
         };
 
