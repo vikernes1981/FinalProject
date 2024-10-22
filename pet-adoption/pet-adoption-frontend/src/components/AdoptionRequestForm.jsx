@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { createRequest } from '../services/PostServicesAdoption';
-import { getUserById } from '../services/PostServicesUsers'; // Ensure the correct path
+import axios from 'axios'; // Assuming you are using axios
 
 const AdoptionRequestForm = () => {
   const { name } = useParams(); // Get the pet name from the URL
@@ -37,53 +37,44 @@ const AdoptionRequestForm = () => {
     });
   };
 
-  // Form submission logic
+  // Updated handleSubmit function
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate input fields
-    if (formData.adopterName.trim().length < 2) {
-      setErrorMessage('Please provide your full name.');
-      return;
-    }
-    if (formData.why.trim().length < 10) {
-      setErrorMessage('Please provide more details on why you want to adopt.');
-      return;
-    }
-    if (formData.when.trim().length === 0) {
-      setErrorMessage('Please provide a date for when you can adopt.');
+    // Validate form fields
+    if (!formData.adopterName || formData.why.length < 10 || !formData.when) {
+      setErrorMessage("Please fill all the fields correctly.");
       return;
     }
 
     try {
       setLoading(true);
-      setErrorMessage(''); // Clear any previous error message
+      setErrorMessage("");
 
       if (!userData) {
-        throw new Error('User data not available.');
+        throw new Error("User data not available.");
       }
 
       const requestData = {
         user: {
           _id: userData._id, // User ID
-          username: userData.username, // User username
-          email: userData.email, // User email
-          role: userData.role, // User role
+          username: userData.username,
+          email: userData.email,
         },
         pet: {
-          name: name, // Pet name from URL
+          name: name, // Pet name from URL params
         },
-        message: formData.why, // Message from the form
-        status: "Pending", // Default status
+        message: formData.why, // Reason for adoption
+        status: "Pending", // Default status when creating a new request
       };
 
-      // Use the createRequest function to submit the request
+      // Call API to create the request
       await createRequest(requestData);
 
-      setSuccessMessage('Your adoption request has been submitted successfully!');
-      setFormData({ adopterName: '', why: '', when: '' }); // Reset form fields
+      setSuccessMessage("Your adoption request has been submitted successfully!");
+      setFormData({ adopterName: "", why: "", when: "" }); // Reset form fields
     } catch (err) {
-      setErrorMessage('There was an issue submitting your request. Please try again.');
+      setErrorMessage("There was an issue submitting your request. Please try again.");
     } finally {
       setLoading(false);
     }
