@@ -15,6 +15,7 @@ import Dashboard from './pages/Dashboard';
 import AdoptionRequestForm from './components/AdoptionRequestForm';
 import AuthProvider from './context/AuthProvider'; // Import AuthProvider
 import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import react-toastify styles
 import AdminDashboard from './components/AdminDashboard';
 
 function App() {
@@ -32,9 +33,19 @@ function App() {
     <AuthProvider> {/* Wrap the app in AuthProvider */}
       <Router>
         <Navbar /> {/* Navbar is displayed on all pages */}
-        
+
         {/* Add ToastContainer here to show notifications across the app */}
-        <ToastContainer />
+        <ToastContainer 
+          position="top-right" 
+          autoClose={3000} 
+          hideProgressBar={false} 
+          newestOnTop={false} 
+          closeOnClick 
+          rtl={false} 
+          pauseOnFocusLoss 
+          draggable 
+          pauseOnHover
+        />
 
         <Routes>
           {/* Home Route */}
