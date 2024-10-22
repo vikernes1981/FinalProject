@@ -1,10 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext'; // Assuming AuthContext is set up
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { user } = useContext(AuthContext); // Get the current user from AuthContext
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -50,11 +48,8 @@ const Navbar = () => {
             <li><Link to="/" onClick={handleMenuItemClick}>Home</Link></li>
             <li><Link to="/about" onClick={handleMenuItemClick}>About Us</Link></li>
             <li><Link to="/contact" onClick={handleMenuItemClick}>Contact Us</Link></li>
-            {user ? (
-              <li><Link to="/admin" onClick={handleMenuItemClick}>Admin Dashboard</Link></li>
-            ) : (
-              <li><Link to="/login" onClick={handleMenuItemClick}>Login</Link></li>
-            )}
+            <li><Link to="/login" onClick={handleMenuItemClick}>Login</Link></li>
+            <li><Link to="/admin" onClick={handleMenuItemClick}>Admin Dashboard</Link></li>
           </ul>
         )}
       </div>
@@ -65,11 +60,8 @@ const Navbar = () => {
           <li><Link to="/">Home</Link></li>
           <li><Link to="/about">About Us</Link></li>
           <li><Link to="/contact">Contact Us</Link></li>
-          {user ? (
-            <li><Link to="/admin">Admin Dashboard</Link></li>
-          ) : (
-            <li><Link to="/login">Login</Link></li>
-          )}
+          <li><Link to="/login">Login</Link></li>
+          <li><Link to="/admin">Admin Dashboard</Link></li>
         </ul>
       </div>
     </nav>

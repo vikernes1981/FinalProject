@@ -13,7 +13,9 @@ import ContactUs from './pages/ContactUs';
 import FoodRecommendation from './pages/FoodRecommendation';
 import Dashboard from './pages/Dashboard';
 import AdoptionRequestForm from './components/AdoptionRequestForm';
-import AuthProvider from './context/AuthContext'; // Import AuthProvider
+import AuthProvider from './context/AuthProvider'; // Import AuthProvider
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import AdminDashboard from './components/AdminDashboard';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Manage authentication state
@@ -30,6 +32,10 @@ function App() {
     <AuthProvider> {/* Wrap the app in AuthProvider */}
       <Router>
         <Navbar /> {/* Navbar is displayed on all pages */}
+        
+        {/* Add ToastContainer here to show notifications across the app */}
+        <ToastContainer />
+
         <Routes>
           {/* Home Route */}
           <Route path="/" element={<HomePage />} />
@@ -48,8 +54,8 @@ function App() {
 
           {/* Quiz Route */}
           <Route path="/quiz" element={<QuizPage />} />
-
           <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
           {/* Forgot Password Route */}
           <Route path="/forgot-password" element={<ForgotPassword />} />
