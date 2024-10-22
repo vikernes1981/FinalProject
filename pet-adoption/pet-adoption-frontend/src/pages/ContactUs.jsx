@@ -9,7 +9,7 @@ const ContactUs = () => {
 
   const [successMessage, setSuccessMessage] = useState('');
 
-  // Handle form submission
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Example of what you'd do with form data
