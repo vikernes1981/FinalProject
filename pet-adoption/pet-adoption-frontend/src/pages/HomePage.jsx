@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { FaSearch } from 'react-icons/fa';
 import { getAllPets } from '../services/PostServicesPets';
 import AdoptionCentersMap from './AdoptionCentersMap'; // Import the new component
