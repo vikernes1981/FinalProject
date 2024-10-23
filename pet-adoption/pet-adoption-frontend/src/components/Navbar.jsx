@@ -15,7 +15,7 @@ const Navbar = () => {
   return (
     <nav className="navbar bg-base-100 shadow-lg">
       <div className="flex-1">
-        <Link to="/" className="text-2xl font-bold">Pet Adoption</Link>
+        <Link to="/" className="text-2xl font-bold">Pawsome Homes</Link>
       </div>
 
       {/* Dropdown for small screens */}

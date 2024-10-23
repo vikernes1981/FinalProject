@@ -46,7 +46,7 @@ const QuizPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12">
       <div className="max-w-3xl w-full bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-4xl font-bold mb-8 text-center text-blue-700">Find Out Which Pet is Right for You!</h1>
+        <h1 className="text-4xl font-bold mb-8 text-center text-green-700">Find Out Which Pet is Right for You!</h1>
 
         {/* Quiz Form */}
         <form className="space-y-6">
@@ -57,7 +57,7 @@ const QuizPage = () => {
               name="activityLevel"
               value={answers.activityLevel}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             >
               <option value="">Select...</option>
               <option value="High">High</option>
@@ -73,7 +73,7 @@ const QuizPage = () => {
               name="space"
               value={answers.space}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             >
               <option value="">Select...</option>
               <option value="Small">Small</option>
@@ -89,7 +89,7 @@ const QuizPage = () => {
               name="allergies"
               value={answers.allergies}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             >
               <option value="">Select...</option>
               <option value="Yes">Yes</option>
@@ -104,7 +104,7 @@ const QuizPage = () => {
               name="experience"
               value={answers.experience}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             >
               <option value="">Select...</option>
               <option value="Yes">Yes</option>
@@ -119,7 +119,7 @@ const QuizPage = () => {
               name="timeAvailability"
               value={answers.timeAvailability}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             >
               <option value="">Select...</option>
               <option value="High">High</option>
@@ -135,7 +135,7 @@ const QuizPage = () => {
               name="grooming"
               value={answers.grooming}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             >
               <option value="">Select...</option>
               <option value="Yes">Yes</option>
@@ -150,7 +150,7 @@ const QuizPage = () => {
               name="children"
               value={answers.children}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             >
               <option value="">Select...</option>
               <option value="Yes">Yes</option>
@@ -165,7 +165,7 @@ const QuizPage = () => {
               name="petSize"
               value={answers.petSize}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             >
               <option value="">Select...</option>
               <option value="Small">Small</option>
@@ -178,7 +178,7 @@ const QuizPage = () => {
           <div className="flex justify-center mt-8">
             <button
               type="button"
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 focus:outline-none transition"
+              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-500 focus:outline-none transition"
               onClick={calculatePet}
             >
               Find Out Now!
