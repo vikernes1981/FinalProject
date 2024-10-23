@@ -17,7 +17,7 @@ const InquirySchema = new mongoose.Schema({
     },
     petId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Pet', // Assuming you have a Pet model
+        ref: 'Pet', // This needs to reference an existing Pet model
         required: true,
     },
 }, {

@@ -1,5 +1,3 @@
-// backend/controllers/inquiryController.js
-
 const Inquiry = require('../models/Inquiry');
 
 // @desc    Create a new inquiry
@@ -9,13 +7,6 @@ const createInquiry = async (req, res) => {
     const { name, email, message } = req.body;
     const petId = req.params.id;
 
-    // Log the incoming data to verify the request body
-    console.log('Incoming data:', { name, email, message, petId });
-
-    if (!name || !email || !message) {
-        return res.status(400).json({ message: 'Please fill in all fields' });
-    }
-
     try {
         const inquiry = new Inquiry({
             name,
@@ -24,13 +15,13 @@ const createInquiry = async (req, res) => {
             petId
         });
 
-        // Log the inquiry object before saving
-        console.log('Saving inquiry:', inquiry);
-
         const createdInquiry = await inquiry.save();
-        res.status(201).json(createdInquiry);
+        res.status(201).json({
+            msg: "Inquiry submitted successfully",
+            inquiry: createdInquiry
+        });
     } catch (error) {
-        console.log('Error saving inquiry:', error);
+        console.error('Error saving inquiry:', error);
         res.status(500).json({ message: 'Server Error', error: error.message });
     }
 };
@@ -43,8 +34,10 @@ const getAllInquiries = async (req, res) => {
         const inquiries = await Inquiry.find();
         res.status(200).json(inquiries);
     } catch (error) {
+        console.error('Error fetching inquiries:', error);
         res.status(500).json({ message: 'Server Error', error: error.message });
     }
 };
 
+// Ensure both functions are exported
 module.exports = { createInquiry, getAllInquiries };
