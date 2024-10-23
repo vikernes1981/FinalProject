@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthProvider';
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user) {
+      console.log(user.role);
+    }
+  }, [user]);
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -18,7 +26,6 @@ const Navbar = () => {
         <Link to="/" className="text-2xl font-bold">Pawsome Homes</Link>
       </div>
 
-      {/* Dropdown for small screens */}
       <div className="dropdown dropdown-end md:hidden">
         <label
           tabIndex={0}
@@ -41,27 +48,28 @@ const Navbar = () => {
           </svg>
         </label>
         {dropdownOpen && (
-          <ul
-            tabIndex={0}
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-          >
+          <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
             <li><Link to="/" onClick={handleMenuItemClick}>Home</Link></li>
             <li><Link to="/about" onClick={handleMenuItemClick}>About Us</Link></li>
             <li><Link to="/contact" onClick={handleMenuItemClick}>Contact Us</Link></li>
             <li><Link to="/login" onClick={handleMenuItemClick}>Login</Link></li>
-            <li><Link to="/admin" onClick={handleMenuItemClick}>Admin Dashboard</Link></li>
+            {user && user.role === 'Admin' && (
+              <li><Link to="/admin" onClick={handleMenuItemClick}>Admin Dashboard</Link></li>
+            )}
           </ul>
         )}
       </div>
 
-      {/* Menu for larger screens */}
       <div className="hidden md:flex flex-none">
         <ul className="menu menu-horizontal p-0">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/about">About Us</Link></li>
           <li><Link to="/contact">Contact Us</Link></li>
           <li><Link to="/login">Login</Link></li>
-          <li><Link to="/admin">Admin Dashboard</Link></li>
+          {user && user.role === 'Admin' && (
+              <li><Link to="/admin">Admin Dashboard</Link></li>
+            )}
+
         </ul>
       </div>
     </nav>

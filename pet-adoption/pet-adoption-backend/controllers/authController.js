@@ -28,7 +28,7 @@ exports.loginUser = async (req, res) => {
 
     // Proceed with generating a token or other logic
     // For example:
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id,role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });
   } catch (error) {
     console.error(error);
@@ -62,7 +62,7 @@ exports.registerUser = async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign(
-      { userId: user._id, email: user.email },
+      { userId: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );

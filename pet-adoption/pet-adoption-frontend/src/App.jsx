@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState, useEffect } from 'react'; // Import useState and useEffect to manage auth state
+import { useState, useEffect } from 'react';
 import PetList from './components/PetList';
 import AboutUs from './pages/AboutUs';
 import HomePage from './pages/HomePage';
@@ -11,30 +11,34 @@ import QuizPage from './pages/QuizPage';
 import ForgotPassword from './pages/ForgotPassword';
 import ContactUs from './pages/ContactUs';
 import FoodRecommendation from './pages/FoodRecommendation';
-import Dashboard from './pages/Dashboard';
 import AdoptionRequestForm from './components/AdoptionRequestForm';
-import AuthProvider from './context/AuthProvider'; // Import AuthProvider
-import { ToastContainer } from 'react-toastify'; // Import ToastContainer
-import 'react-toastify/dist/ReactToastify.css'; // Import react-toastify styles
+import AuthProvider from './context/AuthProvider';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AdminDashboard from './components/AdminDashboard';
+import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
+import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Manage authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // Check if user is authenticated (e.g., by checking localStorage or token)
     const token = localStorage.getItem('authToken');
     if (token) {
-      setIsAuthenticated(true); // Set authentication state based on token
+      setIsAuthenticated(true);
+      // Assuming the token is a JSON string with a role property
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      if (decodedToken.role === 'Admin') {
+        setIsAdmin(true);
+      }
     }
   }, []);
 
   return (
-    <AuthProvider> {/* Wrap the app in AuthProvider */}
+    <AuthProvider>
       <Router>
-        <Navbar /> {/* Navbar is displayed on all pages */}
-
-        {/* Add ToastContainer here to show notifications across the app */}
+        <Navbar />
         <ToastContainer 
           position="top-right" 
           autoClose={3000} 
@@ -46,18 +50,20 @@ function App() {
           draggable 
           pauseOnHover
         />
-
         <Routes>
           {/* Home Route */}
           <Route path="/" element={<HomePage />} />
 
-          {/* Pet Details Route */}
+          {/* Auth Routes */}
+          <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          {/* Pet Details and Adoption Routes */}
           <Route path="/pets/:id" element={<PetDetails />} />
           <Route path="/adopt/:id" element={<AdoptionRequestForm />} />
 
           {/* Other Pages */}
-          <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} /> {/* Pass setAuth prop */}
-          <Route path="/register" element={<Register />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/pet-list" element={<PetList />} />
@@ -65,11 +71,11 @@ function App() {
 
           {/* Quiz Route */}
           <Route path="/quiz" element={<QuizPage />} />
-          <Route path="/admin" element={<Dashboard />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
-          {/* Forgot Password Route */}
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          {/* Admin Dashboard Route */}
+          <Route path="/admin" element={
+            isAdmin ? <AdminDashboard /> : <HomePage />
+          } />
         </Routes>
       </Router>
     </AuthProvider>

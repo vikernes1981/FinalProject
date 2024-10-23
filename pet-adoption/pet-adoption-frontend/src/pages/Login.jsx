@@ -13,8 +13,12 @@ const Login = ({ setAuth }) => {
     try {
       const response = await axios.post('http://localhost:5000/api/login', formData);
       const { token } = response.data;
-      localStorage.setItem('token', token);
-      setAuth(true);
+
+      localStorage.setItem('authToken', token); // Store token
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Set default authorization header
+
+      setAuth(true); // Update auth state
+
       alert('Login successful');
       navigate('/');
     } catch (err) {
@@ -24,6 +28,7 @@ const Login = ({ setAuth }) => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">

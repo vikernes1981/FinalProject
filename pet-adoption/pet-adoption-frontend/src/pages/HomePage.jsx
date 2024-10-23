@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
 import { getAllPets } from '../services/PostServicesPets';
-import AdoptionCentersMap from './AdoptionCentersMap'; // Import the new component
+import AdoptionCentersMap from './AdoptionCentersMap';
+import { AuthContext } from '../context/AuthProvider'; // Adjust the import path
 
-// PetCard Component for each pet
 const PetCard = ({ pet }) => {
   return (
     <Link to={`/pets/${pet._id}`}>
@@ -24,23 +24,12 @@ const PetCard = ({ pet }) => {
   );
 };
 
-// Google Map configuration
-const containerStyle = {
-  width: '100%',
-  height: '100%',
-};
-
-const center = {
-  lat: 51.1657,  // Latitude for Germany
-  lng: 10.4515,  // Longitude for Germany
-};
-
-// Main HomePage Component
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [visiblePets, setVisiblePets] = useState(8);
   const [fadeIn, setFadeIn] = useState(false);
   const [pets, setPets] = useState([]);
+  const { token } = useContext(AuthContext); // Access the token from AuthContext
 
   useEffect(() => {
     setFadeIn(true);
@@ -54,6 +43,7 @@ const HomePage = () => {
 
     fetchPets();
   }, []);
+
 
   const filteredPets = pets.filter(pet =>
     pet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -72,7 +62,7 @@ const HomePage = () => {
         <div 
           className="w-full h-full relative flex justify-center items-center text-center"
           style={{
-            backgroundImage: 'url("/cute cat.jpg")', // Use the image as a background
+            backgroundImage: 'url("/cute cat.jpg")', 
             backgroundPosition: 'center',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
@@ -129,7 +119,7 @@ const HomePage = () => {
       </section>
 
       {/* Map Section with Google Map */}
-      <AdoptionCentersMap /> {/* Use the imported AdoptionCentersMap component */}
+      <AdoptionCentersMap />
 
       {/* Food Recommendation Section */}
       <section className="bg-gray-700 py-12">
