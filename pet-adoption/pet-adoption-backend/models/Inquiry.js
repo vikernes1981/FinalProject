@@ -1,6 +1,6 @@
 // backend/models/Inquiry.js
 
-const mongoose = require('mongoose');
+/*const mongoose = require('mongoose');
 
 const InquirySchema = new mongoose.Schema({
     name: {

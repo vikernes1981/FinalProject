@@ -1,60 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
 import { getPetById } from '../services/PostServicesPets'; 
-
-// ContactForm Component
-const ContactForm = ({ id }) => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' }); // State to hold form data
-  const [submitting, setSubmitting] = useState(false); // State to indicate form submission
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitting(true); // Set form to submitting state
-    try {
-      await axios.post(`/api/pets/${id}/inquiry`, formData); // Send form data to the backend
-      alert('Inquiry submitted successfully'); // Show success message
-      setFormData({ name: '', email: '', message: '' }); // Clear form data
-    } catch (err) {
-      console.error(err);
-      alert('Failed to submit inquiry'); // Show error message
-    } finally {
-      setSubmitting(false); // Stop submitting
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-      <input
-        type="text"
-        placeholder="Your Name"
-        value={formData.name}
-        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        required
-        className="w-full p-2 border border-gray-300 rounded"
-      />
-      <input
-        type="email"
-        placeholder="Your Email"
-        value={formData.email}
-        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-        required
-        className="w-full p-2 border border-gray-300 rounded"
-      />
-      <textarea
-        placeholder="Message"
-        value={formData.message}
-        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-        required
-        className="w-full p-2 border border-gray-300 rounded"
-      />
-      <button type="submit" className="btn btn-primary mt-4" disabled={submitting}>
-        {submitting ? 'Submitting...' : 'Send Inquiry'}
-      </button>
-    </form>
-  );
-};
 
 // PetDetails Component
 const PetDetails = () => {
@@ -82,7 +28,7 @@ const PetDetails = () => {
   if (loading) return <div>Loading...</div>;
 
   // If the pet data is null (i.e., not found or failed to load), show an error
-  if (!pet) return <h2>Pet not found 420</h2>;
+  if (!pet) return <h2>Pet not found</h2>;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
@@ -95,7 +41,6 @@ const PetDetails = () => {
 
           {/* Additional Pet Details */}
           <p className="mt-4"><strong>Age:</strong> {pet.age} years old</p>
-          {/* <p className="mt-2"><strong>Location:</strong> {pet.location}</p> */}
           <p className="mt-2"><strong>Status:</strong> {pet.status}</p>
           <p className="mt-2"><strong>Personality:</strong> {pet.description}</p>
 
@@ -107,9 +52,6 @@ const PetDetails = () => {
               🐾 Adopt Me 🐾
             </button>
           </Link>
-
-          {/* Contact Form */}
-          <ContactForm id={pet.id} /> {/* Pass id to ContactForm */}
         </div>
       </div>
     </div>

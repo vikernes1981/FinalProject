@@ -1,4 +1,4 @@
-const Inquiry = require('../models/Inquiry');
+/*const Inquiry = require('../models/Inquiry');
 
 // @desc    Create a new inquiry
 // @route   POST /api/pets/:id/inquiry
