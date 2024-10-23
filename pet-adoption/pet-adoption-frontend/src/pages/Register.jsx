@@ -27,9 +27,9 @@ const Register = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/register', formData);
       const token = response.data.token;
-      localStorage.setItem('token', token); // Save token in local storage
+      localStorage.setItem('token', token);
       setLoading(false);
-      navigate('/'); // Redirect to the homepage or dashboard after registration
+      navigate('/');
     } catch (error) {
       setLoading(false);
       setErrorMessage('Registration failed. Please try again.');
@@ -37,11 +37,13 @@ const Register = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-3xl font-bold mb-6 text-center">Register</h1>
+    <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
+      <h1 className="text-3xl font-bold text-center mb-6 text-green-700">Register</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="username" className="block text-lg font-semibold mb-2">Username</label>
+          <label htmlFor="username" className="block text-lg font-semibold text-gray-700">
+            Username
+          </label>
           <input
             id="username"
             name="username"
@@ -49,11 +51,13 @@ const Register = () => {
             value={formData.username}
             onChange={handleChange}
             required
-            className="w-full p-4 border rounded-lg"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-lg font-semibold mb-2">Email</label>
+          <label htmlFor="email" className="block text-lg font-semibold text-gray-700">
+            Email
+          </label>
           <input
             id="email"
             name="email"
@@ -61,11 +65,13 @@ const Register = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full p-4 border rounded-lg"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
           />
         </div>
         <div>
-          <label htmlFor="password" className="block text-lg font-semibold mb-2">Password</label>
+          <label htmlFor="password" className="block text-lg font-semibold text-gray-700">
+            Password
+          </label>
           <input
             id="password"
             name="password"
@@ -73,12 +79,12 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            className="w-full p-4 border rounded-lg"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
           />
         </div>
         <button
           type="submit"
-          className={`w-full py-3 text-white bg-blue-500 rounded-lg ${loading ? 'opacity-50' : ''}`}
+          className={`w-full py-3 text-white bg-green-600 rounded-lg font-semibold shadow-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300 ${loading ? 'opacity-50' : ''}`}
           disabled={loading}
         >
           {loading ? 'Registering...' : 'Register'}
