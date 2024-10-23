@@ -1,27 +1,20 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // For navigation to other pages (Signup, Forgot Password)
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Login = ({ setAuth }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [loading, setLoading] = useState(false); // For showing loading spinner during login
-  const navigate = useNavigate(); // To navigate after successful login
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // API call to the backend login route
-      const response = await axios.post('http://localhost:5000/api/login', formData); // Adjust the baseURL as per your setup
+      const response = await axios.post('http://localhost:5000/api/login', formData);
       const { token } = response.data;
-
-      // Save token to localStorage
       localStorage.setItem('token', token);
-
-      // Set the authentication state to true
       setAuth(true);
-
-      // Navigate to a dashboard or home page after login
       alert('Login successful');
       navigate('/');
     } catch (err) {
@@ -33,17 +26,17 @@ const Login = ({ setAuth }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white shadow-md rounded-lg p-8">
-      <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
+    <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
+      <h1 className="text-3xl font-bold text-center mb-6 text-green-700">Login</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Email Field */}
         <div>
-          <label className="block text-gray-700 font-bold mb-2">Email:</label>
+          <label className="block text-lg font-semibold text-gray-700">Email:</label>
           <input
             type="email"
             placeholder="Enter your email"
-            className="form-input w-full px-3 py-2 border rounded-lg"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
           />
@@ -51,21 +44,21 @@ const Login = ({ setAuth }) => {
 
         {/* Password Field */}
         <div>
-          <label className="block text-gray-700 font-bold mb-2">Password:</label>
+          <label className="block text-lg font-semibold text-gray-700">Password:</label>
           <input
             type="password"
             placeholder="Enter your password"
-            className="form-input w-full px-3 py-2 border rounded-lg"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             onChange={(e) => setFormData({ ...formData, password: e.target.value.trim() })}
             required
           />
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-center">
+        <div className="text-center">
           <button
             type="submit"
-            className="btn btn-primary w-full"
+            className="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold shadow-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300"
             disabled={loading}
           >
             {loading ? 'Logging in...' : 'Login'}
