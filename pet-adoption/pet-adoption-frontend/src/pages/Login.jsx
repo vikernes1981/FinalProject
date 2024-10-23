@@ -18,6 +18,7 @@ const Login = ({ setAuth }) => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Set default authorization header
 
       setAuth(true); // Update auth state
+
       alert('Login successful');
       navigate('/');
     } catch (err) {
@@ -30,17 +31,17 @@ const Login = ({ setAuth }) => {
   
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white shadow-md rounded-lg p-8">
-      <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
+    <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
+      <h1 className="text-3xl font-bold text-center mb-6 text-green-700">Login</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Email Field */}
         <div>
-          <label className="block text-gray-700 font-bold mb-2">Email:</label>
+          <label className="block text-lg font-semibold text-gray-700">Email:</label>
           <input
             type="email"
             placeholder="Enter your email"
-            className="form-input w-full px-3 py-2 border rounded-lg"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
           />
@@ -48,21 +49,21 @@ const Login = ({ setAuth }) => {
 
         {/* Password Field */}
         <div>
-          <label className="block text-gray-700 font-bold mb-2">Password:</label>
+          <label className="block text-lg font-semibold text-gray-700">Password:</label>
           <input
             type="password"
             placeholder="Enter your password"
-            className="form-input w-full px-3 py-2 border rounded-lg"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             onChange={(e) => setFormData({ ...formData, password: e.target.value.trim() })}
             required
           />
         </div>
 
         {/* Submit Button */}
-        <div className="flex justify-center">
+        <div className="text-center">
           <button
             type="submit"
-            className="btn btn-primary w-full"
+            className="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold shadow-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300"
             disabled={loading}
           >
             {loading ? 'Logging in...' : 'Login'}

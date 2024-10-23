@@ -7,23 +7,24 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('pets');
 
   return (
-    <div className="admin-dashboard container mx-auto mt-10 p-5">
-      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-      <div className="tabs flex justify-around mb-8 space-x-4"> {/* Added space-x-4 for spacing */}
+    <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
+      <h1 className="text-3xl font-bold text-center mb-6 text-green-700">Admin Dashboard</h1>
+
+      <div className="tabs flex justify-around mb-8 space-x-4">
         <button 
-          className={`px-4 py-2 rounded ${activeTab === 'pets' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`} 
+          className={`px-6 py-3 rounded-lg font-semibold shadow-lg ${activeTab === 'pets' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`} 
           onClick={() => setActiveTab('pets')}
         >
           Manage Pets
         </button>
         <button 
-          className={`px-4 py-2 rounded ${activeTab === 'requests' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`} 
+          className={`px-6 py-3 rounded-lg font-semibold shadow-lg ${activeTab === 'requests' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`} 
           onClick={() => setActiveTab('requests')}
         >
           Adoption Requests
         </button>
         <button 
-          className={`px-4 py-2 rounded ${activeTab === 'users' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`} 
+          className={`px-6 py-3 rounded-lg font-semibold shadow-lg ${activeTab === 'users' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`} 
           onClick={() => setActiveTab('users')}
         >
           Manage Users

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { FaSearch } from 'react-icons/fa';
 import { getAllPets } from '../services/PostServicesPets';
 import AdoptionCentersMap from './AdoptionCentersMap';
@@ -92,7 +91,7 @@ const HomePage = () => {
 
       {/* Pet Listings Section */}
       <section className="max-w-7xl mx-auto px-4 mt-8">
-        <h2 className="text-2xl font-bold text-gray-700 mb-6">All Entries</h2>
+        <h2 className="text-2xl font-bold text-gray-400 mb-6">All Entries</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredPets.slice(0, visiblePets).map((pet, index) => (
             <PetCard key={index} pet={pet} />
@@ -108,7 +107,7 @@ const HomePage = () => {
       </section>
 
       {/* Find Your Pet Section */}
-      <section className="bg-yellow-100 py-12">
+      <section className="bg-gray-700 py-12">
         <div className="max-w-7xl mx-auto text-center">
           <h3 className="text-2xl font-bold">Which Pet is Right for You?</h3>
           <Link to="/quiz">
@@ -123,7 +122,7 @@ const HomePage = () => {
       <AdoptionCentersMap />
 
       {/* Food Recommendation Section */}
-      <section className="bg-green-200 py-12">
+      <section className="bg-gray-700 py-12">
         <div className="max-w-7xl mx-auto text-center">
           <h3 className="text-2xl font-bold">The Right Food for Your Pets!</h3>
           <Link to="/food-recommendation">
