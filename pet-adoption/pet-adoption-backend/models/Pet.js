@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// const Schema = mongoose.Schema;
 
 const petSchema = new mongoose.Schema({
   name: {

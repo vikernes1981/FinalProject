@@ -89,7 +89,7 @@ const AdoptionCentersMap = () => {
 
   return (
     <section className="bg-gray-700 py-12">
-      <div className="max-w-7xl mx-auto text-center">
+      <div className="max-w-7xl text-white mx-auto text-center">
         <h3 className="text-2xl font-bold">Adoption Centers Near You</h3>
         <div className="h-64 mt-6 rounded-lg overflow-hidden">
           <GoogleMap

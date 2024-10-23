@@ -8,7 +8,10 @@ const Navbar = () => {
 
   useEffect(() => {
     if (user) {
-      console.log(user.role);
+      console.log('User object:', user);
+      console.log('User role:', user.role);
+    } else {
+      console.log('No user object found');
     }
   }, [user]);
 
@@ -21,9 +24,9 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar bg-base-100 shadow-lg">
+    <nav className="navbar bg-base-100  shadow-lg">
       <div className="flex-1">
-        <Link to="/" className="text-2xl font-bold">Pawsome Homes</Link>
+        <Link to="/" className="text-2xl text-white  font-bold">Pawsome Homes</Link>
       </div>
 
       <div className="dropdown dropdown-end md:hidden">
@@ -48,7 +51,7 @@ const Navbar = () => {
           </svg>
         </label>
         {dropdownOpen && (
-          <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+          <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 text-white rounded-box w-52">
             <li><Link to="/" onClick={handleMenuItemClick}>Home</Link></li>
             <li><Link to="/about" onClick={handleMenuItemClick}>About Us</Link></li>
             <li><Link to="/contact" onClick={handleMenuItemClick}>Contact Us</Link></li>
@@ -60,16 +63,15 @@ const Navbar = () => {
         )}
       </div>
 
-      <div className="hidden md:flex flex-none">
+      <div className="hidden md:flex text-white flex-none">
         <ul className="menu menu-horizontal p-0">
           <li><Link to="/">Home</Link></li>
           <li><Link to="/about">About Us</Link></li>
           <li><Link to="/contact">Contact Us</Link></li>
           <li><Link to="/login">Login</Link></li>
           {user && user.role === 'Admin' && (
-              <li><Link to="/admin">Admin Dashboard</Link></li>
-            )}
-
+            <li><Link to="/admin">Admin Dashboard</Link></li>
+          )}
         </ul>
       </div>
     </nav>
