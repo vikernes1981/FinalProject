@@ -1,27 +1,23 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // For navigation to other pages (Signup, Forgot Password)
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Login = ({ setAuth }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [loading, setLoading] = useState(false); // For showing loading spinner during login
-  const navigate = useNavigate(); // To navigate after successful login
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // API call to the backend login route
-      const response = await axios.post('http://localhost:5000/api/login', formData); // Adjust the baseURL as per your setup
+      const response = await axios.post('http://localhost:5000/api/login', formData);
       const { token } = response.data;
 
-      // Save token to localStorage
-      localStorage.setItem('token', token);
+      localStorage.setItem('authToken', token); // Store token
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Set default authorization header
 
-      // Set the authentication state to true
-      setAuth(true);
-
-      // Navigate to a dashboard or home page after login
+      setAuth(true); // Update auth state
       alert('Login successful');
       navigate('/');
     } catch (err) {
@@ -31,6 +27,7 @@ const Login = ({ setAuth }) => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="max-w-md mx-auto mt-10 bg-white shadow-md rounded-lg p-8">
