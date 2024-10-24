@@ -16,8 +16,8 @@ import AuthProvider from './context/AuthProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminDashboard from './components/AdminDashboard';
-import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
-import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
+import TierheimDetails from './pages/TierheimDetails'
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -64,6 +64,7 @@ function App() {
           <Route path="/adopt/:id" element={<AdoptionRequestForm />} />
 
           {/* Other Pages */}
+          <Route path="/tierheim/:placeId" element={<TierheimDetails />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/pet-list" element={<PetList />} />
