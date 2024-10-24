@@ -74,9 +74,8 @@ function App() {
           <Route path="/quiz" element={<QuizPage />} />
 
           {/* Admin Dashboard Route */}
-          <Route path="/admin" element={
-            isAdmin ? <AdminDashboard /> : <HomePage />
-          } />
+          <Route path="/admin" element={ <AdminDashboard />}
+          />
         </Routes>
       </Router>
     </AuthProvider>

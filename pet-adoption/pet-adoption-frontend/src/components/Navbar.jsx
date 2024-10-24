@@ -69,9 +69,9 @@ const Navbar = () => {
           <li><Link to="/about">About Us</Link></li>
           <li><Link to="/contact">Contact Us</Link></li>
           <li><Link to="/login">Login</Link></li>
-          {user && user.role === 'Admin' && (
+   
             <li><Link to="/admin">Admin Dashboard</Link></li>
-          )}
+        
         </ul>
       </div>
     </nav>

@@ -88,7 +88,6 @@ const ManagePets = () => {
         </select>
         {selectedPet && (
           <div className="space-x-2 mt-4">
-            <button className="btn btn-primary" onClick={() => handleEditPet(selectedPet)}>Edit</button>
             <button className="btn btn-error" onClick={() => handleDeletePet(selectedPet._id)}>Delete</button>
             <button className="btn btn-secondary" onClick={handleCancelEdit}>Cancel</button>
           </div>
@@ -126,14 +125,19 @@ const ManagePets = () => {
           />
         </div>
         <div className="form-control mb-4">
-          <input
-            type="text"
+          <select
             name="type"
             value={formData.type}
             onChange={handleInputChange}
-            placeholder="Type (e.g. Dog, Cat)"
-            className="input input-bordered w-full"
-          />
+            className="select select-bordered w-full"
+          >
+            <option value="">Select Type</option>
+            <option value="Dog">Dog</option>
+            <option value="Cat">Cat</option>
+            <option value="Bird">Bird</option>
+            <option value="Fish">Fish</option>
+            <option value="Turtle">Turtle</option>
+          </select>
         </div>
         <div className="form-control mb-4">
           <input
