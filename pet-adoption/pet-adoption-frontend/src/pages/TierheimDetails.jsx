@@ -30,23 +30,43 @@ const TierheimDetails = () => {
     fetchPlaceDetails();
   }, [placeId]);
 
-  if (!placeDetails) return <div>Loading place details...</div>;
+  if (!placeDetails) return <div className="text-white">Loading place details...</div>;
 
   return (
-    <div className="container text-white">
-      <h1>{placeDetails.name}</h1>
-      <p>Address: {placeDetails.formatted_address}</p>
-      <p>Phone: {placeDetails.formatted_phone_number || 'N/A'}</p>
-      <p>Rating: {placeDetails.rating || 'No ratings available'}</p>
-      <p>
-        Website: {placeDetails.website ? <a href={placeDetails.website} target="_blank" rel="noopener noreferrer">{placeDetails.website}</a> : 'No website available'}
-      </p>
-      {placeDetails.photos && (
-        <img
-          src={placeDetails.photos[0].getUrl({ maxWidth: 400, maxHeight: 300 })}
-          alt={placeDetails.name}
-        />
-      )}
+    <div className="max-w-3xl mx-auto mt-10 p-6 bg-gray-800 text-white rounded-lg shadow-lg">
+      <div className="flex flex-col md:flex-row items-center">
+        {/* Display the photo */}
+        {placeDetails.photos && (
+          <img
+            className="w-full md:w-1/2 rounded-lg object-cover mb-4 md:mb-0 md:mr-6"
+            src={placeDetails.photos[0].getUrl({ maxWidth: 400, maxHeight: 300 })}
+            alt={placeDetails.name}
+          />
+        )}
+
+        {/* Display the place information */}
+        <div className="w-full md:w-1/2">
+          <h1 className="text-3xl font-bold mb-2">{placeDetails.name}</h1>
+          <p className="mb-2"><strong>Address:</strong> {placeDetails.formatted_address}</p>
+          <p className="mb-2"><strong>Phone:</strong> {placeDetails.formatted_phone_number || 'N/A'}</p>
+          <p className="mb-2"><strong>Rating:</strong> {placeDetails.rating || 'No ratings available'}</p>
+          <p className="mb-2">
+            <strong>Website:</strong>{' '}
+            {placeDetails.website ? (
+              <a
+                href={placeDetails.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:underline"
+              >
+                {placeDetails.website}
+              </a>
+            ) : (
+              'No website available'
+            )}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
