@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import React, { useState, useEffect } from 'react';
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 
 // Container style for the map
@@ -8,23 +8,26 @@ const containerStyle = {
   height: '100%',
 };
 
-// Default center for the map (in case geolocation is not available)
+// Default center for the map
 const defaultCenter = {
   lat: 51.1657, // Latitude for Germany
   lng: 10.4515, // Longitude for Germany
 };
 
+// Move the libraries array outside the component
+const libraries = ['places'];
+
 const AdoptionCentersMap = () => {
   const [center, setCenter] = useState(defaultCenter); // Center of the map
   const [markers, setMarkers] = useState([]); // Markers for adoption centers
+  const [selectedMarker, setSelectedMarker] = useState(null); // To track the selected marker for the info window
   const [loading, setLoading] = useState(false); // Loading state
-  const [hoveredMarker, setHoveredMarker] = useState(null); // State for hovered marker
   const navigate = useNavigate(); // Initialize useNavigate
 
-  // Use the useLoadScript hook to handle script loading
+  // Use the useLoadScript hook to load the Google Maps script and Places library
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY, // Replace with your API key
-    libraries: ['places'], // Load the Places library
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY, // Access the API key from the environment variable
+    libraries: libraries, // Use the declared libraries array
   });
 
   // Function to find adoption centers using the Google Places API
@@ -37,45 +40,42 @@ const AdoptionCentersMap = () => {
 
         setLoading(true);
 
-        // Use Google Places API to find nearby adoption centers
-        const map = new window.google.maps.Map(document.createElement('div'));
-        const service = new window.google.maps.places.PlacesService(map);
+        if (window.google && window.google.maps) {
+          const map = new window.google.maps.Map(document.createElement('div'));
+          const service = new window.google.maps.places.PlacesService(map);
 
-        const request = {
-          location: { lat, lng },
+          const request = {
+            location: { lat, lng },
+            radius: '10000', // 10 km radius
+            keyword: 'tierheim',
+          };
 
-          radius: '10000', // 10 km radius
-
-           
-
-          keyword: 'tierheim',
-        };
-
-        service.nearbySearch(request, (results, status) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            const newMarkers = results.map((place) => ({
-              position: place.geometry.location,
-              name: place.name,
-              address: place.vicinity, // Get the vicinity (address) of the place
-              phone: place.formatted_phone_number || 'N/A', // Get phone number if available
-              website: place.website || 'N/A', // Get website if available
-              id: place.place_id, // Store place_id for navigation
-            }));
-            setMarkers(newMarkers);
-          } else {
-            alert('No adoption centers found nearby.');
-          }
-          setLoading(false);
-        });
+          service.nearbySearch(request, (results, status) => {
+            if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+              const newMarkers = results.map((place) => ({
+                position: place.geometry.location,
+                name: place.name,
+                address: place.vicinity,
+                placeId: place.place_id,
+              }));
+              setMarkers(newMarkers);
+            } else {
+              alert('No adoption centers found nearby.');
+            }
+            setLoading(false);
+          });
+        } else {
+          console.error('Google Maps not available');
+        }
       });
     } else {
       alert('Geolocation is not supported by this browser.');
     }
   };
 
-  const handleMarkerClick = (markerId) => {
-    // Navigate to the tierheim's details page using the place_id
-    navigate(`/tierheim/${markerId}`);
+  // Extract the lat/lng for InfoWindow positioning
+  const getPositionForInfoWindow = (position) => {
+    return { lat: position.lat(), lng: position.lng() }; // Call the lat() and lng() functions to extract the values
   };
 
   // Show loading message if the Google Maps script hasn't loaded yet
@@ -92,48 +92,43 @@ const AdoptionCentersMap = () => {
       <div className="max-w-7xl text-white mx-auto text-center">
         <h3 className="text-2xl font-bold">Adoption Centers Near You</h3>
         <div className="h-64 mt-6 rounded-lg overflow-hidden">
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={12}
-          >
-            {markers.map((marker, index) => (
-              <Marker
-                key={index}
-                position={marker.position}
-                onMouseOver={() => setHoveredMarker(marker)}
-                onMouseOut={() => setHoveredMarker(null)}
-                onClick={() => handleMarkerClick(marker.id)} // Handle marker click
-              />
-            ))}
-            {/* Display info for hovered marker */}
-            {hoveredMarker && (
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: '20px',
-                  left: '20px',
-                  background: 'white',
-                  padding: '10px',
-                  borderRadius: '5px',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
-                }}
-              >
-                <h4>{hoveredMarker.name}</h4>
-                <p>{hoveredMarker.address}</p>
-                <p>Phone: {hoveredMarker.phone}</p>
-                <p>
-                  Website: <a href={hoveredMarker.website} target="_blank" rel="noopener noreferrer">{hoveredMarker.website}</a>
-                </p>
-              </div>
-            )}
-          </GoogleMap>
+          {isLoaded && (
+            <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={12}>
+              {markers.map((marker, index) => (
+                <Marker
+                  key={index}
+                  position={marker.position}
+                  onClick={() => {
+                    console.log('Marker clicked:', marker);
+                    setSelectedMarker(marker); // Open InfoWindow when clicked
+                  }}
+                />
+              ))}
+
+              {/* Show InfoWindow when a marker is selected */}
+              {selectedMarker && selectedMarker.name && selectedMarker.address && (
+                <InfoWindow
+                  position={getPositionForInfoWindow(selectedMarker.position)} // Extract lat/lng values
+                  onCloseClick={() => setSelectedMarker(null)} // Close the InfoWindow
+                >
+                  <div style={{ color: 'black' }}>
+                    <h4>{selectedMarker.name}</h4>
+                    <p>{selectedMarker.address}</p>
+                    <button
+                      onClick={() => {
+                        console.log('Navigating to:', selectedMarker.placeId);
+                        navigate(`/tierheim/${selectedMarker.placeId}`);
+                      }}
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </InfoWindow>
+              )}
+            </GoogleMap>
+          )}
         </div>
-        <button
-          onClick={handleFindAdoptionCenters}
-          className="btn btn-success mt-4"
-          disabled={loading}
-        >
+        <button onClick={handleFindAdoptionCenters} className="btn btn-success mt-4" disabled={loading}>
           {loading ? 'Finding centers...' : 'Find Out Now!'}
         </button>
       </div>
