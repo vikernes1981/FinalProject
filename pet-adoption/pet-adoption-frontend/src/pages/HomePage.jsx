@@ -70,7 +70,7 @@ const HomePage = () => {
         >
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
           <h1 className="relative text-5xl font-bold text-white z-10 animate-fadeInAndMove">
-            Welcome to Our Pet Adoption Platform
+          Your New Best Friend Awaits at Pawsome Homes
           </h1>
         </div>
       </section>
