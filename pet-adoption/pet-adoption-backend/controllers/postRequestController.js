@@ -1,24 +1,26 @@
-const AdoptionRequest = require('../models/AdoptionRequest');
-
-// Create a new adoption request
-exports.createAdoptionRequest = async (req, res) => {
+const AdoptionRequest = require('../models/AdoptionRequest')
+exports.createRequest = async (req, res) => {
   try {
-    const { user, pet, message, status } = req.body;
-
-    // Create a new adoption request based on the schema
     const newRequest = new AdoptionRequest({
-      user,
-      pet,
-      message,
-      status: status || 'Pending', // Default status to 'Pending'
+      user: req.body.user,
+      pet: req.body.pet,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phone: req.body.phone,
+      address: {
+        street: req.body.address.street,
+        city: req.body.address.city,
+        region: req.body.address.region,
+        zip: req.body.address.zip,
+      },
+      message: req.body.message,
+      when: req.body.when,
     });
 
-    // Save the request to the database
-    const savedRequest = await newRequest.save();
-
-    res.status(201).json(savedRequest); // Respond with the created request
+    await newRequest.save();
+    res.status(201).json(newRequest);
   } catch (error) {
-    console.error('Error creating adoption request:', error);
-    res.status(500).json({ error: 'Failed to create adoption request' });
+    res.status(500).json({ message: error.message });
   }
 };
