@@ -3,8 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const TELEGRAM_API_URL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
-console.log('Telegram api:', TELEGRAM_API_URL);
+const TELEGRAM_API_URL = `https://api.telegram.org/bot${process.env.TOKEN}`;
 
 // Send a message via Telegram bot
 export const sendMessage = async (chatId, text) => {

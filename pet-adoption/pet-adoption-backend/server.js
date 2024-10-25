@@ -11,6 +11,7 @@ import postRequestRoutes from './routes/postRequestRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import chatbotRoutes from './routes/chatbotRoutes.js';
 import { getAdoptionAnswer } from './answers.js';
+import { sendMessage } from './services/telegramService.js';
 
 // Environment variable setup
 dotenv.config();
@@ -81,10 +82,7 @@ app.post(URI, async (req, res) => {
     // Respond based on the intent detected
     if (intent === "adoption_proccess") {
       const answer = getAdoptionAnswer(); // Get a random answer for adoption process
-      await axios.post(`${TELEGRAM_API}/sendMessage`, {
-        chat_id: chatId,
-        text: answer,
-      });
+      await sendMessage(chatId, answer);
     } else if (intent === "answers_greetings") {
       const responses = [
         "Hello! I'm here to help you with pet adoption. How can I assist you today?",
@@ -95,25 +93,15 @@ app.post(URI, async (req, res) => {
         "Good day",
       ];
       const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      await axios.post(`${TELEGRAM_API}/sendMessage`, {
-        chat_id: chatId,
-        text: randomResponse,
-      });
+      await sendMessage(chatId, randomResponse);
     } else {
-      await axios.post(`${TELEGRAM_API}/sendMessage`, {
-        chat_id: chatId,
-        text: "I'm sorry, I didn't understand that. Can you ask something else?",
-      });
+      await sendMessage(chatId, "I'm sorry, I didn't understand that. Can you ask something else?");
     }
   } else {
     // If no intent was found
-    await axios.post(`${TELEGRAM_API}/sendMessage`, {
-      chat_id: chatId,
-      text: "I'm sorry, I didn't understand that. Can you ask something else?",
-    });
+    await sendMessage(chatId, "I'm sorry, I didn't understand that. Can you ask something else?");
   }
 });
-
 
 app.listen(process.env.PORT || 5000, async () => {
   console.log("🚀 app running on port", process.env.PORT || 5000);
