@@ -14,15 +14,18 @@ const ChatbotComponent = () => {
         className="bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         onClick={() => setShowChatbot(!showChatbot)}
       >
-        💬 Chat with us
+        💬 Chat with us 🐾
       </button>
       {showChatbot && (
-        <div className="w-80 h-96 bg-white border border-gray-300 rounded-lg shadow-lg mt-4 overflow-hidden">
-          <Chatbot
-            config={config}
-            messageParser={MessageParser}
-            actionProvider={ActionProvider}
-          />
+        <div className="w-50 h-97 bg-white border border-gray-300 rounded-lg shadow-lg mt-4 flex flex-col">
+          <div className="flex-grow overflow-y-auto">
+            <Chatbot
+              config={config}
+              messageParser={MessageParser}
+              actionProvider={ActionProvider}
+            />
+          </div>
+
         </div>
       )}
     </div>
