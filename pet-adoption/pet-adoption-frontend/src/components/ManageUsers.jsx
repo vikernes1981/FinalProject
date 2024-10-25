@@ -73,7 +73,6 @@ const ManageUsers = () => {
         </select>
         {selectedUser && (
           <div className="space-x-2 mt-4">
-            <button className="btn btn-primary" onClick={() => handleEditUser(selectedUser)}>Edit</button>
             <button className="btn btn-error" onClick={() => {
               console.log('Delete button clicked for user:', selectedUser._id); // Log when button is clicked
               handleDeleteUser(selectedUser._id);
