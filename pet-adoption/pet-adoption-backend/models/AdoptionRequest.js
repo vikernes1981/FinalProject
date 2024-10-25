@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const adoptionRequestSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -18,4 +18,4 @@ const adoptionRequestSchema = new mongoose.Schema({
   status: { type: String, enum: ['Pending', 'Approved', 'Rejected'], default: 'Pending' },
 });
 
-module.exports = mongoose.model('AdoptionRequest', adoptionRequestSchema);
+export default mongoose.model('AdoptionRequest', adoptionRequestSchema);

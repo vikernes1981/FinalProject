@@ -1,5 +1,6 @@
-const AdoptionRequest = require('../models/AdoptionRequest')
-exports.createRequest = async (req, res) => {
+import AdoptionRequest from '../models/AdoptionRequest.js';
+
+export const createRequest = async (req, res) => {
   try {
     const newRequest = new AdoptionRequest({
       user: req.body.user,

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const petSchema = new mongoose.Schema({
   name: {
@@ -15,7 +15,7 @@ const petSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['Dog', 'Cat', 'Bird', 'Fish', 'Turtle'], // Define the types of pets
+    enum: ['Dog', 'Cat', 'Bird', 'Fish', 'Turtle'],
     required: true,
   },
   description: {
@@ -23,7 +23,7 @@ const petSchema = new mongoose.Schema({
     required: true,
   },
   image: {
-    type: String, // URL to the pet’s image
+    type: String,
     required: false,
   },
   status: {
@@ -33,7 +33,7 @@ const petSchema = new mongoose.Schema({
     required: true,
   },
   adoptionDate: {
-    type: Date, // Only if the pet is adopted
+    type: Date,
     required: false,
   },
   createdAt: {
@@ -42,4 +42,4 @@ const petSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Pet', petSchema);
+export default mongoose.model('Pet', petSchema);

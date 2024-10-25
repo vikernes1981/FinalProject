@@ -1,7 +1,5 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-
-
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -20,17 +18,16 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    // Admin for managing pets
     default: 'User',
     required: true,
   },
   favorites: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Pet', // Reference to the Pet schema
+    ref: 'Pet',
   }],
   adoptedPets: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Pet', // Reference to the Pet schema
+    ref: 'Pet',
   }],
   createdAt: {
     type: Date,
@@ -46,4 +43,4 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-module.exports = mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema);

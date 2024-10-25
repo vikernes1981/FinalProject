@@ -16,8 +16,8 @@ import AuthProvider from './context/AuthProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminDashboard from './components/AdminDashboard';
-import TierheimDetails from './pages/TierheimDetails'
-
+import TierheimDetails from './pages/TierheimDetails';
+import ChatBotComponent from './components/ChatBotComponent';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,7 +27,6 @@ function App() {
     const token = localStorage.getItem('authToken');
     if (token) {
       setIsAuthenticated(true);
-      // Assuming the token is a JSON string with a role property
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       if (decodedToken.role === 'Admin') {
         setIsAdmin(true);
@@ -51,32 +50,22 @@ function App() {
           pauseOnHover
         />
         <Routes>
-          {/* Home Route */}
           <Route path="/" element={<HomePage />} />
-
-          {/* Auth Routes */}
           <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
-
-          {/* Pet Details and Adoption Routes */}
           <Route path="/pets/:id" element={<PetDetails />} />
           <Route path="/adopt/:id" element={<AdoptionRequestForm />} />
-
-          {/* Other Pages */}
           <Route path="/tierheim/:placeId" element={<TierheimDetails />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/pet-list" element={<PetList />} />
           <Route path="/food-recommendation" element={<FoodRecommendation />} />
-
-          {/* Quiz Route */}
           <Route path="/quiz" element={<QuizPage />} />
-
-          {/* Admin Dashboard Route */}
-          <Route path="/admin" element={ <AdminDashboard />}
-          />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
+        {/* ChatBotComponent here makes it appear globally */}
+        <ChatBotComponent />
       </Router>
     </AuthProvider>
   );
