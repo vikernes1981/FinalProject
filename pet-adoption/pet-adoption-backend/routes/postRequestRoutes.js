@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const postRequestController = require('../controllers/postRequestController');
+const { createRequest } = require('../controllers/postRequestController'); // Ensure the correct path and import
 
-// Route to handle POST requests for creating adoption requests
-router.post('/', postRequestController.createAdoptionRequest);
+// Define the route to handle POST requests
+router.post('/', createRequest); // This is where the error is pointing to
 
 module.exports = router;

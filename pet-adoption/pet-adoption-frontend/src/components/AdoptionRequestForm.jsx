@@ -8,7 +8,15 @@ const AdoptionRequestForm = () => {
   const { id } = useParams(); // Get pet id from URL
   const navigate = useNavigate(); // For navigation
   const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
+    phone: '',
+    street: '',
+    city: '',
+    region: '',
+    zip: '',
+    petType: '',
     why: '',
     when: '',
   });
@@ -24,7 +32,6 @@ const AdoptionRequestForm = () => {
       try {
         // Fetch pet info
         const petResponse = await getPetById(id);
-        console.log('PetResponse : ', petResponse);
         if (petResponse) {
           setPetName(petResponse.name);
         } else {
@@ -60,6 +67,17 @@ const AdoptionRequestForm = () => {
       const requestData = {
         user: user._id, // Use the fetched user ID
         pet: id, // Pet ID from URL
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email, // Ensure email is being sent
+        phone: formData.phone,
+        address: {
+          street: formData.street,
+          city: formData.city,
+          region: formData.region,
+          zip: formData.zip,
+        },
+        petType: formData.petType,
         message: formData.why,
         when: new Date(formData.when).toISOString(), // Format the date
         status: 'Pending',
@@ -67,7 +85,19 @@ const AdoptionRequestForm = () => {
 
       await createRequest(requestData); // Submit the request
       setSuccessMessage('Your adoption request has been submitted successfully!');
-      setFormData({ email: '', why: '', when: '' }); // Reset the form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        street: '',
+        city: '',
+        region: '',
+        zip: '',
+        petType: '',
+        why: '',
+        when: '',
+      }); // Reset the form
     } catch (err) {
       setErrorMessage('There was an issue submitting your request. Please try again.');
     } finally {
@@ -76,40 +106,143 @@ const AdoptionRequestForm = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold mb-6 text-center text-green-700">Adoption Request for {petName}</h1>
+    <div className="max-w-lg mx-auto mt-10 p-8 bg-gray-100 rounded-lg shadow-md">
+      <h1 className="text-3xl font-semibold mb-8 text-center text-green-600">Pet Adoption Form for {petName}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Name Field */}
+        <div className="flex gap-4">
+          <div className="flex-1">
+            <label htmlFor="firstName" className="block text-lg font-semibold mb-2">First Name</label>
+            <input
+              id="firstName"
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+              className="w-full p-4 border border-gray-300 rounded-lg"
+              required
+            />
+          </div>
+          <div className="flex-1">
+            <label htmlFor="lastName" className="block text-lg font-semibold mb-2">Last Name</label>
+            <input
+              id="lastName"
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+              className="w-full p-4 border border-gray-300 rounded-lg"
+              required
+            />
+          </div>
+        </div>
+
         {/* Email Field */}
         <div>
-          <label htmlFor="email" className="block text-lg font-semibold mb-2">Your Email</label>
+          <label htmlFor="email" className="block text-lg font-semibold mb-2">Email Address</label>
           <input
             id="email"
             type="email"
             name="email"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            required
             className="w-full p-4 border border-gray-300 rounded-lg"
-            disabled={loading}
+            required
           />
         </div>
 
-        {/* Why Adopt Field */}
+        {/* Phone Number Field */}
         <div>
-          <label htmlFor="why" className="block text-lg font-semibold mb-2">Why do you want to adopt?</label>
+          <label htmlFor="phone" className="block text-lg font-semibold mb-2">Phone Number</label>
+          <input
+            id="phone"
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            className="w-full p-4 border border-gray-300 rounded-lg"
+            required
+          />
+        </div>
+
+        {/* Address Fields */}
+        <div className="space-y-4">
+          <label htmlFor="address" className="block text-lg font-semibold mb-2">Address</label>
+          <input
+            id="street"
+            type="text"
+            name="street"
+            value={formData.street}
+            onChange={(e) => setFormData({ ...formData, street: e.target.value })}
+            placeholder="Street Address"
+            className="w-full p-4 border border-gray-300 rounded-lg"
+            required
+          />
+          <div className="flex gap-4">
+            <input
+              id="city"
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+              placeholder="City"
+              className="flex-1 p-4 border border-gray-300 rounded-lg"
+              required
+            />
+            <input
+              id="region"
+              type="text"
+              name="region"
+              value={formData.region}
+              onChange={(e) => setFormData({ ...formData, region: e.target.value })}
+              placeholder="Region"
+              className="flex-1 p-4 border border-gray-300 rounded-lg"
+              required
+            />
+          </div>
+          <input
+            id="zip"
+            type="text"
+            name="zip"
+            value={formData.zip}
+            onChange={(e) => setFormData({ ...formData, zip: e.target.value })}
+            placeholder="Postal/Zip Code"
+            className="w-full p-4 border border-gray-300 rounded-lg"
+            required
+          />
+        </div>
+
+        {/* Type of Pet */}
+        <div>
+          <label className="block text-lg font-semibold mb-2">Type of Pet</label>
+          <div className="flex gap-4">
+            <label className="flex items-center">
+              <input type="radio" name="petType" value="Dog" onChange={(e) => setFormData({ ...formData, petType: e.target.value })} className="mr-2" /> Dog
+            </label>
+            <label className="flex items-center">
+              <input type="radio" name="petType" value="Cat" onChange={(e) => setFormData({ ...formData, petType: e.target.value })} className="mr-2" /> Cat
+            </label>
+            <label className="flex items-center">
+              <input type="radio" name="petType" value="Other" onChange={(e) => setFormData({ ...formData, petType: e.target.value })} className="mr-2" /> Other
+            </label>
+          </div>
+        </div>
+
+        {/* Additional Fields */}
+        <div>
+          <label htmlFor="why" className="block text-lg font-semibold mb-2">Why do you want to adopt this pet?</label>
           <textarea
             id="why"
             name="why"
             value={formData.why}
             onChange={(e) => setFormData({ ...formData, why: e.target.value })}
+            className="w-full p-4 border border-gray-300 rounded-lg"
             required
-            className="w-full h-32 p-4 border border-gray-300 rounded-lg"
-            disabled={loading}
           />
         </div>
 
-        {/* When can you adopt Field */}
+        {/* When can you adopt */}
         <div>
           <label htmlFor="when" className="block text-lg font-semibold mb-2">When can you adopt?</label>
           <input
@@ -118,9 +251,8 @@ const AdoptionRequestForm = () => {
             name="when"
             value={formData.when}
             onChange={(e) => setFormData({ ...formData, when: e.target.value })}
-            required
             className="w-full p-4 border border-gray-300 rounded-lg"
-            disabled={loading}
+            required
           />
         </div>
 
