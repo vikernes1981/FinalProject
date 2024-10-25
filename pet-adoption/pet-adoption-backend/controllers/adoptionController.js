@@ -1,6 +1,6 @@
-const AdoptionRequest = require('../models/AdoptionRequest');
+import AdoptionRequest from '../models/AdoptionRequest.js';
 
-exports.getAllAdoptionRequests = async (req, res) => {
+export const getAllAdoptionRequests = async (req, res) => {
   try {
     const requests = await AdoptionRequest.find().populate('user pet');
     res.json(requests);
@@ -9,7 +9,7 @@ exports.getAllAdoptionRequests = async (req, res) => {
   }
 };
 
-exports.updateAdoptionRequestStatus = async (req, res) => {
+export const updateAdoptionRequestStatus = async (req, res) => {
   try {
     const updatedRequest = await AdoptionRequest.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
     if (!updatedRequest) {

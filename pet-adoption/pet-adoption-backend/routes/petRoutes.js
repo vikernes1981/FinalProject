@@ -1,6 +1,7 @@
-const express = require('express');
-const { getAllPets, createPet, getPetById, updatePet, submitInquiry } = require('../controllers/petController');
-const Pet = require('../models/Pet'); // Import the Pet model directly for the new routes
+import express from 'express';
+import { getAllPets, createPet, getPetById, updatePet, submitInquiry } from '../controllers/petController.js';
+import Pet from '../models/Pet.js';
+
 const router = express.Router();
 
 // Existing routes
@@ -22,4 +23,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

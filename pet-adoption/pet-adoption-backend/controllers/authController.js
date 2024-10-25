@@ -1,57 +1,40 @@
-require('dotenv').config(); // Add this line at the top
+import dotenv from 'dotenv';
+import User from '../models/User.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+dotenv.config();
 
-exports.loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Find the user by email
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    console.log('Login attempt with email:', email);
-    console.log('Stored Password:', user.password);
-    console.log('Attempted Password:', password);
-
-    // Compare the password with the stored hashed password
     const isMatch = await bcrypt.compare(password.trim(), user.password);
-    console.log('Test password match:', isMatch);
-
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    // Proceed with generating a token or other logic
-    // For example:
-    const token = jwt.sign({ userId: user._id,role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-
-
-exports.registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Hash the password
-    // const hashedPassword = await bcrypt.hash(password.trim(), 10);
-
-    // Create a new user
     const user = new User({
       username,
       email,
@@ -60,20 +43,14 @@ exports.registerUser = async (req, res) => {
 
     await user.save();
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { userId: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
+    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.status(201).json({ token });
   } catch (error) {
     res.status(500).json({ message: 'Server error. Please try again later.' });
   }
 };
 
-exports.getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().populate('favorites adoptedPets');
     res.json(users);
@@ -82,7 +59,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
+export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).populate('favorites adoptedPets');
     if (!user) return res.status(404).json({ message: 'User not found' });
@@ -92,7 +69,7 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.createUser = async (req, res) => {
+export const createUser = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -100,12 +77,11 @@ exports.createUser = async (req, res) => {
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
-    console.error('Error creating user:', error); // Log the error for debugging
     res.status(400).json({ message: error.message });
   }
 };
 
-exports.updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
     const user = await User.findById(req.params.id);
@@ -123,7 +99,7 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-exports.deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
