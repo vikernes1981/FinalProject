@@ -1,7 +1,7 @@
 import { sendMessage } from '../services/telegramService.js';
 import dbService from '../services/dbService.js';
 
-export const handleMessage = async (req, res) => {
+export const handleTelegramMessage = async (req, res) => {
   try {
     const message = req.body?.message;
 
@@ -9,7 +9,7 @@ export const handleMessage = async (req, res) => {
       return res.sendStatus(400);
     }
 
-    const chatId = message.chat.id;
+    const chatId = message.chat.id; // Get the chat ID
     const text = message.text;
 
     if (text === '/start') {
@@ -19,7 +19,6 @@ export const handleMessage = async (req, res) => {
       const user = await dbService.getUserByTelegramId(chatId);
       const name = user?.name ?? 'unknown';
       const age = user?.age ?? 'not set';
-
       await sendMessage(chatId, `Your profile: Name - ${name}, Age - ${age}`);
     } else if (text === 'hi' || text === 'hey') {
       await sendMessage(chatId, 'Hello! How can I assist you today?');
@@ -27,7 +26,8 @@ export const handleMessage = async (req, res) => {
       await sendMessage(chatId, 'Sorry, I did not understand that. Can you please try again?');
     }
 
-    res.sendStatus(200);
+    // Send chat ID back to the frontend
+    res.status(200).json({ chatId });
   } catch (error) {
     res.sendStatus(500);
   }

@@ -1,19 +1,39 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthProvider';
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const { user } = useContext(AuthContext);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      console.log('User object:', user);
-      console.log('User role:', user.role);
-    } else {
-      console.log('No user object found');
-    }
-  }, [user]);
+    const checkAuthStatus = () => {
+      const token = localStorage.getItem('authToken');
+      console.log('NavToken:', token);
+      if (token) {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        console.log('Decoded token:', decodedToken);
+        if (decodedToken.role === 'Admin') {
+          setIsAdmin(true);
+          console.log('Nav Admin user detected');
+          setIsAuthenticated(true);
+          return true; // Stop checking
+        }
+        setIsAuthenticated(true);
+        console.log('Nav Authenticated user detected');
+        return true; // Stop checking
+      }
+      return false; // Continue checking
+    };
+
+    const intervalId = setInterval(() => {
+      if (checkAuthStatus()) {
+        clearInterval(intervalId);
+      }
+    }, 50);
+
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, []);
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -23,10 +43,17 @@ const Navbar = () => {
     setDropdownOpen(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    setIsAuthenticated(false);
+    setIsAdmin(false);
+    handleMenuItemClick();
+  };
+
   return (
-    <nav className="navbar bg-base-100  shadow-lg">
+    <nav className="navbar bg-base-100 shadow-lg">
       <div className="flex-1">
-        <Link to="/" className="text-2xl text-white  font-bold">Pawsome Homes</Link>
+        <Link to="/" className="text-2xl text-white font-bold">Pawsome Homes</Link>
       </div>
 
       <div className="dropdown dropdown-end md:hidden">
@@ -55,8 +82,12 @@ const Navbar = () => {
             <li><Link to="/" onClick={handleMenuItemClick}>Home</Link></li>
             <li><Link to="/about" onClick={handleMenuItemClick}>About Us</Link></li>
             <li><Link to="/contact" onClick={handleMenuItemClick}>Contact Us</Link></li>
-            <li><Link to="/login" onClick={handleMenuItemClick}>Login</Link></li>
-            {user && user.role === 'Admin' && (
+            {isAuthenticated ? (
+              <li><Link to="/" onClick={handleLogout}>Logout</Link></li>
+            ) : (
+              <li><Link to="/login" onClick={handleMenuItemClick}>Login</Link></li>
+            )}
+            {isAdmin && (
               <li><Link to="/admin" onClick={handleMenuItemClick}>Admin Dashboard</Link></li>
             )}
           </ul>
@@ -68,10 +99,14 @@ const Navbar = () => {
           <li><Link to="/">Home</Link></li>
           <li><Link to="/about">About Us</Link></li>
           <li><Link to="/contact">Contact Us</Link></li>
-          <li><Link to="/login">Login</Link></li>
-   
+          {isAuthenticated ? (
+            <li><Link to="/" onClick={handleLogout}>Logout</Link></li>
+          ) : (
+            <li><Link to="/login">Login</Link></li>
+          )}
+          {isAdmin && (
             <li><Link to="/admin">Admin Dashboard</Link></li>
-        
+          )}
         </ul>
       </div>
     </nav>
