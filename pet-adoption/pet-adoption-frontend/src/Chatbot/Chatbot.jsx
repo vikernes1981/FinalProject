@@ -4,9 +4,31 @@ import "react-chatbot-kit/build/main.css";
 import config from "./config";
 import MessageParser from "./messageParser";
 import ActionProvider from "./actionProvider";
+import axios from "axios";
 
 const ChatbotComponent = () => {
   const [showChatbot, setShowChatbot] = useState(false);
+  const [userMessage, setUserMessage] = useState("");
+  const [chatId, setChatId] = useState("");
+
+  const handleSendMessage = async () => {
+    if (userMessage.trim() !== "") {
+      const response = await axios.post('http://localhost:5000/chatbot/telegram', {
+        message: {
+          chat: {
+            id: chatId,
+          },
+          text: userMessage,
+        },
+      });
+
+      if (response.data.chatId && !chatId) {
+        setChatId(response.data.chatId);
+      }
+
+      setUserMessage("");
+    }
+  };
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -25,7 +47,6 @@ const ChatbotComponent = () => {
               actionProvider={ActionProvider}
             />
           </div>
-
         </div>
       )}
     </div>

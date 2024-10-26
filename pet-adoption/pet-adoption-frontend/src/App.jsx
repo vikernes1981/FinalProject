@@ -25,12 +25,16 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
+    console.log('Token:', token);
     if (token) {
-      setIsAuthenticated(true);
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      console.log('Decoded token:', decodedToken);
       if (decodedToken.role === 'Admin') {
         setIsAdmin(true);
+        console.log('Admin user detected');
       }
+      setIsAuthenticated(true);
+      console.log('Authenticated user detected');
     }
   }, []);
 

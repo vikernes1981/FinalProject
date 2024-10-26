@@ -7,45 +7,68 @@ dotenv.config();
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  console.log('Login attempt:', { email, password });
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
+      console.log('User not found:', email);
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const isMatch = await bcrypt.compare(password.trim(), user.password);
+    console.log('User found:', user);
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log('Password comparison result:', isMatch);
+
     if (!isMatch) {
+      console.log('Password mismatch for user:', email);
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign(
+      { userId: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+    console.log('Token generated:', token);
+
     res.json({ token });
   } catch (error) {
+    console.error('Server error during login:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
+
 export const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
+  console.log('Registration attempt:', { username, email, password });
 
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log('User already exists:', email);
       return res.status(400).json({ message: 'User already exists' });
     }
+
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    // console.log('Hashed password:', hashedPassword);
 
     const user = new User({
       username,
       email,
-      password: password.trim(),
+      password: password,
     });
 
     await user.save();
+    console.log('User registered:', user);
 
     const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    console.log('Token generated:', token);
     res.status(201).json({ token });
   } catch (error) {
+    console.error('Server error during registration:', error);
     res.status(500).json({ message: 'Server error. Please try again later.' });
   }
 };
@@ -89,7 +112,7 @@ export const updateUser = async (req, res) => {
 
     user.username = username || user.username;
     user.email = email || user.email;
-    if (password) user.password = await bcrypt.hash(password, 10);
+    if (password) user.password = await bcrypt.hash(password, 10) || user.password;
     user.role = role || user.role;
 
     await user.save();

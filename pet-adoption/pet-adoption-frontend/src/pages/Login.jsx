@@ -21,6 +21,7 @@ const Login = ({ setAuth }) => {
 
       alert('Login successful');
       navigate('/');
+      window.location.reload(); // Reload the navbar
     } catch (err) {
       console.error(err);
       alert('Login failed: Invalid email or password');

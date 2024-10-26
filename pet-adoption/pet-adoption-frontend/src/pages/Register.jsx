@@ -25,9 +25,7 @@ const Register = () => {
     setErrorMessage('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/register', formData);
-      const token = response.data.token;
-      localStorage.setItem('token', token);
+      await axios.post('http://localhost:5000/api/register', formData);
       setLoading(false);
       navigate('/');
     } catch (error) {
