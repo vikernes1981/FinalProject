@@ -7,9 +7,9 @@ class MessageParser {
 
   async parse(message, chatId) {
     // Example of handling a specific intent
-    if (message.includes("adopt")) {
-      this.actionProvider.handleAdoptionInquiry();
-    }
+    // if (message.includes("adopt")) {
+    //   this.actionProvider.handleAdoptionInquiry();
+    // }
 
     // Send the message to the backend
     try {

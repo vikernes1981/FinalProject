@@ -36,7 +36,7 @@ export const handleChatbotMessage = async (req, res) => {
       const intent = witResponse.intents[0].name;
 
       // Respond based on detected intent
-      if (intent === "adoption_process") {
+      if (intent === "adoption_proccess") {
         const answer = getAdoptionAnswer();
         res.json({ reply: answer });
       } else if (intent === "answers_greetings") {
