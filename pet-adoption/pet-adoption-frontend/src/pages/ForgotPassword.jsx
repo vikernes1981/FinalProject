@@ -1,87 +1,98 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = ({ setAuth }) => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+const ForgotPassword = () => {
+  const [formData, setFormData] = useState({ email: '', newPassword: '', confirmPassword: '' });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError('');
+
+    if (formData.newPassword !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await axios.post('/api/auth/login', formData);
-      const { token } = response.data;
-      localStorage.setItem('token', token); // Save token to localStorage
-      setAuth(true); // Update authentication state
-      alert('Login successful');
+      const response = await axios.post('http://localhost:5000/api/forgot-password', {
+        email: formData.email,
+        newPassword: formData.newPassword,
+      });
+
+      if (response.data.success) {
+        alert('Password reset successful');
+      } else {
+        alert('Password reset failed');
+      }
     } catch (err) {
       console.error(err);
-      alert('Login failed');
+      setError('Error resetting password');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white shadow-md rounded-lg p-8">
-      <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
+    <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
+      <h1 className="text-3xl font-bold text-center mb-6 text-green-700">Forgot Password</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Email Field */}
         <div>
-          <label className="block text-gray-700 font-bold mb-2">Email:</label>
+          <label className="block text-lg font-semibold text-gray-700">Email:</label>
           <input
             type="email"
             placeholder="Enter your email"
-            className="form-input w-full px-3 py-2 border rounded-lg"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
           />
         </div>
 
-        {/* Password Field */}
+        {/* New Password Field */}
         <div>
-          <label className="block text-gray-700 font-bold mb-2">Password:</label>
+          <label className="block text-lg font-semibold text-gray-700">New Password:</label>
           <input
             type="password"
-            placeholder="Enter your password"
-            className="form-input w-full px-3 py-2 border rounded-lg"
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            placeholder="Enter new password"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            onChange={(e) => setFormData({ ...formData, newPassword: e.target.value })}
             required
           />
         </div>
 
+        {/* Confirm Password Field */}
+        <div>
+          <label className="block text-lg font-semibold text-gray-700">Confirm Password:</label>
+          <input
+            type="password"
+            placeholder="Confirm new password"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+            required
+          />
+        </div>
+
+        {/* Error Message */}
+        {error && <p className="text-red-500 text-center">{error}</p>}
+
         {/* Submit Button */}
-        <div className="flex justify-center">
+        <div className="text-center">
           <button
             type="submit"
-            className="btn btn-primary w-full"
+            className="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold shadow-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300"
             disabled={loading}
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Resetting...' : 'Reset Password'}
           </button>
         </div>
       </form>
-
-      {/* Forgot Password Link */}
-      <div className="text-center mt-4">
-        <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">
-          Forgot your password?
-        </Link>
-      </div>
-
-      {/* Sign Up Link */}
-      <div className="text-center mt-4">
-        <p className="text-gray-600">
-          Don't have an account?{' '}
-          <Link to="/register" className="text-blue-500 hover:underline">
-            Sign up here
-          </Link>
-        </p>
-      </div>
     </div>
   );
 };
 
-export default Login;
+export default ForgotPassword;

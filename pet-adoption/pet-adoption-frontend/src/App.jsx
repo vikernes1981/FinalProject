@@ -57,7 +57,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/ForgotPassword" element={<ForgotPassword />} />
           <Route path="/pets/:id" element={<PetDetails />} />
           <Route path="/adopt/:id" element={<AdoptionRequestForm />} />
           <Route path="/tierheim/:placeId" element={<TierheimDetails />} />
