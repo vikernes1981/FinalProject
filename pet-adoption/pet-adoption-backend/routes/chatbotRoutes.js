@@ -1,8 +1,8 @@
 import express from 'express';
-import { handleTelegramMessage } from '../controllers/chatbotController.js';
+import { handleChatbotMessage } from '../controllers/chatbotController.js';
 
 const router = express.Router();
 
-router.post('/telegram', handleTelegramMessage);
+router.post('/message', handleChatbotMessage);
 
 export default router;
