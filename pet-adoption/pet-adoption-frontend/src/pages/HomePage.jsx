@@ -98,7 +98,7 @@ const HomePage = () => {
         </div>
         <div className="flex justify-center mt-6">
           {visiblePets < filteredPets.length && (
-            <button onClick={loadMorePets} className="btn btn-primary animate-bounce hover:bg-blue-600">
+            <button onClick={loadMorePets} className="btn btn-success animate-bounce hover:bg-blue-600">
               Load More
             </button>
           )}
