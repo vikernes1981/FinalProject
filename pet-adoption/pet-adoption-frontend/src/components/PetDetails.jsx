@@ -49,13 +49,6 @@ const PetDetails = () => {
             <br />
           
 
-          {/* Link if it exists */}
-          {pet.link && (
-            <a href={pet.link} target="_blank" rel="noopener noreferrer" className="mt-2 text-blue-600 underline">
-              <strong>More about this pet</strong>
-            </a>
-          )}
-
           {/* Adopt Me Button */}
           <Link to={`/adopt/${pet._id}`}>
             <button className="mt-6 bg-pink-500 text-white py-3 px-6 rounded-full hover:bg-pink-600 
