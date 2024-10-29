@@ -2,112 +2,83 @@ import React, { useState } from 'react';
 
 const FoodRecommendation = () => {
   const [petType, setPetType] = useState('');
-  const [age, setAge] = useState(''); // Age in years or months
-  const [ageInMonths, setAgeInMonths] = useState(''); // Age in months for pets younger than 1 year
-  const [size, setSize] = useState(''); // Size for pets like dogs and cats
-  const [healthCondition, setHealthCondition] = useState(''); // Health conditions
+  const [age, setAge] = useState('');
+  const [ageInMonths, setAgeInMonths] = useState('');
+  const [size, setSize] = useState('');
+  const [activityLevel, setActivityLevel] = useState('');
+  const [healthCondition, setHealthCondition] = useState('');
   const [foodRecommendation, setFoodRecommendation] = useState(null);
 
-  // Function to determine pet's life stage based on age
+  // Determine life stage based on age
   const getLifeStage = (petType, age) => {
-    age = parseFloat(age); // Ensure age is a number
-
+    age = parseFloat(age);
     if (petType === 'Dog') {
       if (age < 1) return 'Puppy';
       if (age >= 1 && age < 7) return 'Adult';
-      return 'Senior'; // Age 7+ for dogs is considered senior
+      return age >= 10 ? 'Very Senior' : 'Senior';
     }
     if (petType === 'Cat') {
       if (age < 1) return 'Kitten';
       if (age >= 1 && age < 10) return 'Adult';
-      return 'Senior'; // Age 10+ for cats is considered senior
+      return age >= 15 ? 'Very Senior' : 'Senior';
     }
-    // Default for other animals
-    return 'Adult'; // Default to adult for simplicity
+    return 'Adult';
   };
 
-  // Function to determine food recommendation based on inputs
+  // Generate food recommendation based on inputs
   const findFoodRecommendation = () => {
     let finalAge = age;
+    if (age < 1 && ageInMonths) finalAge = (parseFloat(ageInMonths) / 12).toFixed(2);
 
-    // If age is less than 1 year, use the value from the months input
-    if (age < 1 && ageInMonths) {
-      finalAge = (parseFloat(ageInMonths) / 12).toFixed(2); // Convert months to years
-    }
-
-    const lifeStage = getLifeStage(petType, finalAge); // Get the life stage based on age
+    const lifeStage = getLifeStage(petType, finalAge);
     let recommendation = '';
 
-    // Dog-specific recommendations
     if (petType === 'Dog') {
       if (lifeStage === 'Puppy') {
-        recommendation = 'High-protein puppy food with DHA for development.';
+        recommendation = 'High-protein puppy food with DHA for development and immune support.';
       } else if (lifeStage === 'Adult') {
-        if (size === 'Small') {
-          recommendation = 'Small breed adult dog food rich in protein.';
-        } else if (size === 'Medium') {
-          recommendation = 'Medium breed dog food with balanced nutrients.';
-        } else if (size === 'Large') {
-          recommendation = 'Large breed food with joint support and glucosamine.';
-        } else {
-          recommendation = 'Balanced adult dog food with essential nutrients.';
-        }
+        recommendation = size === 'Small'
+          ? 'Small breed adult dog food high in protein and calories for energy.'
+          : size === 'Large'
+          ? 'Large breed dog food with joint support and controlled calcium for bone health.'
+          : 'Balanced adult dog food with essential vitamins.';
 
-        // Specific recommendations based on health conditions
-        if (healthCondition === 'Weight Management') {
-          recommendation += ' Look for food labeled for weight management with lower calories.';
-        } else if (healthCondition === 'Sensitive Stomach') {
-          recommendation += ' Opt for limited-ingredient diets with easily digestible proteins.';
-        } else if (healthCondition === 'Joint Support') {
-          recommendation += ' Consider food with added glucosamine and chondroitin to support joints.';
-        }
+        if (activityLevel === 'High') recommendation += ' Choose high-calorie food to sustain energy needs.';
+        if (healthCondition === 'Weight Management') recommendation += ' Opt for a weight-control formula with low fat.';
+        if (healthCondition === 'Sensitive Stomach') recommendation += ' Select a limited-ingredient food with easy-to-digest proteins.';
       } else if (lifeStage === 'Senior') {
-        recommendation = 'Senior dog food with joint support and reduced calories.';
-        if (healthCondition === 'Joint Support') {
-          recommendation += ' Look for food with glucosamine and chondroitin for joint support.';
-        } else if (healthCondition === 'Weight Management') {
-          recommendation += ' Choose a lower-calorie senior diet for weight control.';
-        }
+        recommendation = 'Senior dog food with added antioxidants, reduced calories, and joint support.';
+        if (activityLevel === 'Low') recommendation += ' Choose lower-calorie options to prevent weight gain.';
+        if (healthCondition === 'Joint Support') recommendation += ' Look for glucosamine-rich food for joints.';
+      } else if (lifeStage === 'Very Senior') {
+        recommendation = 'Very senior dog food with easily digestible proteins and ingredients to support kidney function.';
+        if (healthCondition === 'Weight Management') recommendation += ' Opt for lower-calorie senior formulas.';
       }
-
-    // Cat-specific recommendations
     } else if (petType === 'Cat') {
       if (lifeStage === 'Kitten') {
-        recommendation = 'High-calorie kitten food with taurine for growth.';
+        recommendation = 'High-calorie kitten food with taurine for eye and heart health.';
       } else if (lifeStage === 'Adult') {
-        recommendation = 'Balanced adult cat food with plenty of protein.';
-        if (healthCondition === 'Urinary Health') {
-          recommendation += ' Opt for food that supports urinary tract health with low magnesium levels.';
-        } else if (healthCondition === 'Hairball Control') {
-          recommendation += ' Choose food with added fiber to help manage hairballs.';
-        } else if (healthCondition === 'Sensitive Stomach') {
-          recommendation += ' Choose food with easily digestible proteins for a sensitive stomach.';
-        }
-      } else if (lifeStage === 'Senior') {
-        recommendation = 'Senior cat food with reduced calories and kidney support.';
-        if (healthCondition === 'Urinary Health') {
-          recommendation += ' Look for senior cat food that supports kidney health and reduces urinary issues.';
-        }
+        recommendation = 'Protein-rich adult cat food with essential nutrients.';
+        if (healthCondition === 'Urinary Health') recommendation += ' Choose urinary-support formulas with balanced minerals.';
+        if (healthCondition === 'Hairball Control') recommendation += ' Select food with added fiber to manage hairballs.';
+        if (activityLevel === 'High') recommendation += ' Opt for nutrient-dense food for active cats.';
+      } else if (lifeStage === 'Senior' || lifeStage === 'Very Senior') {
+        recommendation = 'Senior cat food with kidney and heart support, plus high digestibility.';
+        if (healthCondition === 'Urinary Health') recommendation += ' Look for formulas that support kidney health.';
       }
-
-    // Bird-specific recommendations
     } else if (petType === 'Bird') {
-      recommendation = 'Bird seed mix with added fruits and vegetables.';
-      if (healthCondition === 'Feather Health') {
-        recommendation += ' Look for food with omega fatty acids to promote healthy feathers.';
-      }
-
-    // Fish-specific recommendations
+      recommendation = 'Species-specific bird seed with fruits and vegetables for balanced nutrition.';
+      if (healthCondition === 'Feather Health') recommendation += ' Choose food rich in omega-3 fatty acids.';
+      if (healthCondition === 'Digestive Health') recommendation += ' Opt for high-fiber options like fruit supplements.';
     } else if (petType === 'Fish') {
-      recommendation = 'Specialized fish flakes or pellets based on species.';
-
-    // Small Mammal-specific recommendations
+      recommendation = 'Fish-specific flakes or pellets with vitamins and minerals.';
+      if (healthCondition === 'Color Enhancement') recommendation += ' Look for food that enhances color with natural pigments.';
     } else if (petType === 'Small Mammal') {
-      recommendation = 'Pellet-based food with occasional fresh vegetables.';
-
-    // Reptile-specific recommendations
+      recommendation = 'High-fiber pellets with fresh vegetables for balanced nutrition.';
+      if (healthCondition === 'Dental Health') recommendation += ' Include hay for dental maintenance.';
     } else if (petType === 'Reptile') {
-      recommendation = 'Insects and leafy greens, specific to reptile species.';
+      recommendation = 'Live insects and greens based on reptile species, supplemented with calcium powder.';
+      if (healthCondition === 'Shell Health' && petType === 'Turtle') recommendation += ' Add calcium and vitamin D supplements for shell strength.';
     }
 
     setFoodRecommendation(recommendation);
@@ -116,20 +87,10 @@ const FoodRecommendation = () => {
   return (
     <div className="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-10">
       <h2 className="text-3xl font-bold text-center mb-6 text-green-700">Food Recommendation</h2>
-
       <form className="space-y-6">
-        {/* Pet Type */}
         <div>
-          <label htmlFor="petType" className="block text-lg font-semibold text-gray-700">
-            Select your pet type:
-          </label>
-          <select
-            id="petType"
-            value={petType}
-            onChange={(e) => setPetType(e.target.value)}
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-            required
-          >
+          <label htmlFor="petType" className="block text-lg font-semibold text-gray-700">Select your pet type:</label>
+          <select id="petType" value={petType} onChange={(e) => setPetType(e.target.value)} className="w-full p-3 border rounded-lg">
             <option value="">Select...</option>
             <option value="Dog">Dog</option>
             <option value="Cat">Cat</option>
@@ -139,56 +100,20 @@ const FoodRecommendation = () => {
             <option value="Reptile">Reptile</option>
           </select>
         </div>
-
-        {/* Pet Age (in years) */}
         <div>
-          <label htmlFor="age" className="block text-lg font-semibold text-gray-700">
-            Enter your pet's age (in years):
-          </label>
-          <input
-            type="number"
-            id="age"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-            placeholder="Enter age in years"
-            required
-            min="0"
-          />
+          <label htmlFor="age" className="block text-lg font-semibold text-gray-700">Enter pet's age (in years):</label>
+          <input type="number" id="age" value={age} onChange={(e) => setAge(e.target.value)} className="w-full p-3 border rounded-lg" />
         </div>
-
-        {/* Age in months (conditional for pets younger than 1 year) */}
         {age < 1 && (
           <div>
-            <label htmlFor="ageInMonths" className="block text-lg font-semibold text-gray-700">
-              Enter your pet's age (in months):
-            </label>
-            <input
-              type="number"
-              id="ageInMonths"
-              value={ageInMonths}
-              onChange={(e) => setAgeInMonths(e.target.value)}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-              placeholder="Enter age in months"
-              min="0"
-              max="12"
-              required
-            />
+            <label htmlFor="ageInMonths" className="block text-lg font-semibold text-gray-700">Enter age (in months):</label>
+            <input type="number" id="ageInMonths" value={ageInMonths} onChange={(e) => setAgeInMonths(e.target.value)} className="w-full p-3 border rounded-lg" />
           </div>
         )}
-
-        {/* Pet Size (only for Dogs and Cats) */}
         {(petType === 'Dog' || petType === 'Cat') && (
           <div>
-            <label htmlFor="size" className="block text-lg font-semibold text-gray-700">
-              Select your pet's size:
-            </label>
-            <select
-              id="size"
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-            >
+            <label htmlFor="size" className="block text-lg font-semibold text-gray-700">Select size:</label>
+            <select id="size" value={size} onChange={(e) => setSize(e.target.value)} className="w-full p-3 border rounded-lg">
               <option value="">Select...</option>
               <option value="Small">Small</option>
               <option value="Medium">Medium</option>
@@ -196,41 +121,33 @@ const FoodRecommendation = () => {
             </select>
           </div>
         )}
-
-        {/* Pet Health Condition */}
         <div>
-          <label htmlFor="healthCondition" className="block text-lg font-semibold text-gray-700">
-            Does your pet have any special health conditions?
-          </label>
-          <select
-            id="healthCondition"
-            value={healthCondition}
-            onChange={(e) => setHealthCondition(e.target.value)}
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
-          >
+          <label htmlFor="activityLevel" className="block text-lg font-semibold text-gray-700">Select activity level:</label>
+          <select id="activityLevel" value={activityLevel} onChange={(e) => setActivityLevel(e.target.value)} className="w-full p-3 border rounded-lg">
+            <option value="">Select...</option>
+            <option value="Low">Low</option>
+            <option value="Moderate">Moderate</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor="healthCondition" className="block text-lg font-semibold text-gray-700">Health condition:</label>
+          <select id="healthCondition" value={healthCondition} onChange={(e) => setHealthCondition(e.target.value)} className="w-full p-3 border rounded-lg">
             <option value="">None</option>
             <option value="Weight Management">Weight Management</option>
             <option value="Sensitive Stomach">Sensitive Stomach</option>
-            <option value="Urinary Health">Urinary Health (for cats)</option>
-            <option value="Hairball Control">Hairball Control (for cats)</option>
-            <option value="Joint Support">Joint Support (for senior pets)</option>
-            <option value="Feather Health">Feather Health (for birds)</option>
+            <option value="Urinary Health">Urinary Health</option>
+            <option value="Joint Support">Joint Support</option>
+            <option value="Feather Health">Feather Health</option>
+            <option value="Color Enhancement">Color Enhancement (for fish)</option>
+            <option value="Dental Health">Dental Health (for small mammals)</option>
+            <option value="Shell Health">Shell Health (for reptiles)</option>
           </select>
         </div>
-
-        {/* Submit Button */}
         <div className="text-center">
-          <button
-            type="button"
-            onClick={findFoodRecommendation}
-            className="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold shadow-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300"
-          >
-            Get Recommendation
-          </button>
+          <button type="button" onClick={findFoodRecommendation} className="px-6 py-3 bg-green-600 text-white rounded-lg">Get Recommendation</button>
         </div>
       </form>
-
-      {/* Display Food Recommendation */}
       {foodRecommendation && (
         <div className="bg-green-100 text-green-700 p-4 mt-6 rounded-lg shadow-md">
           <h3 className="text-lg font-semibold">Recommended Food:</h3>
