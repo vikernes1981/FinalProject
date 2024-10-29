@@ -42,6 +42,12 @@ const PetDetails = () => {
           <p className="mt-4"><strong>Age:</strong> {pet.age} years old</p>
           <p className="mt-2"><strong>Status:</strong> {pet.status}</p>
           <p className="mt-2"><strong>Personality:</strong> {pet.description}</p>
+          
+            <a href={pet.link} target="_blank" rel="noopener noreferrer" className="mt-2 text-blue-600 underline">
+              <strong>More about this pet</strong>
+            </a>
+            <br />
+          
 
           {/* Link if it exists */}
           {pet.link && (
