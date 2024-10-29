@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getPetById } from '../services/PostServicesPets'; 
 
@@ -37,7 +37,6 @@ const PetDetails = () => {
         <div className="p-6">
           <h1 className="text-3xl font-bold">{pet.name}</h1>
           <p className="text-xl">{pet.breed}</p>
-          {/* <p className="mt-4">{pet.description}</p> */}
 
           {/* Additional Pet Details */}
           <p className="mt-4"><strong>Age:</strong> {pet.age} years old</p>
@@ -49,6 +48,13 @@ const PetDetails = () => {
             </a>
             <br />
           
+
+          {/* Link if it exists */}
+          {pet.link && (
+            <a href={pet.link} target="_blank" rel="noopener noreferrer" className="mt-2 text-blue-600 underline">
+              <strong>More about this pet</strong>
+            </a>
+          )}
 
           {/* Adopt Me Button */}
           <Link to={`/adopt/${pet._id}`}>
