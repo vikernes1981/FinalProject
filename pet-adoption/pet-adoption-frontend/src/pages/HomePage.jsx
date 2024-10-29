@@ -17,7 +17,7 @@ const PetCard = ({ pet }) => {
         />
         <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-end p-4">
           <h2 className="text-xl font-bold text-white">{pet.name} - {pet.breed}</h2>
-          <p className="text-white text-sm mt-1">{pet.description}</p>
+          {/* <p className="text-white text-sm mt-1">{pet.description}</p> */}
         </div>
       </div>
     </Link>
