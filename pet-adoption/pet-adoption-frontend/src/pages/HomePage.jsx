@@ -91,6 +91,7 @@ const HomePage = () => {
       {/* Pet Listings Section */}
       <section className="max-w-7xl mx-auto px-4 mt-8">
         <h2 className="text-2xl font-bold text-white mb-6">All Entries</h2>
+        { console.log(filteredPets) }
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredPets.slice(0, visiblePets).map((pet, index) => (
             <PetCard key={index} pet={pet} />
