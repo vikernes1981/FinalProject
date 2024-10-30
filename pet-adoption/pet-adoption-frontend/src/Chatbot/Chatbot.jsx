@@ -13,17 +13,19 @@ const ChatbotComponent = () => {
       {showChatbot ? (
         <div className="relative w-72 h-auto bg-white border border-gray-300 rounded-lg shadow-lg">
           <button
-            className="absolute top-2 right-2 bg-green-500 text-white p-1 text-xs rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="absolute top-2 right-2 z-50 bg-green-500 text-white p-1 text-xs rounded-full shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             onClick={() => setShowChatbot(!showChatbot)}
           >
             X
           </button>
-          <div className="flex-grow overflow-y-auto mt-6">
-            <Chatbot
-              config={config}
-              actionProvider={ActionProvider}
-              messageParser={MessageParser}
-            />
+          <div className="flex flex-col items-center pt-8"> {/* Add padding to space out the title */}
+            <div className="flex-grow overflow-y-auto w-full">
+              <Chatbot
+                config={config}
+                actionProvider={ActionProvider}
+                messageParser={MessageParser}
+              />
+            </div>
           </div>
         </div>
       ) : (
