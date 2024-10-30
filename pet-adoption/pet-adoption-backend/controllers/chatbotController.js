@@ -43,6 +43,8 @@ export const handleChatbotMessage = async (req, res) => {
         res.json({ reply: "Hello! How can I assist you today?" });
       } else if (intent === "find_nearby_shelters") {
         res.json({ reply: "You can view nearby shelters directly on our homepage! The app uses your location to find animal shelters within a 10 km radius. Make sure location services are enabled, and the map will show shelters around you. Just tap on a shelter for more details!" });
+      } else if( intent === "contact_shelter") {
+        res.json({ reply: "You can find the contact details for each shelter directly in the pet's profile! Just scroll down to the pet’s description, and you’ll see a link with shelter details right underneath. Tap the link to get more information about the shelter." });
       } else {
         res.json({ reply: "Hello! How can I assist you today?" });
       }
