@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Select from 'react-select';
+// import Select from 'react-select';
 import { getAllPets, addPet, updatePet, deletePet } from '../services/PostServicesPets';
 
 const ManagePets = () => {
@@ -12,6 +12,7 @@ const ManagePets = () => {
     type: '',
     description: '',
     image: '',
+    link: '',
   });
 
   useEffect(() => {
@@ -31,14 +32,14 @@ const ManagePets = () => {
   const handleCreatePet = async () => {
     await addPet(formData);
     fetchPets();
-    setFormData({ name: '', age: '', breed: '', type: '', description: '', image: '' });
+    setFormData({ name: '', age: '', breed: '', type: '', description: '', image: '', link: '', });
   };
 
   const handleUpdatePet = async () => {
     await updatePet(selectedPet._id, formData);
     fetchPets();
     setSelectedPet(null);
-    setFormData({ name: '', age: '', breed: '', type: '', description: '', image: '' });
+    setFormData({ name: '', age: '', breed: '', type: '', description: '', image: '' , link: '', });
   };
 
   const handleDeletePet = async (petId) => {
@@ -60,12 +61,13 @@ const ManagePets = () => {
       type: pet.type,
       description: pet.description,
       image: pet.image,
+      link: pet.link,
     });
   };
 
   const handleCancelEdit = () => {
     setSelectedPet(null);
-    setFormData({ name: '', age: '', breed: '', type: '', description: '', image: '' });
+    setFormData({ name: '', age: '', breed: '', type: '', description: '', image: '', link: '', });
   };
 
   return (
@@ -156,6 +158,16 @@ const ManagePets = () => {
             value={formData.image}
             onChange={handleInputChange}
             placeholder="Image URL"
+            className="input input-bordered w-full"
+          />
+        </div>
+        <div className="form-control mb-4">
+          <input
+            type="text"
+            name="link"
+            value={formData.link}
+            onChange={handleInputChange}
+            placeholder="Link"
             className="input input-bordered w-full"
           />
         </div>

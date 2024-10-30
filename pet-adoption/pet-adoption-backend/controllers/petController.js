@@ -16,9 +16,9 @@ export const getAllPets = async (req, res) => {
 };
 
 export const createPet = async (req, res) => {
-  const { name, age, breed, type, description, image } = req.body;
+  const { name, age, breed, type, description, image, link } = req.body;
   try {
-    const pet = new Pet({ name, age, breed, type, description, image });
+    const pet = new Pet({ name, age, breed, type, description, image , link});
     await pet.save();
     res.json(pet);
   } catch (err) {
@@ -40,12 +40,12 @@ export const getPetById = async (req, res) => {
 
 export const updatePet = async (req, res) => {
   const { id } = req.params;
-  const { name, age, breed, location, description, image } = req.body;
+  const { name, age, breed, location, description, image, link } = req.body;
 
   try {
     const pet = await Pet.findByIdAndUpdate(
       id,
-      { name, age, breed, location, description, image },
+      { name, age, breed, location, description, image, link },
       { new: true }
     );
 
