@@ -48,7 +48,8 @@ const HomePage = () => {
   const filteredPets = pets.filter(pet =>
     pet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     pet.breed.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    pet.type.toLowerCase().includes(searchTerm.toLowerCase())
+    pet.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    pet.age.toString().includes(searchTerm)
   );
 
   const loadMorePets = () => {
