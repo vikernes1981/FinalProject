@@ -17,7 +17,7 @@ const defaultCenter = {
 // Move the libraries array outside the component
 const libraries = ['places'];
 
-const AdoptionCentersMap = () => {
+const PetShops = () => {
   const [center, setCenter] = useState(defaultCenter); // Center of the map
   const [markers, setMarkers] = useState([]); // Markers for adoption centers
   const [selectedMarker, setSelectedMarker] = useState(null); // To track the selected marker for the info window
@@ -31,7 +31,7 @@ const AdoptionCentersMap = () => {
   });
 
   // Function to find adoption centers using the Google Places API
-  const handleFindAdoptionCenters = () => {
+  const handleFindPetShop = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const lat = position.coords.latitude;
@@ -46,8 +46,8 @@ const AdoptionCentersMap = () => {
 
           const request = {
             location: { lat, lng },
-            radius: '10000', // 10 km radius
-            keyword: 'tierheim',
+            radius: '15000', // 10 km radius
+            keyword: 'pet supply stores',
           };
           
           service.nearbySearch(request, (results, status) => {
@@ -60,7 +60,7 @@ const AdoptionCentersMap = () => {
               }));
               setMarkers(newMarkers);
             } else {
-              alert('No adoption centers found nearby.');
+              alert('No pet shops found nearby.');
             }
             setLoading(false);
           });
@@ -90,7 +90,7 @@ const AdoptionCentersMap = () => {
   return (
     <section className="bg-gray-700 py-12">
       <div className="max-w-7xl text-white mx-auto text-center">
-        <h3 className="text-2xl font-bold">Adoption Centers Near You</h3>
+        <h3 className="text-2xl font-bold">pet shops Near You</h3>
         <div className="h-64 mt-6 rounded-lg overflow-hidden">
           {isLoaded && (
             <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={12}>
@@ -114,7 +114,7 @@ const AdoptionCentersMap = () => {
                   <div style={{ color: 'black' }}>
                     <h4>{selectedMarker.name}</h4>
                     <p>{selectedMarker.address}</p>
-                    <button className='text-blue-900 font-bold'
+                    <button className=' text-blue-900 font-bold'
                       onClick={() => {
                         console.log('Navigating to:', selectedMarker.placeId);
                         navigate(`/tierheim/${selectedMarker.placeId}`);
@@ -128,7 +128,7 @@ const AdoptionCentersMap = () => {
             </GoogleMap>
           )}
         </div>
-        <button onClick={handleFindAdoptionCenters} className="btn btn-success mt-4" disabled={loading}>
+        <button onClick={handleFindPetShop} className="btn btn-success mt-4" disabled={loading}>
           {loading ? 'Finding centers...' : 'Find Out Now!'}
         </button>
       </div>
@@ -136,4 +136,4 @@ const AdoptionCentersMap = () => {
   );
 };
 
-export default AdoptionCentersMap;
+export default PetShops;
