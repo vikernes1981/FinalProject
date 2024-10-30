@@ -19,6 +19,7 @@ import AdminDashboard from './components/AdminDashboard';
 import TierheimDetails from './pages/TierheimDetails';
 import ChatbotComponent from "./Chatbot/Chatbot";
 
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -42,6 +43,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Navbar />
+        
         <ToastContainer 
           position="top-right" 
           autoClose={3000} 
