@@ -51,7 +51,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar bg-base-100 shadow-lg">
+    <nav className="navbar bg-base-100 shadow-lg fixed top-0 left-0 right-0 z-50">
       <div className="flex-1">
         <Link to="/" className="text-2xl text-white font-bold">Pawsome Homes</Link>
       </div>
