@@ -169,48 +169,56 @@ const AdoptionRequestForm = () => {
         {/* Address Fields */}
         <div className="space-y-4">
           <label htmlFor="address" className="block text-lg font-semibold mb-2">Address</label>
-          <input
-            id="street"
-            type="text"
-            name="street"
-            value={formData.street}
-            onChange={(e) => setFormData({ ...formData, street: e.target.value })}
-            placeholder="Street Address"
-            className="w-full p-4 border border-gray-300 rounded-lg"
-            required
-          />
-          <div className="flex gap-4">
+          <div>
+            <label htmlFor="street" className="block text-lg font-semibold mb-2">Street Address</label>
             <input
-              id="city"
+              id="street"
               type="text"
-              name="city"
-              value={formData.city}
-              onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-              placeholder="City"
-              className="flex-1 p-4 border border-gray-300 rounded-lg"
-              required
-            />
-            <input
-              id="region"
-              type="text"
-              name="region"
-              value={formData.region}
-              onChange={(e) => setFormData({ ...formData, region: e.target.value })}
-              placeholder="Region"
-              className="flex-1 p-4 border border-gray-300 rounded-lg"
+              name="street"
+              value={formData.street}
+              onChange={(e) => setFormData({ ...formData, street: e.target.value })}
+              className="w-full p-4 border border-gray-300 rounded-lg"
               required
             />
           </div>
-          <input
-            id="zip"
-            type="text"
-            name="zip"
-            value={formData.zip}
-            onChange={(e) => setFormData({ ...formData, zip: e.target.value })}
-            placeholder="Postal/Zip Code"
-            className="w-full p-4 border border-gray-300 rounded-lg"
-            required
-          />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label htmlFor="city" className="block text-lg font-semibold mb-2">City</label>
+              <input
+                id="city"
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                className="w-full p-4 border border-gray-300 rounded-lg"
+                required
+              />
+            </div>
+            <div className="flex-1">
+              <label htmlFor="region" className="block text-lg font-semibold mb-2">Region</label>
+              <input
+                id="region"
+                type="text"
+                name="region"
+                value={formData.region}
+                onChange={(e) => setFormData({ ...formData, region: e.target.value })}
+                className="w-full p-4 border border-gray-300 rounded-lg"
+                required
+              />
+            </div>
+          </div>
+          <div>
+            <label htmlFor="zip" className="block text-lg font-semibold mb-2">Postal/Zip Code</label>
+            <input
+              id="zip"
+              type="text"
+              name="zip"
+              value={formData.zip}
+              onChange={(e) => setFormData({ ...formData, zip: e.target.value })}
+              className="w-full p-4 border border-gray-300 rounded-lg"
+              required
+            />
+          </div>
         </div>
 
         {/* Type of Pet */}
