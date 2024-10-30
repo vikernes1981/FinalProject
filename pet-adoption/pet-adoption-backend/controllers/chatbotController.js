@@ -54,9 +54,15 @@ export const handleChatbotMessage = async (req, res) => {
           reply:
             "You can find the contact details for each shelter directly in the pet's profile! Just scroll down to the pet’s description, and you’ll see a link with shelter details right underneath. Tap the link to get more information about the shelter.",
         });
+      } else if (intent === "find_petshop") {
+        res.json({
+          reply:
+            "You can find pet shops near you on our Food Recommendation page! The app uses Google Maps to show pet supply stores within a 15 km radius of your location. Just head to the Food Recommendation section, and the map will display all the nearby pet shops for you!",
+        });
       } else {
         res.json({ reply: "Hello! How can I assist you today?" });
       }
+      
     } else {
       // No recognized intent from Wit.ai
       res.json({
