@@ -41,8 +41,10 @@ export const handleChatbotMessage = async (req, res) => {
         res.json({ reply: answer });
       } else if (intent === "answers_greetings") {
         res.json({ reply: "Hello! How can I assist you today?" });
+      } else if (intent === "find_nearby_shelters") {
+        res.json({ reply: "You can view nearby shelters directly on our homepage! The app uses your location to find animal shelters within a 10 km radius. Make sure location services are enabled, and the map will show shelters around you. Just tap on a shelter for more details!" });
       } else {
-        res.json({ reply: "I'm sorry, I didn't understand that. Could you try asking in a different way?" });
+        res.json({ reply: "Hello! How can I assist you today?" });
       }
     } else {
       // No recognized intent from Wit.ai
