@@ -168,7 +168,6 @@ const AdoptionRequestForm = () => {
 
         {/* Address Fields */}
         <div className="space-y-4">
-          <label htmlFor="address" className="block text-lg font-semibold mb-2">Address</label>
           <div>
             <label htmlFor="street" className="block text-lg font-semibold mb-2">Street Address</label>
             <input
@@ -218,22 +217,6 @@ const AdoptionRequestForm = () => {
               className="w-full p-4 border border-gray-300 rounded-lg"
               required
             />
-          </div>
-        </div>
-
-        {/* Type of Pet */}
-        <div>
-          <label className="block text-lg font-semibold mb-2">Type of Pet</label>
-          <div className="flex gap-4">
-            <label className="flex items-center">
-              <input type="radio" name="petType" value="Dog" onChange={(e) => setFormData({ ...formData, petType: e.target.value })} className="mr-2" /> Dog
-            </label>
-            <label className="flex items-center">
-              <input type="radio" name="petType" value="Cat" onChange={(e) => setFormData({ ...formData, petType: e.target.value })} className="mr-2" /> Cat
-            </label>
-            <label className="flex items-center">
-              <input type="radio" name="petType" value="Other" onChange={(e) => setFormData({ ...formData, petType: e.target.value })} className="mr-2" /> Other
-            </label>
           </div>
         </div>
 
