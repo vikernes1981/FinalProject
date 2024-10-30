@@ -43,12 +43,10 @@ const PetDetails = () => {
           <p className="mt-2"><strong>Status:</strong> {pet.status}</p>
           <p className="mt-2"><strong>Personality:</strong> {pet.description}</p>
 
-          {/* Link if it exists */}
-          {pet.link && (
-            <a href={pet.link} target="_blank" rel="noopener noreferrer" className="mt-2 text-blue-600 underline">
+          <a href={pet.link} target="_blank" rel="noopener noreferrer" className="mt-2 text-blue-600 underline">
               <strong>More about this pet</strong>
             </a>
-          )}
+            <br />
 
           {/* Adopt Me Button */}
           <Link to={`/adopt/${pet._id}`}>

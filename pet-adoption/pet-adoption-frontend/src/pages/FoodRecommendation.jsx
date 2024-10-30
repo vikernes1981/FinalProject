@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 
 const FoodRecommendation = () => {
   const [petType, setPetType] = useState('');
@@ -8,6 +9,59 @@ const FoodRecommendation = () => {
   const [activityLevel, setActivityLevel] = useState('');
   const [healthCondition, setHealthCondition] = useState('');
   const [foodRecommendation, setFoodRecommendation] = useState(null);
+  const [location, setLocation] = useState({ lat: 51.1657, lng: 10.4515 }); // Default location
+  const [locationError, setLocationError] = useState(null);
+  const [petFoodShops, setPetFoodShops] = useState([]);
+
+  // Google Maps API settings
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY, // Replace with your actual Google Maps API key
+    libraries: ['places']
+  });
+
+  const mapContainerStyle = {
+    width: '100%',
+    height: '400px'
+  };
+
+  // Function to find user's current location
+  const handleFindLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          setLocationError(null);
+        },
+        (error) => {
+          setLocationError("Unable to retrieve your location.");
+        }
+      );
+    } else {
+      setLocationError("Geolocation is not supported by this browser.");
+    }
+  };
+
+  // Fetch nearby pet food shops
+  const fetchNearbyPetFoodShops = (currentLocation) => {
+    const service = new window.google.maps.places.PlacesService(document.createElement('div'));
+    const request = {
+      location: currentLocation,
+      radius: 15000, // Adjust radius as needed (in meters)
+      keyword: 'tiernahrungsgeschäft'
+    };
+
+    service.nearbySearch(request, (results, status) => {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+        setPetFoodShops(results);
+      } else {
+        console.error('Error fetching nearby pet food shops:', status);
+      }
+    });
+  };
+
 
   // Determine life stage based on age
   const getLifeStage = (petType, age) => {
@@ -154,8 +208,38 @@ const FoodRecommendation = () => {
           <p>{foodRecommendation}</p>
         </div>
       )}
+       <div className="mt-10 text-center">
+        <button onClick={handleFindLocation} className="px-6 py-3 bg-blue-600 text-white rounded-lg">
+          Find Nearby Pet Food Shops
+        </button>
+        {locationError && <p className="text-red-500 mt-2">{locationError}</p>}
+      </div>
+      {isLoaded ? (
+        <div className="mt-10">
+          <h3 className="text-2xl font-bold text-center mb-4 text-green-700">Nearby Pet Food Shops</h3>
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            center={location}
+            zoom={12}
+          >
+            {petFoodShops.map((shop) => (
+              <Marker
+                key={shop.place_id}
+                position={{
+                  lat: shop.geometry.location.lat(),
+                  lng: shop.geometry.location.lng()
+                }}
+                title={shop.name}
+              />
+            ))}
+          </GoogleMap>
+        </div>
+      ) : (
+        <p>Loading map...</p>
+      )}
     </div>
   );
 };
+
 
 export default FoodRecommendation;
