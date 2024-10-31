@@ -12,19 +12,19 @@ const AdminDashboard = () => {
 
       <div className="tabs flex justify-around mb-8 space-x-4">
         <button 
-          className={`px-6 py-3 rounded-lg font-semibold shadow-lg ${activeTab === 'pets' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`} 
+          className={`px-6 py-3 rounded-lg font-semibold shadow-lg ${activeTab === 'pets' ? 'bg-green-600 text-white' : 'bg-gray-200 text-black hover:bg-gray-300'}`} 
           onClick={() => setActiveTab('pets')}
         >
           Manage Pets
         </button>
         <button 
-          className={`px-6 py-3 rounded-lg font-semibold shadow-lg ${activeTab === 'requests' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`} 
+          className={`px-6 py-3 rounded-lg font-semibold shadow-lg ${activeTab === 'requests' ? 'bg-green-600 text-white' : 'bg-gray-200 text-black hover:bg-gray-300'}`} 
           onClick={() => setActiveTab('requests')}
         >
           Adoption Requests
         </button>
         <button 
-          className={`px-6 py-3 rounded-lg font-semibold shadow-lg ${activeTab === 'users' ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`} 
+          className={`px-6 py-3 rounded-lg font-semibold shadow-lg ${activeTab === 'users' ? 'bg-green-600 text-white' : 'bg-gray-200 text-black hover:bg-gray-300'}`} 
           onClick={() => setActiveTab('users')}
         >
           Manage Users

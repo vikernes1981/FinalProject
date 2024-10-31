@@ -40,7 +40,7 @@ const ManageAdoptionRequests = () => {
   // Create options for the Select dropdown from the requests
   const requestOptions = requests.map((request) => ({
     value: request._id,
-    label: `${request.pet.name} - ${request.status}`, // Label shows pet name and status
+    label: `${request.pet?.name} - ${request.status}`, // Label shows pet name and status
     request: request, // Store the whole request object
   }));
 
@@ -78,7 +78,7 @@ const ManageAdoptionRequests = () => {
 
   return (
     <div className="manage-requests p-4">
-      <h2 className="text-2xl font-semibold mb-6">Manage Adoption Requests</h2>
+      <h2 className="text-2xl font-semibold text-black mb-6">Manage Adoption Requests</h2>
       
       {/* Select a request */}
       <Select
@@ -92,7 +92,7 @@ const ManageAdoptionRequests = () => {
 
       {/* Show the form to update the status when a request is selected */}
       {selectedRequest && (
-        <div className="update-request-form p-4 bg-white shadow-md rounded-lg">
+        <div className="update-request-form p-4 bg-white text-black shadow-md rounded-lg">
           <h3 className="text-xl font-semibold mb-4">Update Request Status</h3>
           <p><strong>User:</strong> {selectedRequest.user.username}</p>
           <p><strong>Pet Name:</strong> {selectedRequest.pet.name}</p>
