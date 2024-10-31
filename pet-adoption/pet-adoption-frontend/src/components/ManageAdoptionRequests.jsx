@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import Select from "react-select";
 import { getAllRequest as getAllAdoptionRequests, updateRequest as updateAdoptionRequestStatus } from "../services/PostServicesAdoption";
 
@@ -92,7 +92,7 @@ const ManageAdoptionRequests = () => {
 
       {/* Show the form to update the status when a request is selected */}
       {selectedRequest && (
-        <div className="update-request-form p-4 bg-white text-black shadow-md rounded-lg">
+        <div className="update-request-form p-4 bg-gray-100 text-black shadow-md rounded-lg">
           <h3 className="text-xl font-semibold mb-4">Update Request Status</h3>
           <p><strong>User:</strong> {selectedRequest.user.username}</p>
           <p><strong>Pet Name:</strong> {selectedRequest.pet.name}</p>

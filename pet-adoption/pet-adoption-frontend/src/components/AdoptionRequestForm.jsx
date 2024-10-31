@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { createRequest } from '../services/PostServicesPostRequest';
 import { getAllUsers } from '../services/PostServicesUsers'; // Fetch all users
@@ -109,9 +109,9 @@ const AdoptionRequestForm = () => {
     <div className="max-w-lg mx-auto mt-10 p-8 bg-gray-100 rounded-lg shadow-md">
       <h1 className="text-3xl font-semibold mb-8 text-center text-green-600">Pet Adoption Form for {petName}</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6  bg-gray-100">
         {/* Name Field */}
-        <div className="flex gap-4">
+        <div className="flex gap-4  bg-gray-100">
           <div className="flex-1">
             <label htmlFor="firstName" className="block text-lg font-semibold mb-2">First Name</label>
             <input
