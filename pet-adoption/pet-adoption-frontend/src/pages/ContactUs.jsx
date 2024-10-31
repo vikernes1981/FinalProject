@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useForm, ValidationError } from '@formspree/react';
 
 const ContactUs = () => {
+  const [state, handleSubmit] = useForm('mwpkllvq');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -9,21 +11,38 @@ const ContactUs = () => {
 
   const [successMessage, setSuccessMessage] = useState('');
 
- 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Example of what you'd do with form data
-    console.log('Form submitted:', formData);
-    setSuccessMessage('Thank you for your message! We will get back to you soon.');
-    setFormData({ name: '', email: '', message: '' }); // Reset form fields
-  };
-
   // Handle input change
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleSubmitWrapper = async (e) => {
+    e.preventDefault();
+
+    console.log('Form Data:', formData);
+
+    try {
+      // Attempt to submit the form data
+      const response = await handleSubmit(formData);
+
+      console.log('Response:', response); // Log the response for debugging
+
+      // Check the response
+      if (state.succeeded) {
+        console.log('Form submitted successfully'); // Log successful submission
+        setSuccessMessage('Thank you for your message! We will get back to you soon.');
+        setFormData({ name: '', email: '', message: '' }); // Reset form fields
+      } else {
+        console.error('Form submission failed:', response); // Log errors if the submission failed
+        alert('There was an error submitting the form. Please try again.'); // Alert the user about the error
+      }
+    } catch (error) {
+      console.error('Submission error:', error); // Log any error that occurred during submission
+      alert('There was an error submitting the form. Please try again.'); // Alert the user about the error
+    }
   };
 
   return (
@@ -36,12 +55,10 @@ const ContactUs = () => {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmitWrapper} className="space-y-6">
         {/* Name Field */}
         <div>
-          <label htmlFor="name" className="block text-lg font-semibold text-gray-700">
-            Your Name
-          </label>
+          <label htmlFor="name" className="block text-lg font-semibold text-gray-700">Your Name</label>
           <input
             type="text"
             name="name"
@@ -56,9 +73,7 @@ const ContactUs = () => {
 
         {/* Email Field */}
         <div>
-          <label htmlFor="email" className="block text-lg font-semibold text-gray-700">
-            Email Address
-          </label>
+          <label htmlFor="email" className="block text-lg font-semibold text-gray-700">Email Address</label>
           <input
             type="email"
             name="email"
@@ -73,9 +88,7 @@ const ContactUs = () => {
 
         {/* Message Field */}
         <div>
-          <label htmlFor="message" className="block text-lg font-semibold text-gray-700">
-            Your Message
-          </label>
+          <label htmlFor="message" className="block text-lg font-semibold text-gray-700">Your Message</label>
           <textarea
             name="message"
             id="message"
@@ -93,11 +106,21 @@ const ContactUs = () => {
           <button
             type="submit"
             className="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold shadow-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-300"
+            disabled={state.submitting}
           >
             Submit
           </button>
         </div>
       </form>
+
+      {/* Show validation errors if any */}
+      {state.errors && state.errors.length > 0 && (
+        <div className="bg-red-100 text-red-700 p-4 mb-6 rounded-lg shadow-md">
+          {state.errors.map((error) => (
+            <p key={error.field} className="text-sm">{error.message}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
