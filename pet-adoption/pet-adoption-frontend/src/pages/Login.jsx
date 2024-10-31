@@ -72,11 +72,11 @@ const Login = ({ setAuth }) => {
         </div>
 
         {/* Forgot Password Link */}
-        <div className="text-center mt-4">
+        {/* <div className="text-center mt-4">
           <Link to="/ForgotPassword" className="text-sm text-blue-500 hover:underline">
             Forgot your password?
           </Link>
-        </div>
+        </div> */}
       </form>
 
       {/* Sign Up Section */}

@@ -95,8 +95,8 @@ export const getUserById = async (req, res) => {
 export const createUser = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password: hashedPassword, role });
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, email, password: password, role });
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
@@ -112,7 +112,7 @@ export const updateUser = async (req, res) => {
 
     user.username = username || user.username;
     user.email = email || user.email;
-    if (password) user.password = await bcrypt.hash(password, 10) || user.password;
+    if (password) user.password = user.password;
     user.role = role || user.role;
 
     await user.save();
@@ -121,6 +121,24 @@ export const updateUser = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+
+export const updateUserPassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.password = user.password;
+    await user.save();
+
+    res.json({ success: true, message: 'Password updated successfully' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 
 export const deleteUser = async (req, res) => {
   try {

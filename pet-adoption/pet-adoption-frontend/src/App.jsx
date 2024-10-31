@@ -8,7 +8,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PetDetails from './components/PetDetails';
 import QuizPage from './pages/QuizPage';
-import ForgotPassword from './pages/ForgotPassword';
+// import ForgotPassword from './pages/ForgotPassword';
 import ContactUs from './pages/ContactUs';
 import FoodRecommendation from './pages/FoodRecommendation';
 import AdoptionRequestForm from './components/AdoptionRequestForm';
@@ -59,7 +59,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/ForgotPassword" element={<ForgotPassword />} />
+          {/* <Route path="/ForgotPassword" element={<ForgotPassword />} /> */}
           <Route path="/pets/:id" element={<PetDetails />} />
           <Route path="/adopt/:id" element={<AdoptionRequestForm />} />
           <Route path="/tierheim/:placeId" element={<TierheimDetails />} />
