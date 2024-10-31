@@ -71,8 +71,8 @@ const ManagePets = () => {
   };
 
   return (
-    <div className="manage-pets p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-semibold mb-6">Manage Pets</h2>
+    <div className="manage-pets  p-6 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl text-black font-semibold mb-6">Manage Pets</h2>
       <div className="space-y-4">
         <select
           className="select select-bordered w-full"
