@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { getAllUsers, createUser, deleteUser, updateUser } from '../services/PostServicesUsers';
 
 const ManageUsers = () => {

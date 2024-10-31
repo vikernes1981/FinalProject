@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 // import Select from 'react-select';
 import { getAllPets, addPet, updatePet, deletePet } from '../services/PostServicesPets';
 
@@ -71,7 +71,7 @@ const ManagePets = () => {
   };
 
   return (
-    <div className="manage-pets  p-6 bg-gray-100 min-h-screen">
+    <div className="manage-pets  p-6 bg-gray-200 min-h-screen">
       <h2 className="text-2xl text-black font-semibold mb-6">Manage Pets</h2>
       <div className="space-y-4">
         <select
@@ -95,7 +95,7 @@ const ManagePets = () => {
           </div>
         )}
       </div>
-      <div className="pet-form mt-6 p-6 bg-white rounded shadow">
+      <div className="pet-form mt-6 p-6 bg-gray-100 rounded shadow">
         <div className="form-control mb-4">
           <input
             type="text"
