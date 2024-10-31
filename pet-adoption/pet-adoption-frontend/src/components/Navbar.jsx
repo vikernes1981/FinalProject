@@ -9,7 +9,7 @@ const Navbar = () => {
   useEffect(() => {
     const checkAuthStatus = () => {
       const token = localStorage.getItem('authToken');
-      console.log('NavToken:', token);
+     
       if (token) {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         console.log('Decoded token:', decodedToken);
@@ -30,7 +30,7 @@ const Navbar = () => {
       if (checkAuthStatus()) {
         clearInterval(intervalId);
       }
-    }, 50);
+    }, 20);
 
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);

@@ -10,6 +10,7 @@ import postRequestRoutes from './routes/postRequestRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import chatbotRoutes from './routes/chatbotRoutes.js';
 
+
 dotenv.config();
 
 // Initialize Express app
@@ -33,6 +34,7 @@ app.use('/admin', authRoutes);
 app.use('/api', authRoutes);
 app.use('/api/adoption-requests', postRequestRoutes);
 app.use('/chatbot', chatbotRoutes);
+app.use('/api/forgot-password', authRoutes);
 
 // Start server
 app.listen(process.env.PORT || 5000, () => {

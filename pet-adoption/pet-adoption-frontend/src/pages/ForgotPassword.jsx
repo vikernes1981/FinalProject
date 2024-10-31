@@ -18,9 +18,9 @@ const ForgotPassword = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/forgot-password', {
+      const response = await axios.patch('http://localhost:5000/api/forgot-password', {
         email: formData.email,
-        newPassword: formData.newPassword,
+        newPassword: formData.newPassword, // Use newPassword here
       });
 
       if (response.data.success) {
