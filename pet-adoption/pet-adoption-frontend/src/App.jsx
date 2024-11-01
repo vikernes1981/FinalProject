@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AdminDashboard from './components/AdminDashboard';
 import TierheimDetails from './pages/TierheimDetails';
 import ChatbotComponent from "./Chatbot/Chatbot";
+import SuggestedItems from './components/SuggestedItems';
 
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
           <Route path="/pet-list" element={<PetList />} />
           <Route path="/food-recommendation" element={<FoodRecommendation />} />
           <Route path="/quiz" element={<QuizPage />} />
+          <Route path="/suggested-items" element={<SuggestedItems />} />
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
         {/* ChatBotComponent here makes it appear globally */}
