@@ -127,7 +127,7 @@ const HomePage = () => {
 
     {/* Suggested Items Section */}
     <div className="w-full md:w-1/2">
-      <h3 className="text-2xl font-bold">Suggested Items</h3>
+      <h3 className="text-2xl font-bold">Suggested items to buy for your new friend</h3>
       <Link to="/suggested-items">
         <button className="btn btn-success mt-4 transition duration-500 ease-in-out transform hover:scale-105">
           Find Out Now!

@@ -58,7 +58,9 @@ const SuggestedItems = () => {
       <h2 className="text-3xl font-bold mb-6 underline decoration-emerald-400">
         Suggested Items to Buy Before Adopting a Pet
       </h2>
-      
+      <p className="mt-4 text-sm text-gray-300 mb-6">
+        Please note that these suggestions are just recommendations. If you have a local pet shop, we strongly encourage you to support them by purchasing these items there.
+      </p>
       <div className="bg-gray-800 rounded-lg p-6 mb-6 shadow-md">
         <p className="mb-6 text-md text-gray-300 leading-relaxed">
           Preparing your home for a new pet is crucial for ensuring a smooth transition and a happy environment. 
@@ -105,6 +107,7 @@ const SuggestedItems = () => {
           </li>
         ))}
       </ul>
+
       <a
         href="https://www.amazon.de/s?k=pets+supplies&__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=1ZLS0JR1IPQCS&sprefix=pets+supplies%2Caps%2C111&ref=nb_sb_noss_2"
         target="_blank"
