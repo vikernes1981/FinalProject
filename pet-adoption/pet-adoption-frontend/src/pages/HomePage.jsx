@@ -116,24 +116,38 @@ const HomePage = () => {
   <div className="max-w-7xl mx-auto text-white flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-16 text-center">
     
     {/* Find Your Pet Section */}
-    <div className="w-full md:w-1/2">
-      <h3 className="text-2xl font-bold">Which Pet is Right for You?</h3>
-      <Link to="/quiz">
-        <button className="btn btn-success mt-4 transition duration-500 ease-in-out transform hover:scale-105">
-          Find Out Now!
-        </button>
-      </Link>
-    </div>
+    <div
+  className="w-full md:w-1/2 p-6 bg-cover bg-center text-white h-64 flex flex-col justify-between"
+  style={{
+    backgroundImage: `url('https://petstrainingandboarding.com.au/wp-content/uploads/2016/05/choosing-the-right-pup-1.jpg')`,
+  }}
+>
+  <h3 className="text-2xl font-bold">Which Pet is Right for You?</h3>
+  <Link to="/quiz" className="mt-auto">
+    <button className="btn btn-success transition duration-500 ease-in-out transform hover:scale-105">
+      Find Out Now!
+    </button>
+  </Link>
+</div>
+
+
+
 
     {/* Suggested Items Section */}
-    <div className="w-full md:w-1/2">
-      <h3 className="text-2xl font-bold">Suggested items to buy for your new friend</h3>
-      <Link to="/suggested-items">
-        <button className="btn btn-success mt-4 transition duration-500 ease-in-out transform hover:scale-105">
-          Find Out Now!
-        </button>
-      </Link>
-    </div>
+    <div
+  className="w-full md:w-1/2 h-64 p-6 bg-cover bg-center text-white flex flex-col justify-between"
+  style={{
+    backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEHUiMKXrqszd7ate582QcsgQAfLaVfoZ3Gw&s')`,
+  }}
+>
+  <h3 className="text-2xl font-bold">Suggested items to buy for your new friend</h3>
+  <Link to="/suggested-items" className="mt-auto">
+    <button className="btn btn-success transition duration-500 ease-in-out transform hover:scale-105">
+      Find Out Now!
+    </button>
+  </Link>
+</div>
+
 
   </div>
 </section>
