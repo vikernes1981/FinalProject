@@ -1,23 +1,24 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { FaSearch } from 'react-icons/fa';
-import { getAllPets } from '../services/PostServicesPets';
-import AdoptionCentersMap from './AdoptionCentersMap';
-import { AuthContext } from '../context/AuthProvider'; // Adjust the import path
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+import { FaSearch } from "react-icons/fa";
+import { getAllPets } from "../services/PostServicesPets";
+import AdoptionCentersMap from "./AdoptionCentersMap";
+import { AuthContext } from "../context/AuthProvider"; // Adjust the import path
 
 const PetCard = ({ pet }) => {
   return (
     <Link to={`/pets/${pet._id}`}>
       <div className="relative shadow-lg rounded-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl animate-pulse-on-hover">
-        <img 
-          src={pet.image} 
-          alt={pet.name} 
-          className="object-cover h-64 w-full transition-opacity duration-300 hover:opacity-90" 
-          style={{ filter: 'brightness(1.1)' }}
+        <img
+          src={pet.image}
+          alt={pet.name}
+          className="object-cover h-64 w-full transition-opacity duration-300 hover:opacity-90"
+          style={{ filter: "brightness(1.1)" }}
         />
         <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-end p-4">
-          <h2 className="text-xl font-bold text-white">{pet.name} - {pet.breed}</h2>
-          
+          <h2 className="text-xl font-bold text-white">
+            {pet.name} - {pet.breed}
+          </h2>
         </div>
       </div>
     </Link>
@@ -25,7 +26,7 @@ const PetCard = ({ pet }) => {
 };
 
 const HomePage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [visiblePets, setVisiblePets] = useState(8);
   const [fadeIn, setFadeIn] = useState(false);
   const [pets, setPets] = useState([]);
@@ -44,34 +45,34 @@ const HomePage = () => {
     fetchPets();
   }, []);
 
-
-  const filteredPets = pets.filter(pet =>
-    pet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    pet.breed.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    pet.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    pet.age.toString().includes(searchTerm)
+  const filteredPets = pets.filter(
+    (pet) =>
+      pet.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pet.breed.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pet.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pet.age.toString().includes(searchTerm)
   );
 
   const loadMorePets = () => {
-    setVisiblePets(prev => prev + 8);
+    setVisiblePets((prev) => prev + 8);
   };
 
   return (
     <div className="space-y-12">
       {/* Header Section */}
       <section className="relative bg-green-200 py-0 h-[550px] flex items-center justify-center overflow-hidden">
-        <div 
+        <div
           className="w-full h-full relative flex justify-center items-center text-center"
           style={{
-            backgroundImage: 'url("/cute cat.jpg")', 
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
+            backgroundImage: 'url("/cute cat.jpg")',
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
           }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
           <h1 className="relative text-5xl font-bold text-white z-10 animate-fadeInAndMove">
-          Your New Best Friend Awaits at Pawsome Homes
+            Your New Best Friend Awaits at Pawsome Homes
           </h1>
         </div>
       </section>
@@ -100,24 +101,43 @@ const HomePage = () => {
         </div>
         <div className="flex justify-center mt-6">
           {visiblePets < filteredPets.length && (
-            <button onClick={loadMorePets} className="btn btn-success animate-bounce hover:bg-green-600 transition duration-500 ease-in-out transform hover:scale-105">
+            <button
+              onClick={loadMorePets}
+              className="btn btn-success animate-bounce hover:bg-green-600 transition duration-500 ease-in-out transform hover:scale-105"
+            >
               Load More
             </button>
           )}
         </div>
       </section>
 
-      {/* Find Your Pet Section */}
-      <section className="bg-gray-700 py-12">
-        <div className="max-w-7xl text-white mx-auto text-center">
-          <h3 className="text-2xl font-bold">Which Pet is Right for You?</h3>
-          <Link to="/quiz">
-            <button className="btn btn-success mt-4 transition duration-500 ease-in-out transform hover:scale-105">
-              Find Out Now!
-            </button>
-          </Link>
-        </div>
-      </section>
+{/* Combined Section for "Which Pet is Right for You?" and "Suggested Items" */}
+<section className="bg-gray-700 py-12">
+  <div className="max-w-7xl mx-auto text-white flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-16 text-center">
+    
+    {/* Find Your Pet Section */}
+    <div className="w-full md:w-1/2">
+      <h3 className="text-2xl font-bold">Which Pet is Right for You?</h3>
+      <Link to="/quiz">
+        <button className="btn btn-success mt-4 transition duration-500 ease-in-out transform hover:scale-105">
+          Find Out Now!
+        </button>
+      </Link>
+    </div>
+
+    {/* Suggested Items Section */}
+    <div className="w-full md:w-1/2">
+      <h3 className="text-2xl font-bold">Suggested Items</h3>
+      <Link to="/suggested-items">
+        <button className="btn btn-success mt-4 transition duration-500 ease-in-out transform hover:scale-105">
+          Find Out Now!
+        </button>
+      </Link>
+    </div>
+
+  </div>
+</section>
+
 
       {/* Map Section with Google Map */}
       <AdoptionCentersMap />
