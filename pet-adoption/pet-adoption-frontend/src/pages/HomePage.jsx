@@ -66,11 +66,16 @@ const HomePage = () => {
     "https://wallpapercave.com/wp/wp2544107.jpg",
   ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 3000); // Change image every 1 second
+      setIsFading(true); // Start fade-out
+      setTimeout(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+        setIsFading(false); // End fade-out
+      }, 0); // Duration of the fade-out
+    }, 4000); // Change image every 4 seconds
 
     return () => clearInterval(interval); // Cleanup on component unmount
   }, [images.length]);
@@ -78,21 +83,28 @@ const HomePage = () => {
   return (
     <div className="space-y-12">
       {/* Header Section */}
-      <section className="relative bg-green-200 py-0 h-[550px] flex items-center justify-center overflow-hidden">
-        <div
-          className="w-full h-full relative flex justify-center items-center text-center"
-          style={{
-            backgroundImage: `url("${images[currentImageIndex]}")`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-          }}
-        >
-          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-          <h1 className="relative text-5xl font-bold text-white z-10 animate-fadeInAndMove">
-            Your New Best Friend Awaits at Pawsome Homes
-          </h1>
+      <section className="relative h-[550px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 transition-opacity duration-1000 ease-in-out">
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className={`w-full h-full absolute top-0 left-0 transition-opacity duration-1000 ease-in-out ${
+                currentImageIndex === index ? (isFading ? "opacity-0" : "opacity-100") : "opacity-0"
+              }`}
+              style={{
+                backgroundImage: `url("${image}")`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+            >
+              <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+            </div>
+          ))}
         </div>
+        <h1 className="relative text-5xl font-bold text-white z-10">
+          Your New Best Friend Awaits at Pawsome Homes
+        </h1>
       </section>
 
       {/* Search Section */}
@@ -113,19 +125,19 @@ const HomePage = () => {
   <h2 className="text-2xl font-bold text-white mb-6">All Entries</h2>
 
   {/* Carousel Container */}
-  <div className="relative flex items-center overflow-x-hidden">
+  <div className="relative flex items-center overflow-hidden"> {/* Changed overflow-x-hidden to overflow-hidden */}
     {/* Left Navigation Button */}
     <button
-      onClick={() => document.querySelector('.scrollbar-hide').scrollBy({ left: -300, behavior: 'smooth' })}
+      onClick={() => document.querySelector('.carousel-items').scrollBy({ left: -300, behavior: 'smooth' })}
       className="absolute left-0 bg-green-600 text-white rounded-full p-2 shadow-lg z-10"
     >
       ❮
     </button>
 
     {/* Carousel Items */}
-    <div className="flex items-center overflow-x-scroll scrollbar-hide">
+    <div className="carousel-items flex items-center overflow-x-hidden"> {/* Set overflow-x-hidden */}
       {filteredPets.map((pet, index) => (
-        <div key={index} className="flex-shrink-0 w-56 mx-2"> {/* Adjusted width */}
+        <div key={index} className="flex-shrink-0 w-72 h-80 mx-2"> {/* Adjusted width and height */}
           <PetCard pet={pet} />
         </div>
       ))}
@@ -133,16 +145,13 @@ const HomePage = () => {
 
     {/* Right Navigation Button */}
     <button
-      onClick={() => document.querySelector('.scrollbar-hide').scrollBy({ left: 300, behavior: 'smooth' })}
+      onClick={() => document.querySelector('.carousel-items').scrollBy({ left: 300, behavior: 'smooth' })} 
       className="absolute right-0 bg-green-600 text-white rounded-full p-2 shadow-lg z-10"
     >
       ❯
     </button>
   </div>
 </section>
-
-
-
 
 
       {/* Combined Section for "Which Pet is Right for You?" and "Suggested Items" */}
