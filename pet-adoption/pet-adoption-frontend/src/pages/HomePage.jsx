@@ -112,73 +112,69 @@ const HomePage = () => {
         </div>
       </section>
 
-{/* Combined Section for "Which Pet is Right for You?" and "Suggested Items" */}
-<section className="py-12">
-  <div className="max-w-7xl mx-auto text-white flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-16 text-center">
-    
-    {/* Find Your Pet Section */}
-    <div className="w-full md:w-1/2 flex flex-col items-center space-y-4">
-      <h3 className="text-2xl font-bold">Which Pet is Right for You?</h3>
-      <div
-        className="w-full h-64 bg-cover bg-center rounded-lg shadow-lg"
-        style={{
-          backgroundImage: `url('https://petstrainingandboarding.com.au/wp-content/uploads/2016/05/choosing-the-right-pup-1.jpg')`,
-        }}
-      ></div>
-      <Link to="/quiz">
-        <button className="btn btn-success transition duration-500 ease-in-out transform hover:scale-105 mt-4">
-          Find Out Now!
-        </button>
-      </Link>
-    </div>
+      {/* Combined Section for "Which Pet is Right for You?" and "Suggested Items" */}
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto text-white flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-16 text-center">
+          
+          {/* Find Your Pet Section */}
+          <div className="w-full md:w-1/2 flex flex-col items-center space-y-4">
+            <h3 className="text-2xl font-bold">Which Pet is Right for You?</h3>
+            <div
+              className="w-full h-64 bg-cover bg-center rounded-lg shadow-lg"
+              style={{
+                backgroundImage: `url('https://petstrainingandboarding.com.au/wp-content/uploads/2016/05/choosing-the-right-pup-1.jpg')`,
+              }}
+            ></div>
+            <Link to="/quiz">
+              <button className="btn btn-success transition duration-500 ease-in-out transform hover:scale-105 mt-4">
+                Find Out Now!
+              </button>
+            </Link>
+          </div>
 
-    {/* Suggested Items Section */}
-    <div className="w-full md:w-1/2 flex flex-col items-center space-y-4">
-      <h3 className="text-2xl font-bold">Suggested items to buy for your new friend</h3>
-      <div
-        className="w-full h-64 bg-cover bg-center rounded-lg shadow-lg"
-        style={{
-          backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEHUiMKXrqszd7ate582QcsgQAfLaVfoZ3Gw&s')`,
-        }}
-      ></div>
-      <Link to="/suggested-items">
-        <button className="btn btn-success transition duration-500 ease-in-out transform hover:scale-105 mt-4">
-          Find Out Now!
-        </button>
-      </Link>
-    </div>
-  </div>
-</section>
-
-
+          {/* Suggested Items Section */}
+          <div className="w-full md:w-1/2 flex flex-col items-center space-y-4">
+            <h3 className="text-2xl font-bold">Suggested items to buy for your new friend</h3>
+            <div
+              className="w-full h-64 bg-cover bg-center rounded-lg shadow-lg"
+              style={{
+                backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEHUiMKXrqszd7ate582QcsgQAfLaVfoZ3Gw&s')`,
+              }}
+            ></div>
+            <Link to="/suggested-items">
+              <button className="btn btn-success transition duration-500 ease-in-out transform hover:scale-105 mt-4">
+                Find Out Now!
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Map Section with Google Map */}
       <AdoptionCentersMap />
+      
+      {/* Food Section */}
       <section className="py-12 text-white text-center">
-  <div className="max-w-7xl mx-auto flex flex-col items-center space-y-4">
-    {/* Title Above Image */}
-    <h3 className="text-2xl font-bold">The Right Food for Your Pets!</h3>
+        <div className="max-w-7xl mx-auto flex flex-col items-center space-y-4">
+          <h3 className="text-2xl font-bold">The Right Food for Your Pets!</h3>
+          <div
+            className="w-full h-96 bg-center rounded-lg shadow-lg"
+            style={{
+              backgroundImage: "url('https://as1.ftcdn.net/v2/jpg/08/13/28/18/1000_F_813281821_ljnOcqB3P5ddBcl3YR4xcZrx3vi9FswC.jpg')",
+              backgroundSize: "auto 100%",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center"
+            }}
+          ></div>
+          <Link to="/food-recommendation">
+            <button className="btn btn-success mt-4 transition duration-500 ease-in-out transform hover:scale-105">
+              Find Out Now!
+            </button>
+          </Link>
+        </div>
+      </section>
 
-    {/* Background Image */}
-    <div
-      className="w-full h-96 bg-cover bg-center rounded-lg shadow-lg"
-      style={{
-        backgroundImage: `url('https://lh7-rt.googleusercontent.com/docsz/AD_4nXfJutWGsHBXaQ-8WFTpUnXgAFyPaLDzh-e5C-twKn8em9LDC3Y9gxxT_r82_8LwXPJ6gcgls7dMqExK5rECEYsGK_-e-VIYC4QApNv5E9FwemEmmRLIJ8rP8VmMxrMRpNGptJI_AMydyaxR3-SHGayoOp4?key=v-rv7mTYCzUGDy419JZ28A')`,
-      }}
-    ></div>
-
-    {/* Button Below Image */}
-    <Link to="/food-recommendation">
-      <button className="btn btn-success mt-4 transition duration-500 ease-in-out transform hover:scale-105">
-        Find Out Now!
-      </button>
-    </Link>
-  </div>
-</section>
-
-<Footer />
-
-
+      <Footer />
     </div>
   );
 };
