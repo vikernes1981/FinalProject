@@ -108,7 +108,7 @@ const HomePage = () => {
       </section>
 
       {/* Search Section */}
-      <section className="max-w-7xl mx-auto px-4 mt-6 animate-slideDown">
+      <section id="adopt-pet-section" className="max-w-7xl mx-auto px-4 mt-6 animate-slideDown">
         <div className="relative">
           <input
             type="text"
