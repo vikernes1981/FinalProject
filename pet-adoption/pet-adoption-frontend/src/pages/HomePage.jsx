@@ -58,6 +58,23 @@ const HomePage = () => {
     setVisiblePets((prev) => prev + 8);
   };
 
+  const images = [
+    "https://www.parade.pet/assets/images/seasons/spring/pet/facebook.jpg",
+    "https://c.wallhere.com/photos/31/cb/dog_pet_animals_nature_plants_lake_green_relaxing-1521209.jpg!d", // Add more image paths here
+    "https://wallpaperaccess.com/full/1447496.jpg",
+    "https://png.pngtree.com/background/20230528/original/pngtree-five-dogs-and-a-cat-together-on-a-black-background-picture-image_2777259.jpg",
+    "https://wallpapercave.com/wp/wp2544107.jpg",
+  ];
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000); // Change image every 1 second
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, [images.length]);
+
   return (
     <div className="space-y-12">
       {/* Header Section */}
@@ -65,7 +82,7 @@ const HomePage = () => {
         <div
           className="w-full h-full relative flex justify-center items-center text-center"
           style={{
-            backgroundImage: 'url("/cute cat.jpg")',
+            backgroundImage: `url("${images[currentImageIndex]}")`,
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
@@ -92,25 +109,41 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Pet Listings Section */}
-      <section className="max-w-7xl mx-auto px-4 mt-8">
-        <h2 className="text-2xl font-bold text-white mb-6">All Entries</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredPets.slice(0, visiblePets).map((pet, index) => (
-            <PetCard key={index} pet={pet} />
-          ))}
+      <section className="max-w-7xl mx-auto px-4 mt-8 relative">
+  <h2 className="text-2xl font-bold text-white mb-6">All Entries</h2>
+
+  {/* Carousel Container */}
+  <div className="relative flex items-center overflow-x-hidden">
+    {/* Left Navigation Button */}
+    <button
+      onClick={() => document.querySelector('.scrollbar-hide').scrollBy({ left: -300, behavior: 'smooth' })}
+      className="absolute left-0 bg-green-600 text-white rounded-full p-2 shadow-lg z-10"
+    >
+      ❮
+    </button>
+
+    {/* Carousel Items */}
+    <div className="flex items-center overflow-x-scroll scrollbar-hide">
+      {filteredPets.map((pet, index) => (
+        <div key={index} className="flex-shrink-0 w-56 mx-2"> {/* Adjusted width */}
+          <PetCard pet={pet} />
         </div>
-        <div className="flex justify-center mt-6">
-          {visiblePets < filteredPets.length && (
-            <button
-              onClick={loadMorePets}
-              className="btn btn-success animate-bounce hover:bg-green-600 transition duration-500 ease-in-out transform hover:scale-105"
-            >
-              Load More
-            </button>
-          )}
-        </div>
-      </section>
+      ))}
+    </div>
+
+    {/* Right Navigation Button */}
+    <button
+      onClick={() => document.querySelector('.scrollbar-hide').scrollBy({ left: 300, behavior: 'smooth' })}
+      className="absolute right-0 bg-green-600 text-white rounded-full p-2 shadow-lg z-10"
+    >
+      ❯
+    </button>
+  </div>
+</section>
+
+
+
+
 
       {/* Combined Section for "Which Pet is Right for You?" and "Suggested Items" */}
       <section className="py-12">
