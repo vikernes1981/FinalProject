@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useForm, ValidationError } from '@formspree/react';
 
+// Maybe put this on .env file
+
 const ContactUs = () => {
   const [state, handleSubmit] = useForm('mwpkllvq');
   const [formData, setFormData] = useState({
