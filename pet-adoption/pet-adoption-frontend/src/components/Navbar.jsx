@@ -50,26 +50,28 @@ const Navbar = () => {
   return (
     <nav className="navbar bg-base-100 shadow-lg fixed top-0 left-0 right-0 z-50">
       <div className="flex items-center flex-1">
+        {/* Logo on the left side */}
         <img src={logo} alt="Pawsome Homes Logo" className="h-24 w-26 mr-2" />
+
         <Link to="/" className="text-3xl text-white font-bold">Pawsome Homes</Link>
       </div>
 
       {/* Right-side navigation */}
       <div className="hidden md:flex text-white flex-none">
-        <ul className="menu menu-horizontal p-0 text-lg"> {/* Adjust text size here */}
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/about">About Us</Link></li>
-          <li><Link to="/contact">Contact Us</Link></li>
-          {isAuthenticated ? (
-            <li><Link to="/" onClick={handleLogout}>Logout</Link></li>
-          ) : (
-            <li><Link to="/login">Login</Link></li>
-          )}
-          {isAdmin && (
-            <li><Link to="/admin">Admin Dashboard</Link></li>
-          )}
-        </ul>
-    </div>
+  <ul className="menu menu-horizontal p-0 text-lg"> {/* Adjust text size here */}
+    <li><Link to="/">Home</Link></li>
+    <li><Link to="/about">About Us</Link></li>
+    <li><Link to="/contact">Contact Us</Link></li>
+    {isAuthenticated ? (
+      <li><Link to="/" onClick={handleLogout}>Logout</Link></li>
+    ) : (
+      <li><Link to="/login">Login</Link></li>
+    )}
+    {isAdmin && (
+      <li><Link to="/admin">Admin Dashboard</Link></li>
+    )}
+  </ul>
+</div>
 
 
       {/* Dropdown for mobile */}

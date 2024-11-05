@@ -32,7 +32,7 @@ const Login = ({ setAuth }) => {
   
 
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-gray-200 shadow-lg rounded-lg mt-10">
+    <div className="max-w-3xl mx-auto p-16 bg-gray-200 shadow-lg rounded-lg mt-20">
       <h1 className="text-3xl font-bold text-center mb-6 text-green-700">Login</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
