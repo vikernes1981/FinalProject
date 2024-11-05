@@ -81,7 +81,7 @@ const HomePage = () => {
   }, [images.length]);
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 mt-20  ">
       {/* Header Section */}
       <section className="relative h-[550px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 transition-opacity duration-1000 ease-in-out">
