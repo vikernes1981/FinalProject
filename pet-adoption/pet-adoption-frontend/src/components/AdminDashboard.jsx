@@ -7,7 +7,7 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('pets');
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-gray-200 shadow-lg rounded-lg mt-10">
+    <div className="max-w-4xl mx-auto p-16 bg-gray-200 shadow-lg rounded-lg mt-20">
       <h1 className="text-3xl font-bold text-center mb-6 text-green-700">Admin Dashboard</h1>
 
       <div className="tabs flex justify-around mb-8 space-x-4">

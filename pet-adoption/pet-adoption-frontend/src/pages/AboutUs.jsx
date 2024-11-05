@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const AboutUs = () => {
   return (
-    <div className="max-w-5xl mx-auto p-8 bg-gray-200 shadow-lg rounded-lg mt-10">
+    <div className="max-w-5xl mx-auto p-16 bg-gray-200 shadow-lg rounded-lg mt-20">
       <h1 className="text-4xl font-bold text-center text-green-700 mb-8">About Pet Adoption</h1>
 
       {/* Section 1: Introduction */}
