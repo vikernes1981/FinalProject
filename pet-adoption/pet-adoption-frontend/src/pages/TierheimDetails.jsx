@@ -33,7 +33,7 @@ const TierheimDetails = () => {
   if (!placeDetails) return <div className="text-white">Loading place details...</div>;
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-6 bg-gray-800 text-white rounded-lg shadow-lg">
+    <div className="max-w-3xl mx-auto mt-20 p-16 bg-gray-800 text-white rounded-lg shadow-lg">
       <div className="flex flex-col md:flex-row items-center">
         {/* Display the photo */}
         {placeDetails.photos && (
