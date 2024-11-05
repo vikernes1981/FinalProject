@@ -102,31 +102,29 @@ const HomePage = () => {
   return (
     <div className="space-y-12">
       {/* Header Section */}
-      <section className="relative h-[550px] flex items-center justify-center overflow-hidden mt-20"> {/* Added mt-16 for margin-top */}
-  <div className="absolute inset-0 transition-opacity duration-1000 ease-in-out">
-    {images.map((image, index) => (
-      <div
-        key={index}
-        className={`w-full h-full absolute top-0 left-0 transition-opacity duration-1000 ease-in-out ${
-          currentImageIndex === index ? (isFadingHeader ? "opacity-0" : "opacity-100") : "opacity-0"
-        }`}
-        style={{
-          backgroundImage: `url("${image}")`,
-          backgroundPosition: "center",
-          backgroundSize: "contain", // Changed from 'cover' to 'contain'
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-      </div>
-    ))}
-  </div>
-  <h1 className="relative text-5xl font-bold text-white z-10">
-    Your New Best Friend Awaits at Pawsome Homes
-  </h1>
-</section>
-
-
+      <section className="relative h-[550px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 transition-opacity duration-1000 ease-in-out">
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className={`w-full h-full absolute top-0 left-0 transition-opacity duration-1000 ease-in-out ${
+                currentImageIndex === index ? (isFadingHeader ? "opacity-0" : "opacity-100") : "opacity-0"
+              }`}
+              style={{
+                backgroundImage: `url("${image}")`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+            >
+              <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+            </div>
+          ))}
+        </div>
+        <h1 className="relative text-5xl font-bold text-white z-10">
+          Your New Best Friend Awaits at Pawsome Homes
+        </h1>
+      </section>
 
       {/* Search Section */}
       <section id="adopt-pet-section" className="max-w-7xl mx-auto px-4 mt-6 animate-slideDown">
