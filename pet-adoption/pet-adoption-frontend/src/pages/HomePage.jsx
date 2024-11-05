@@ -61,8 +61,8 @@ const HomePage = () => {
   const images = [
     "https://www.parade.pet/assets/images/seasons/spring/pet/facebook.jpg",
     "https://c.wallhere.com/photos/31/cb/dog_pet_animals_nature_plants_lake_green_relaxing-1521209.jpg!d", // Add more image paths here
-    "https://wallpaperaccess.com/full/1447496.jpg",
-    "https://png.pngtree.com/background/20230528/original/pngtree-five-dogs-and-a-cat-together-on-a-black-background-picture-image_2777259.jpg",
+    "https://www.thefarmersdog.com/digest/wp-content/uploads/2021/06/cat-and-dog-top.jpg",
+    "https://wallup.net/wp-content/uploads/2016/01/198138-animals-cat-dog.jpg",
     "https://wallpapercave.com/wp/wp2544107.jpg",
   ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
