@@ -28,10 +28,22 @@ const PetCard = ({ pet }) => {
 
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [visiblePets, setVisiblePets] = useState(8);
+  const [visiblePets, setVisiblePets] = useState(4);
   const [fadeIn, setFadeIn] = useState(false);
   const [pets, setPets] = useState([]);
   const { token } = useContext(AuthContext); // Access the token from AuthContext
+  const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isFadingHeader, setIsFadingHeader] = useState(false);
+  const images = [
+    "https://www.parade.pet/assets/images/seasons/spring/pet/facebook.jpg",
+    "https://c.wallhere.com/photos/31/cb/dog_pet_animals_nature_plants_lake_green_relaxing-1521209.jpg!d", // Add more image paths here
+    "https://wallpaperaccess.com/full/1447496.jpg",
+    "https://png.pngtree.com/background/20230528/original/pngtree-five-dogs-and-a-cat-together-on-a-black-background-picture-image_2777259.jpg",
+    "https://wallpapercave.com/wp/wp2544107.jpg",
+  ];
+
 
   useEffect(() => {
     setFadeIn(true);
@@ -54,26 +66,33 @@ const HomePage = () => {
       pet.age.toString().includes(searchTerm)
   );
 
-  const loadMorePets = () => {
-    setVisiblePets((prev) => prev + 8);
-  };
 
-  const images = [
-    "https://www.parade.pet/assets/images/seasons/spring/pet/facebook.jpg",
-    "https://c.wallhere.com/photos/31/cb/dog_pet_animals_nature_plants_lake_green_relaxing-1521209.jpg!d", // Add more image paths here
-    "https://wallpaperaccess.com/full/1447496.jpg",
-    "https://png.pngtree.com/background/20230528/original/pngtree-five-dogs-and-a-cat-together-on-a-black-background-picture-image_2777259.jpg",
-    "https://wallpapercave.com/wp/wp2544107.jpg",
-  ];
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isFading, setIsFading] = useState(false);
+  // Carousel controls for pet cards with forward and backward looping
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => {
+        if (prevIndex >= filteredPets.length - visiblePets) {
+          setDirection(-1); // Switch to backward
+          return prevIndex - 1;
+        } else if (prevIndex <= 0) {
+          setDirection(1); // Switch to forward
+          return prevIndex + 1;
+        }
+        return prevIndex + direction;
+      });
+    }, 4000); // Change pet card every 4 seconds
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, [filteredPets.length, direction]);
+
+
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsFading(true); // Start fade-out
+      setIsFadingHeader(true); // Start fade-out
       setTimeout(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-        setIsFading(false); // End fade-out
+        setIsFadingHeader(false); // End fade-out
       }, 0); // Duration of the fade-out
     }, 4000); // Change image every 4 seconds
 
@@ -81,7 +100,7 @@ const HomePage = () => {
   }, [images.length]);
 
   return (
-    <div className="space-y-12 mt-20  ">
+    <div className="space-y-12">
       {/* Header Section */}
       <section className="relative h-[550px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 transition-opacity duration-1000 ease-in-out">
@@ -89,7 +108,7 @@ const HomePage = () => {
             <div
               key={index}
               className={`w-full h-full absolute top-0 left-0 transition-opacity duration-1000 ease-in-out ${
-                currentImageIndex === index ? (isFading ? "opacity-0" : "opacity-100") : "opacity-0"
+                currentImageIndex === index ? (isFadingHeader ? "opacity-0" : "opacity-100") : "opacity-0"
               }`}
               style={{
                 backgroundImage: `url("${image}")`,
@@ -121,43 +140,42 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 mt-8 relative">
-  <h2 className="text-2xl font-bold text-white mb-6">All Entries</h2>
+      <section className="max-w-7xl mx-auto px-4 mt-8 relative animate-slideDown">
+        <h2 className="text-2xl font-bold text-white mb-6">All Entries</h2>
 
-  {/* Carousel Container */}
-  <div className="relative flex items-center overflow-hidden"> {/* Changed overflow-x-hidden to overflow-hidden */}
-    {/* Left Navigation Button */}
-    <button
-      onClick={() => document.querySelector('.carousel-items').scrollBy({ left: -300, behavior: 'smooth' })}
-      className="absolute left-0 bg-green-600 text-white rounded-full p-2 shadow-lg z-10"
-    >
-      ❮
-    </button>
-
-    {/* Carousel Items */}
-    <div className="carousel-items flex items-center overflow-x-hidden"> {/* Set overflow-x-hidden */}
-      {filteredPets.map((pet, index) => (
-        <div key={index} className="flex-shrink-0 w-72 h-80 mx-2"> {/* Adjusted width and height */}
-          <PetCard pet={pet} />
-        </div>
-      ))}
+        <div className="relative overflow-hidden">
+      <div
+        className="flex transition-transform duration-700 ease-in-out"
+        style={{
+          transform: `translateX(-${currentIndex * (100 / visiblePets)}%)`,
+        }}
+      >
+        {filteredPets.map((pet, index) => (
+          <div key={index} className="flex-shrink-0 w-72 h-80 mx-2">
+            <PetCard pet={pet} />
+          </div>
+        ))}
+      </div>
+      <div className="absolute top-0 left-0 right-0 flex justify-between items-center h-full">
+        <button
+          className="bg-white rounded-full shadow p-2 hover:bg-gray-200"
+          onClick={() => setCurrentIndex((prev) => Math.max(prev - 1, 0))}
+        >
+          ❮
+        </button>
+        <button
+          className="bg-white rounded-full shadow p-2 hover:bg-gray-200"
+          onClick={() => setCurrentIndex((prev) => Math.min(prev + 1, filteredPets.length - visiblePets))}
+        >
+          ❯
+        </button>
+      </div>
     </div>
+      </section>
 
-    {/* Right Navigation Button */}
-    <button
-      onClick={() => document.querySelector('.carousel-items').scrollBy({ left: 300, behavior: 'smooth' })} 
-      className="absolute right-0 bg-green-600 text-white rounded-full p-2 shadow-lg z-10"
-    >
-      ❯
-    </button>
-  </div>
-</section>
-
-
-      {/* Combined Section for "Which Pet is Right for You?" and "Suggested Items" */}
+      {/* Combined Section */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto text-white flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-16 text-center">
-          
           {/* Find Your Pet Section */}
           <div className="w-full md:w-1/2 flex flex-col items-center space-y-4">
             <h3 className="text-2xl font-bold">Which Pet is Right for You?</h3>
@@ -173,6 +191,7 @@ const HomePage = () => {
               </button>
             </Link>
           </div>
+
 
           {/* Suggested Items Section */}
           <div className="w-full md:w-1/2 flex flex-col items-center space-y-4">
