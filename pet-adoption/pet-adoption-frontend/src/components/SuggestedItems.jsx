@@ -47,12 +47,12 @@ const SuggestedItems = () => {
   ];
 
   return (
-    <div className="bg-gray-700 text-white py-12 px-4 rounded-lg shadow-lg text-center pt-16">
-      <div className="flex justify-center mb-6">
+    <div className="bg-gray-700 text-white py-20 px-4  rounded-lg shadow-lg text-center pt-18">
+      <div className="flex justify-center mb-12">
         <img 
           src="https://cdn.mos.cms.futurecdn.net/NTHiJHD2tnCxZoL8cX3hBU-1024-80.jpg" 
           alt="Suggested Items"
-          className="rounded-md h-48 w-[90%] object-cover mx-4" 
+          className="rounded-md h-80 w-[90%] object-cover mx-4" 
         />
       </div>
       <h2 className="text-3xl font-bold mb-6 underline decoration-emerald-400">

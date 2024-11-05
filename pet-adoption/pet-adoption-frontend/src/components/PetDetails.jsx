@@ -61,7 +61,7 @@ const PetDetails = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <div className="max-w-7xl mx-auto px-4 py-32">
       <div className="card shadow-lg rounded-lg overflow-hidden">
         <img src={pet.image} alt={pet.name} className="object-contain h-96 w-full" />
         <div className="p-6">

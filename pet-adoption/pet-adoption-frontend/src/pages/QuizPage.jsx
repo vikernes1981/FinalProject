@@ -173,8 +173,8 @@ const QuizPage = () => {
   };
 
   return (
-    <div className="min-h-screen  flex items-center justify-center py-12">
-      <div className="max-w-3xl w-full bg-gray-200 rounded-lg shadow-lg p-8">
+    <div className="min-h-screen  flex items-center justify-center py-20">
+      <div className="max-w-3xl w-full bg-gray-200 rounded-lg shadow-lg p-14">
         <h1 className="text-4xl font-bold mb-8 text-center text-green-700">Find Out Which Pet is Right for You!</h1>
 
         {/* Quiz Form */}

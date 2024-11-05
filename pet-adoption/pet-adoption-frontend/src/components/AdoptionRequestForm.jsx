@@ -106,7 +106,7 @@ const AdoptionRequestForm = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-8 bg-gray-100 rounded-lg shadow-md">
+    <div className="max-w-lg mx-auto mt-20 p-16 bg-gray-100 rounded-lg shadow-md">
       <h1 className="text-3xl font-semibold mb-8 text-center text-green-600">Pet Adoption Form for {petName}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6  bg-gray-100">
