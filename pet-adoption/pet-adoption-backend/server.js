@@ -19,7 +19,7 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
-  origin: 'https://final-project-nine-pink.vercel.app/'
+  origin: 'https://final-project-nine-pink.vercel.app'
 }));
 
 // MongoDB connection
