@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL_ADOPTION = 'https://finalproject-taeu.onrender.com/api/adoption-requests';
+const API_URL_ADOPTION = 'https://final-project-cnm2.vercel.app/api/adoption-requests';
 
 export const createRequest = async (data) => {
   try {

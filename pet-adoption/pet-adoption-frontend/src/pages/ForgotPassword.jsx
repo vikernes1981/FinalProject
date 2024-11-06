@@ -18,7 +18,7 @@ const ForgotPassword = () => {
     }
 
     try {
-      const response = await axios.patch('https://finalproject-taeu.onrender.com/api/forgot-password', {
+      const response = await axios.patch('https://final-project-cnm2.vercel.app/api/forgot-password', {
         email: formData.email,
         newPassword: formData.newPassword, // Use newPassword here
       });

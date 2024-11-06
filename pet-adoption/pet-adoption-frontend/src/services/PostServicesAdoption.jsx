@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL_ADOPTION ='https://finalproject-taeu.onrender.com/admin/adoption-requests';
+const API_URL_ADOPTION ='https://final-project-cnm2.vercel.app/admin/adoption-requests';
 
 export const getAllRequest = async () => {
     try {
