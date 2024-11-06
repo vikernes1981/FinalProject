@@ -11,7 +11,7 @@ const Login = ({ setAuth }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('https://finalproject-taeu.onrender.com/api/login', formData);
+      const response = await axios.post('https://final-project-cnm2.vercel.app/api/login', formData);
       const { token } = response.data;
 
       localStorage.setItem('authToken', token); // Store token

@@ -13,7 +13,7 @@ class MessageParser {
 
     // Send the message to the backend
     try {
-      const response = await axios.post('https://finalproject-taeu.onrender.com/chatbot/message', {
+      const response = await axios.post('https://final-project-cnm2.vercel.app/chatbot/message', {
         message: {
           chat: {
             id: chatId,

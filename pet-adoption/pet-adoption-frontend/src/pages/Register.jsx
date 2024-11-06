@@ -25,7 +25,7 @@ const Register = () => {
     setErrorMessage('');
 
     try {
-      await axios.post('https://finalproject-taeu.onrender.com/api/register', formData);
+      await axios.post('https://final-project-cnm2.vercel.app/api/register', formData);
       setLoading(false);
       navigate('/');
     } catch (error) {

@@ -17,7 +17,7 @@ class ActionProvider {
   handleSendMessage = async (userMessage, chatId) => {
     if (userMessage.trim() !== "") {
       try {
-        await axios.post('https://finalproject-taeu.onrender.com/chatbot/message', {
+        await axios.post('https://final-project-cnm2.vercel.app/chatbot/message', {
           message: {
             chat: {
               id: chatId,

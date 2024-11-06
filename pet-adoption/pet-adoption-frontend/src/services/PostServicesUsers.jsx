@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL_USERS = 'https://finalproject-taeu.onrender.com/admin/users';
+const API_URL_USERS = 'https://final-project-cnm2.vercel.app/admin/users';
 
 export const getAllUsers = async () => {
   try {
