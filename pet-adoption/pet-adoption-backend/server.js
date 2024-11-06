@@ -19,7 +19,7 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
-  origin: 'https://final-project-nine-pink.vercel.app'
+  origin: 'http://localhost:5173',
 }));
 
 // MongoDB connection
@@ -35,10 +35,6 @@ app.use('/api', authRoutes);
 app.use('/api/adoption-requests', postRequestRoutes);
 app.use('/chatbot', chatbotRoutes);
 app.use('/api/forgot-password', authRoutes);
-
-app.get('/', (req, res) => {
-  res.send('Backend is running successfully');
-});
 
 // Start server
 app.listen(process.env.PORT || 5000, () => {
