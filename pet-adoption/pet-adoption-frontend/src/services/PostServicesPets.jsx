@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL_PETS = 'https://final-project-cnm2.vercel.app/api/pets';
+const API_URL_PETS = 'http://localhost:5000/api/pets';
 
 export const getAllPets = async () => {
   const res = await axios.get(`${API_URL_PETS}`);
